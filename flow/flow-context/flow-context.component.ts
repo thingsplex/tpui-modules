@@ -10,8 +10,6 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromEvent';
 import { BACKEND_ROOT } from "app/globals";
-import {ThingEditorDialog} from "../../registry/things/thing-editor.component";
-import {Thing} from "../../registry/model";
 import {MatDialog} from "@angular/material";
 import {RecordEditorDialog} from "./record-editor-dialog.component";
 import {TableContextRec} from "./model"

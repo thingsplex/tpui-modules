@@ -8,7 +8,7 @@ import { MatTableModule,
          MatSliderModule,
          MatCheckboxModule,
          MatListModule,
-         MatSelectModule, 
+         MatSelectModule,
          MatOptionModule,
          MatDialogModule,
          MatTabsModule,
@@ -22,14 +22,14 @@ import { ThingsComponent } from './things/things.component';
 import { ServicesComponent ,ServicesMainComponent,ServiceSelectorWizardComponent } from './services/services.component';
 import { LocationsComponent,LocationSelectorWizardComponent } from './locations/locations.component';
 import { AdminComponent } from './admin/admin.component';
-import { ThingIntfUiComponent,KeysPipe } from 'app/registry/thing-intf-ui/thing-intf-ui.component'
+import { ThingIntfUiComponent,KeysPipe } from './thing-intf-ui/thing-intf-ui.component'
 
 import { RegistryRoutingModule } from "./registry-routing.module";
 import { CdkTableModule } from '@angular/cdk/table';
 import { FimpService } from 'app/fimp/fimp.service'
-import { ServiceEditorDialog }from 'app/registry/services/service-editor.component'
-import { ThingEditorDialog }from 'app/registry/things/thing-editor.component'
-import { LocationEditorDialog }from 'app/registry/locations/location-editor.component'
+import { ServiceEditorDialog }from './services/service-editor.component'
+import { ThingEditorDialog }from './things/thing-editor.component'
+import { LocationEditorDialog }from './locations/location-editor.component'
 import {ThingsRegistryService} from "./registry.service";
 
 @NgModule({
@@ -40,7 +40,7 @@ import {ThingsRegistryService} from "./registry.service";
     MatSnackBarModule,
     MatInputModule,
     MatButtonModule,
-    MatFormFieldModule, 
+    MatFormFieldModule,
     MatTableModule,
     MatChipsModule,
     MatOptionModule,
@@ -52,14 +52,14 @@ import {ThingsRegistryService} from "./registry.service";
     MatDialogModule,
     MatTabsModule,
     MatCardModule,
-    HttpModule, 
+    HttpModule,
     CdkTableModule
   ],
   exports:[ServicesComponent,
     ThingIntfUiComponent,
     KeysPipe,
     ServiceSelectorWizardComponent
-    ], 
+    ],
 
   declarations: [
     ThingsComponent,

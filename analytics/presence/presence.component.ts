@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromEvent';
-import {ThingsRegistryService} from "../../../registry/registry.service";
+import {ThingsRegistryService} from "../../registry/registry.service";
 
 @Component({
   selector: 'app-analytics-presence',

@@ -11,9 +11,9 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromEvent';
 import {Location} from '../model';
 import { BACKEND_ROOT } from "app/globals";
-import { LocationEditorDialog} from 'app/registry/locations/location-editor.component'
+import { LocationEditorDialog} from './location-editor.component'
 import {MatDialog, MatDialogRef,MatSnackBar} from '@angular/material';
-import {MatTableDataSource} from '@angular/material';
+// import {MatTableDataSource} from '@angular/material';
 
 @Component({
   selector: 'app-locations',

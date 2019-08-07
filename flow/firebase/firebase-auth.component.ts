@@ -1,7 +1,7 @@
 import { Component, OnInit,Inject } from '@angular/core';
 import { MatDialog, MatDialogRef,MatSnackBar} from '@angular/material';
 import { MAT_DIALOG_DATA} from '@angular/material';
-import {FireService} from '../../../firebase/fire.service'
+import {FireService} from 'app/firebase/fire.service'
 import * as firebase from "firebase";
 
 @Component({

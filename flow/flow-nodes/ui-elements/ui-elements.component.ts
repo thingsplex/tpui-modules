@@ -1,5 +1,5 @@
 import { Component, OnInit ,Input } from '@angular/core';
-import {Variable } from "app/flow/flow-editor/flow-editor.component";
+import {Variable } from "app/tpui-modules/flow/flow-editor/flow-editor.component";
 
 @Component({
     selector: 'variable-element',
@@ -9,9 +9,9 @@ import {Variable } from "app/flow/flow-editor/flow-editor.component";
   export class VariableElementComponent implements OnInit {
     @Input() variable :Variable;
     constructor() { }
-  
-    ngOnInit() { 
-      
+
+    ngOnInit() {
+
     }
-    
+
   }

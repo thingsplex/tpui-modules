@@ -13,7 +13,7 @@ import 'rxjs/add/observable/fromEvent';
 import { Thing } from '../model';
 import { ActivatedRoute } from '@angular/router';
 import { BACKEND_ROOT } from "app/globals";
-import { ThingEditorDialog} from 'app/registry/things/thing-editor.component'
+import { ThingEditorDialog} from './thing-editor.component'
 
 @Component({
   selector: 'app-things',
@@ -27,8 +27,8 @@ export class ThingsComponent implements OnInit {
 
   @ViewChild('filterAddr') filter: ElementRef;
 
-  constructor(private http : Http,private route: ActivatedRoute,public dialog: MatDialog) { 
-    
+  constructor(private http : Http,private route: ActivatedRoute,public dialog: MatDialog) {
+
   }
 
   ngOnInit() {
@@ -37,7 +37,7 @@ export class ThingsComponent implements OnInit {
     if (this.locationId=="*"){
       this.locationId = "";
     }
-    
+
     this.dataSource.getData(this.locationId);
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
         .debounceTime(150)
@@ -55,18 +55,18 @@ export class ThingsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result)
         {
-           this.dataSource.getData(this.locationId) 
+           this.dataSource.getData(this.locationId)
         }
-    });      
+    });
   }
-  
+
   deleteThing(id:string) {
     this.http
      .delete(BACKEND_ROOT+'/fimp/api/registry/thing/'+id)
      .subscribe ((result) => {
         this.dataSource.getData("");
      });
-  } 
+  }
   }
 
   /**
@@ -101,7 +101,7 @@ export class ThingsDataSource extends DataSource<any> {
         });
 
   }
-  
+
   connect(): Observable<Thing[]> {
     return this.thingsObs;
   }
@@ -123,6 +123,6 @@ export class ThingsDataSource extends DataSource<any> {
             thing.locationAlias = result[key].location_alias;
             things.push(thing)
      }
-     return things;     
+     return things;
   }
 }

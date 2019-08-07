@@ -1,7 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from "@angular/core";
 import {DashboardComponent} from "./dashboard/dashboard.component";
-import {Component} from "@angular/core/src/metadata/directives";
 import {PresenceComponent} from "./presence/presence.component";
 import {SensorsComponent} from "./sensors/sensors.component";
 

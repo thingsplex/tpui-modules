@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 // } from 'angular2-mqtt';
 // import { FimpMessage, NewFimpMessageFromString } from "app/fimp/Message";
 // import {tap} from "rxjs/operators";
-import {FimpService} from "../fimp/fimp.service";
+import {FimpService} from "app/fimp/fimp.service";
 import { BACKEND_ROOT} from "app/globals";
 import {HttpClient} from "@angular/common/http";
 

@@ -1,6 +1,6 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import { FimpService } from "app/fimp/fimp.service";
-import { FimpMessage ,NewFimpMessageFromString } from '../fimp/Message'; 
+import { FimpMessage ,NewFimpMessageFromString } from 'app/fimp/Message';
 import { Subscription } from "rxjs/Subscription";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
 // import {MatSnackBarModule} from '@angular/material/snack-bar';
@@ -30,7 +30,7 @@ export class GenericAdManComponent implements OnInit {
       this.fimp.publish("pt:j1/mt:cmd/rt:ad/rn:"+this.adapter+"/ad:1",msg.toString());
     }
 
-  } 
+  }
 
   discover() {
     this.listOfAdapters = [];
@@ -57,13 +57,13 @@ export class GenericAdManComponent implements OnInit {
     let val = {"address":address.toString()}
     let msg  = new FimpMessage(this.adapter,"cmd.thing.delete","str_map",val,null,null)
     this.fimp.publish("pt:j1/mt:cmd/rt:ad/rn:"+this.adapter+"/ad:1",msg.toString());
-    
+
   }
-  
+
   generateExclusionReport(address:string){
     let msg  = new FimpMessage(this.adapter,"evt.thing.exclusion_report","object",{"address":String(address)},null,null)
     this.fimp.publish("pt:j1/mt:evt/rt:ad/rn:"+this.adapter+"/ad:1",msg.toString());
-    
+
   }
 
   onAdapterSelected() {
@@ -88,7 +88,7 @@ export class GenericAdManComponent implements OnInit {
       let fimpMsg = NewFimpMessageFromString(msg.payload.toString());
       if (fimpMsg.service == this.adapter ){
         if(fimpMsg.mtype == "evt.network.all_nodes_report" )
-        { 
+        {
           this.nodes = fimpMsg.val;
           localStorage.setItem(this.adapter+"NodesList", JSON.stringify(this.nodes));
         }else if (fimpMsg.mtype == "evt.thing.exclusion_report" || fimpMsg.mtype == "evt.thing.inclusion_report"){

@@ -1,10 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {Flow} from "../flow-editor/flow-editor.component";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
 import { Observable } from 'rxjs';
-import {FireService} from "../../firebase/fire.service";
+import {FireService} from "app/firebase/fire.service";
 import {Headers, Http, RequestOptions} from "@angular/http";
-import {BACKEND_ROOT} from "../../globals";
+import {BACKEND_ROOT} from "app/globals";
 
 
 export interface Item { name: string; }

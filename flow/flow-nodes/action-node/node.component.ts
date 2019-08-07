@@ -3,12 +3,12 @@ import {Component, Input, OnInit} from "@angular/core";
 import {MatDialog} from "@angular/material";
 // import {Http, Response} from "@angular/http";
 import { HttpClient } from '@angular/common/http';
-import {BACKEND_ROOT} from "../../../globals";
+import {BACKEND_ROOT} from "../../../../globals";
 import {ContextVariable} from "../../flow-context/variable-selector.component";
 import {ServiceInterface} from "../../../registry/model";
 import {Subscription} from "rxjs";
-import {FimpMessage, NewFimpMessageFromString} from "../../../fimp/Message";
-import {FimpService} from "../../../fimp/fimp.service";
+import {FimpMessage, NewFimpMessageFromString} from "../../../../fimp/Message";
+import {FimpService} from "../../../../fimp/fimp.service";
 
 @Component({
   selector: 'action-node',

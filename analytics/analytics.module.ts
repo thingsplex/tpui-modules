@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CdkTableModule } from '@angular/cdk/table';
 import { HttpModule } from '@angular/http';
 import { AnalyticsRoutingModule } from "./analytics-routing.module";
-import { RegistryModule } from "../../registry/registry.module";
+import { RegistryModule } from "../registry/registry.module";
 import { last } from 'rxjs/operator/last';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule,

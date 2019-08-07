@@ -7,10 +7,10 @@ import { FimpService } from "app/fimp/fimp.service";
 import { FimpMessage } from "app/fimp/Message";
 import { msgTypeToValueTypeMap } from "app/things-db/mapping";
 import { BACKEND_ROOT } from "app/globals";
-import { ServiceInterface } from "app/registry/model";
+import { ServiceInterface } from "app/tpui-modules/registry/model";
 import {SafeResourceUrl,DomSanitizer} from "@angular/platform-browser"
 import { setTimeout } from 'timers';
-import {FireService} from "../../firebase/fire.service";
+import {FireService} from "app/firebase/fire.service";
 import {FlowPropsDialog} from "./flow-props-editor.component";
 
 export class MetaNode {

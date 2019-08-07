@@ -1,12 +1,8 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {FlowRunDialog, MetaNode, ServiceLookupDialog} from "../../flow-editor/flow-editor.component";
 import {MatDialog} from "@angular/material";
-import {BACKEND_ROOT} from "../../../globals";
-import {Http, Response} from "@angular/http";
 import {ServiceInterface} from "../../../registry/model";
-import {FimpMessage, NewFimpMessageFromString} from "../../../fimp/Message";
-import {FimpService} from "../../../fimp/fimp.service";
-import {Subscription} from "rxjs";
+import {FimpService} from "../../../../fimp/fimp.service";
 
 
 @Component({

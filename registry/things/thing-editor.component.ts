@@ -1,9 +1,8 @@
 import { Component, OnInit,Inject } from '@angular/core';
 import { MatDialog, MatDialogRef,MatSnackBar} from '@angular/material';
 import { MAT_DIALOG_DATA} from '@angular/material';
-import { BACKEND_ROOT } from "app/globals";
-import {FimpService} from "../../fimp/fimp.service";
-import {FimpMessage} from "../../fimp/Message";
+import {FimpService} from "app/fimp/fimp.service";
+import {FimpMessage} from "app/fimp/Message";
 
 @Component({
     selector: 'thing-editor-dialog',
@@ -12,7 +11,7 @@ import {FimpMessage} from "../../fimp/Message";
   export class ThingEditorDialog {
     locationId : number;
     alias : string;
-    thingId : number;     
+    thingId : number;
     constructor(public dialogRef: MatDialogRef<ThingEditorDialog>,@Inject(MAT_DIALOG_DATA) public data: any,public snackBar: MatSnackBar,private fimp:FimpService) {
           console.dir(data)
           this.thingId = data.id
@@ -20,7 +19,7 @@ import {FimpMessage} from "../../fimp/Message";
           this.locationId = data.locationId
     }
     onLocationSelected(locationId:number ) {
-        console.log("Location selected = "+locationId) 
+        console.log("Location selected = "+locationId)
         this.locationId = locationId
     }
     save(){
@@ -29,5 +28,5 @@ import {FimpMessage} from "../../fimp/Message";
       this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:tpflow/ad:1",msg.toString());
       this.dialogRef.close("ok");
     }
-    
+
   }

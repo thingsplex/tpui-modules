@@ -14,8 +14,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ServiceInterface,Service} from '../model';
 import { BACKEND_ROOT} from "app/globals";
 import { getFimpServiceList} from "app/fimp/service-lookup"
-import {ThingIntfUiComponent} from 'app/registry/thing-intf-ui/thing-intf-ui.component'
-import {ServiceEditorDialog} from 'app/registry/services/service-editor.component'
+// import {ThingIntfUiComponent} from 'app/registry/thing-intf-ui/thing-intf-ui.component'
+import {ServiceEditorDialog} from './service-editor.component'
 import {ThingsRegistryService} from "../registry.service";
 
 

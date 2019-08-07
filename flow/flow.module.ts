@@ -15,11 +15,11 @@ import { TransformNodeComponent  } from './flow-nodes/transform-node/node.compon
 import { ExecNodeComponent  } from './flow-nodes/exec-node/node.component';
 import { ActionNodeComponent,VincActionNodeComponent,NotificationActionNodeComponent,TimelineActionNodeComponent } from './flow-nodes/action-node/node.component';
 import { ReceiveNodeComponent } from './flow-nodes/flow-nodes.component';
-import { FlowRoutingModule } from "app/flow/flow-routing.module";
+import { FlowRoutingModule } from "app/tpui-modules/flow/flow-routing.module";
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { RegistryModule} from 'app/registry/registry.module'
-import { VariableElementComponent} from 'app/flow/flow-nodes/ui-elements/ui-elements.component'
+import { RegistryModule} from 'app/tpui-modules/registry/registry.module'
+import { VariableElementComponent} from 'app/tpui-modules/flow/flow-nodes/ui-elements/ui-elements.component'
 import { RecordEditorDialog} from "./flow-context/record-editor-dialog.component";
 import { CdkTableModule } from '@angular/cdk/table';
 import { SignInDialog,FirebaseAuthCheckComponent } from './firebase/firebase-auth.component';
@@ -42,7 +42,7 @@ import { MatTableModule,
   MatExpansionModule,
   MatTabsModule,
   MatCheckbox} from '@angular/material';
-import {MsgDetailsDialog} from "../timeline/timeline.component";
+// import {MsgDetailsDialog} from "../timeline/timeline.component";
 import {FlowPropsDialog} from "./flow-editor/flow-props-editor.component";
 
 

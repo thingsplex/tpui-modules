@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {Http, Response} from "@angular/http";
-import {BACKEND_ROOT} from "../../globals";
+import {BACKEND_ROOT} from "app/globals";
 import {TableContextRec} from "./model";
 import {RecordEditorDialog} from "./record-editor-dialog.component";
 import {MatDialog} from "@angular/material";

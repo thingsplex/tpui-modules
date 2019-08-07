@@ -2,7 +2,7 @@ import {MetaNode} from "../../flow-editor/flow-editor.component";
 import {Component, Input, OnInit} from "@angular/core";
 import {MatDialog} from "@angular/material";
 import {Http, Response} from "@angular/http";
-import {BACKEND_ROOT} from "../../../globals";
+import {BACKEND_ROOT} from "../../../../globals";
 import {ContextVariable} from "../../flow-context/variable-selector.component";
 
 @Component({
