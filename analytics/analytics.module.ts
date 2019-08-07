@@ -27,6 +27,8 @@ import {BinarySensorChartComponent} from "./charts/binary-sensor-chart.component
 import {LineChartComponent} from "./charts/line-chart.component";
 import {PresenceComponent} from "./presence/presence.component";
 import {SensorsComponent} from "./sensors/sensors.component";
+import {ExploreComponent} from "./explore/explore.component";
+import {SimplePieChartComponent} from "./charts/simple-pie-chart.component";
 
 
 @NgModule({
@@ -56,6 +58,6 @@ import {SensorsComponent} from "./sensors/sensors.component";
     RegistryModule
   ],
   exports:[],
-  declarations: [DashboardComponent,BinarySensorChartComponent,LineChartComponent,PresenceComponent,SensorsComponent]
+  declarations: [DashboardComponent,BinarySensorChartComponent,LineChartComponent,PresenceComponent,SensorsComponent,ExploreComponent,SimplePieChartComponent]
 })
 export class AnalyticsModule { }

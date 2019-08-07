@@ -3,10 +3,57 @@
     <a mat-tab-link [routerLink]="['/analytics/sensors']" >Sensors</a>
     <a mat-tab-link [routerLink]="['/analytics/presence']" >Presence</a>
     <a mat-tab-link [routerLink]="['/analytics/presence']" >Energy</a>
+    <a mat-tab-link [routerLink]="['/analytics/explore']" >Explore</a>
 </nav>
 
 <div style="overflow: hidden" >
 
-<line-chart [measurement]="'sensor_temp.evt.sensor.report'" [title]="'Temperature'"></line-chart>
+    <mat-card class="card">
+        <h3> What do you want to do today ? </h3>
+    </mat-card>
+
+    <mat-card class="card">
+        <mat-card-header>
+            <mat-card-title><h3> Locations overview</h3></mat-card-title>
+            <mat-card-subtitle></mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>Number of locations : {{totalLocations}}</p>
+            <div class="chart-container">
+                <simple-pie-chart [data]="thingsPerLocation" [labels]="locationNames" [title]="'Things per location'" ></simple-pie-chart>
+            </div>
+
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="card">
+        <mat-card-header>
+            <mat-card-title><h3> Things overview</h3></mat-card-title>
+            <mat-card-subtitle></mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>Number of things    : {{totalThings}}</p>
+            <p>Number of services  : {{totalServices}}</p>
+            <p></p>
+            <div class="chart-container">
+                <simple-pie-chart [data]="thingsByTechnology" [labels]="thingsTechLabels" [title]="'Devices by technology'" ></simple-pie-chart>
+                <simple-pie-chart [data]="thingsByTechnology" [labels]="thingsTechLabels" [title]="'Devices by power supply'" ></simple-pie-chart>
+            </div>
+
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="card">
+        <mat-card-header>
+            <mat-card-title><h3> Flows overview</h3></mat-card-title>
+            <mat-card-subtitle ></mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>
+
+            </p>
+        </mat-card-content>
+    </mat-card>
+
 
 </div>

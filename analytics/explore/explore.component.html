@@ -1,0 +1,14 @@
+<nav mat-tab-nav-bar>
+    <a mat-tab-link [routerLink]="['/analytics/dashboard']" >Dashboard</a>
+    <a mat-tab-link [routerLink]="['/analytics/sensors']" >Sensors</a>
+    <a mat-tab-link [routerLink]="['/analytics/presence']" >Presence</a>
+    <a mat-tab-link [routerLink]="['/analytics/presence']" >Energy</a>
+    <a mat-tab-link active [routerLink]="['/analytics/explore']" >Explore</a>
+</nav>
+
+<div style="overflow: hidden" >
+
+
+<line-chart [measurement]="'basic.evt.lvl.report'" [filterByTopic]="'pt:j1/mt:evt/rt:dev/rn:zw/ad:1/sv:basic/ad:13_0'" [title]="'Single value'"></line-chart>
+
+</div>
