@@ -1,0 +1,104 @@
+<div>
+    <div #nodebody > 
+    
+     <mat-expansion-panel>
+        <mat-expansion-panel-header>
+             <mat-panel-title> Service binding </mat-panel-title>
+        </mat-expansion-panel-header>    
+        <p>
+            <mat-input-container style="width: 130px">
+                <input matInput [(ngModel)]="node.Service" placeholder="Service">
+            </mat-input-container>
+            <mat-input-container style="width: 200px">
+                <input matInput [(ngModel)]="node.ServiceInterface" placeholder="Interface">
+            </mat-input-container>
+            <mat-input-container style="width: 450px">
+                <input matInput [(ngModel)]="node.Address" placeholder="Address">
+            </mat-input-container>
+            <button mat-raised-button (click)="serviceLookupDialog(node.Id)" >Lookup</button>
+        </p>
+     </mat-expansion-panel> 
+
+     <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                 <mat-panel-title> Message filter </mat-panel-title>
+            </mat-expansion-panel-header>     
+            <div style="margin-bottom: 30px" >
+                    <mat-checkbox [(ngModel)]="node.Config.IsValueFilterEnabled" > Enable value filter </mat-checkbox>
+            </div> 
+            <mat-select #nodeTypeInput class="value-selector" placeholder="Value type" [(ngModel)]="node.Config.ValueFilter.ValueType">
+                <mat-option value="">The same as input </mat-option>
+                <mat-option value="string">string</mat-option>
+                <mat-option value="bool">bool</mat-option>
+                <mat-option value="int">int</mat-option>
+                <mat-option value="float">float</mat-option>
+                <mat-option value="null">null</mat-option>
+                <mat-option value="str_array">array of strings</mat-option>
+                <mat-option value="int_array">array of integers</mat-option>
+                <mat-option value="float_array">array of floats</mat-option>
+                <mat-option value="bool_array">array of floats</mat-option>
+                <mat-option value="str_map">map of string</mat-option>
+                <mat-option value="int_map">map of integers</mat-option>
+                <mat-option value="float_map">map of floats</mat-option>
+                <mat-option value="bool_map">map of booleans</mat-option>
+                <mat-option value="object">object</mat-option>
+            </mat-select>
+            <span [ngSwitch]="node.Config.ValueFilter.ValueType">
+                <mat-input-container *ngSwitchCase="'string'" class="node-transition-field">
+                    <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value">
+                </mat-input-container>
+                <mat-input-container *ngSwitchCase="'int'" class="node-transition-field">
+                    <input matInput type="number" [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value">
+                </mat-input-container>
+                <mat-input-container *ngSwitchCase="'float'"  class="node-transition-field">
+                    <input matInput type="number" [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value">
+                </mat-input-container>
+            <span *ngSwitchCase="''">
+
+            </span>
+            <mat-radio-group *ngSwitchCase="'bool'" class="example-radio-group" placeholder="Default value" [(ngModel)]="node.Config.ValueFilter.Value">
+                    <mat-radio-button class="example-radio-button" [value]="true">
+                        true (On)
+                    </mat-radio-button>
+                    <mat-radio-button class="example-radio-button" [value]="false">
+                        false (Off)
+                    </mat-radio-button>
+            </mat-radio-group>
+            <mat-input-container *ngSwitchCase="'str_array'" class="node-transition-field">
+                    <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : ['abc','cde']">
+            </mat-input-container>
+            <mat-input-container *ngSwitchCase="'int_array'" class="node-transition-field">
+                    <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : [1,2] ">
+            </mat-input-container>
+            <mat-input-container *ngSwitchCase="'float_array'" class="node-transition-field">
+                    <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : [1.2,0.5] ">
+            </mat-input-container>
+            <mat-input-container *ngSwitchCase="'bool_array'" class="node-transition-field">
+                    <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : [true,false]">
+            </mat-input-container>
+            <mat-input-container *ngSwitchCase="'str_map'" class="node-transition-field">
+                    <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : {'a':'a1','b':'b2'}">
+            </mat-input-container>
+            <mat-input-container *ngSwitchCase="'int_map'" class="node-transition-field">
+                    <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : {'a':1,'b':2}">
+            </mat-input-container>
+            <mat-input-container *ngSwitchCase="'float_map'" class="node-transition-field">
+                    <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : {'a':0.5,'b':1.5}">
+            </mat-input-container>
+            <mat-input-container *ngSwitchCase="'bool_map'" class="node-transition-field">
+                    <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : {'a':true,'b':false}">
+            </mat-input-container>
+            <mat-input-container *ngSwitchCase="'object'" class="node-transition-field">
+                    <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : {'a':'b','b':3}">
+            </mat-input-container>
+        </span>
+     </mat-expansion-panel>   
+ <p>
+ <mat-input-container class="node-transition-field">
+    <input matInput type="number" [(ngModel)]="node.Config.Timeout" placeholder="Timeout">
+ </mat-input-container>
+ </p>
+    </div>
+    
+ 
+</div>

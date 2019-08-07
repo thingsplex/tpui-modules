@@ -1,0 +1,49 @@
+<nav mat-tab-nav-bar>
+  <a mat-tab-link [routerLink]="['/zwave-man']" >Z-Wave</a>
+  <a mat-tab-link active [routerLink]="['/zigbee-man']" >ZigBee</a>
+  <a mat-tab-link [routerLink]="['/ikea-man']" >Ikea Tradfri</a>
+  <a mat-tab-link [routerLink]="['/generic-ad-man']" >Generic adapter</a>
+  <a mat-tab-link [routerLink]="['/systems-man']" >Systems</a>
+
+</nav>
+<div class="generic-ad-man">
+  <mat-card class="example-card">
+    <mat-card-header>
+      <!--<div mat-card-avatar class="example-header-image"></div>-->
+      <mat-card-title><h3> {{ adapter }} network manager</h3></mat-card-title>
+      <!--<mat-card-subtitle>Dog Breed</mat-card-subtitle>-->
+    </mat-card-header>
+    <mat-card-content>
+          <table>
+          <thead><tr><th style="width: 70px">Node</th>
+          <th style="width: 250px">Alias</th><th></th></tr> </thead>
+          <tbody>
+         <tr *ngFor="let node of nodes">
+          <td> {{node.address}}</td> <td> {{node.alias}} </td>
+           <td>
+            <mat-chip-list>
+             <mat-chip class="open-chip" [routerLink]="['/thing-view',adapter,node.address]">Services</mat-chip>
+             <mat-chip color="warn" (click)="removeDevice(node.address)">Remove</mat-chip>
+            </mat-chip-list>
+           </td>
+          </tr>
+          </tbody>
+         </table>
+    </mat-card-content>
+    <mat-card-actions>
+      <mat-form-field>
+        <mat-label>Adapter selector</mat-label>
+        <mat-select  [(value)]="adapter" (change)="onAdapterSelected()" >
+          <mat-option *ngFor="let ad of listOfAdapters" [value]="ad">
+            {{ad}}
+          </mat-option>
+
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button (click)="addDevice()" color="primary" > Add device</button>
+      <button mat-raised-button (click)="reloadListOfDevices()" color="primary" >Reload device list</button>
+      <button mat-raised-button color="accent" (click)="discover()">Re-discover adapters</button>
+   </mat-card-actions>
+  </mat-card>
+
+</div>

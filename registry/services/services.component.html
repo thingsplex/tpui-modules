@@ -1,0 +1,38 @@
+<div class="table-container mat-elevation-z8">
+  <div class="example-header">
+    <mat-input-container floatPlaceholder="never">
+      <input matInput #filterServiceName placeholder="Filter service name">
+    </mat-input-container>
+    <mat-input-container floatPlaceholder="never">
+      <input matInput #filterThingAddr placeholder="Service address">
+    </mat-input-container>
+    
+  </div>
+
+  <mat-table #table [dataSource]="dataSource">
+
+    <ng-container cdkColumnDef="address">
+      <mat-header-cell *cdkHeaderCellDef> Service addr. </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.address}} </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="name">
+      <mat-header-cell *cdkHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.name}} </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="alias">
+      <mat-header-cell *cdkHeaderCellDef> Service alias </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.alias}} </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="locationAlias">
+      <mat-header-cell *cdkHeaderCellDef> Loacation </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.locationAlias}} </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="action">
+      <mat-header-cell *cdkHeaderCellDef> Action </mat-header-cell>  
+      <mat-cell *cdkCellDef="let row"><mat-chip-list> <mat-chip (click)="showServiceEditorDialog(row)" >Edit</mat-chip>  </mat-chip-list> </mat-cell>
+    </ng-container>
+    <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *cdkRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+  </mat-table>
+</div>

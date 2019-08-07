@@ -1,0 +1,59 @@
+<nav mat-tab-nav-bar>
+  <a mat-tab-link [routerLink]="['/registry/locations']" >Locations</a>
+  <a mat-tab-link active [routerLink]="['/registry/things/*/*']" >Things</a>
+  <a mat-tab-link [routerLink]="['/registry/services/*/*']" >Services</a>
+  <a mat-tab-link [routerLink]="['/registry/admin']" >Admin</a>
+</nav>
+
+<br/>
+<div class="table-container mat-elevation-z8">
+  <div class="example-header">
+    
+  </div>
+
+  <mat-table #table [dataSource]="dataSource">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+  
+    <!-- Progress Column -->
+    <ng-container cdkColumnDef="id">
+      <mat-header-cell  *cdkHeaderCellDef> ID </mat-header-cell>
+      <mat-cell  *cdkCellDef="let row"> {{row.id}} </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="type">
+      <mat-header-cell *cdkHeaderCellDef> Type </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.type}} </mat-cell>
+    </ng-container>
+     <ng-container cdkColumnDef="alias">
+      <mat-header-cell *cdkHeaderCellDef> Alias </mat-header-cell>
+      <mat-cell *cdkCellDef="let row">{{row.alias}} </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container cdkColumnDef="address">
+      <mat-header-cell *cdkHeaderCellDef> Address </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.address}} </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="geo">
+      <mat-header-cell *cdkHeaderCellDef> Geo position </mat-header-cell>
+      <mat-cell *cdkCellDef="let row">Long:{{row.long}} Lat:{{row.lat}} </mat-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="action">
+      <mat-header-cell *cdkHeaderCellDef> Action </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"><mat-chip-list> 
+        <mat-chip (click)="showLocationEditorDialog(row)" > Edit </mat-chip>
+        <mat-chip [routerLink]="['/registry/things','locationId',row.id]"> Things </mat-chip> 
+        <mat-chip (click)="deleteLocation(row.id)"> Delete </mat-chip> 
+      </mat-chip-list> </mat-cell>
+    </ng-container>
+    
+    <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+<div style="width:100%;height:60px">&nbsp; </div>
+  <div>
+    <button class="add-button" (click)="showLocationEditorDialog(null)" mat-mini-fab>Add</button>
+  </div>
+</div>

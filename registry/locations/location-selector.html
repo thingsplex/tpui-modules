@@ -1,0 +1,3 @@
+<mat-select placeholder="Location" style="width:350px" [(ngModel)]="selectedLocationId" (change)="onSelected()" >
+    <mat-option *ngFor="let location of locations" [value]="location.id">{{ location.alias }} ({{location.type}}) </mat-option>
+</mat-select>

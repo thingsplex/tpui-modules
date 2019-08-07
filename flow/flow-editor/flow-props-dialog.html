@@ -1,0 +1,18 @@
+<h1 *ngIf="opType=='add'" mat-dialog-title> Create new flow </h1>
+<h1 *ngIf="opType=='edit'" mat-dialog-title> Edit flow </h1>
+<mat-dialog-content>
+  <mat-input-container class="example-full-width">
+    <input matInput [(ngModel)]="flow.Name" placeholder="Name" >
+  </mat-input-container>
+  <mat-input-container class="example-full-width">
+    <input matInput [(ngModel)]="flow.Group" placeholder="Group" >
+  </mat-input-container>
+  <mat-input-container >
+    <input style="width: 300px" matInput [(ngModel)]="flow.Description" placeholder="Description" >
+  </mat-input-container>
+</mat-dialog-content>
+<mat-dialog-actions>
+<button mat-raised-button color="warn" (click)="save()" >Save</button>
+<button *ngIf="opType=='edit'" mat-raised-button >Close</button>
+<button *ngIf="opType=='add'" mat-raised-button [routerLink]="['/flow/overview']" mat-dialog-close> Close </button>
+</mat-dialog-actions>

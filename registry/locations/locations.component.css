@@ -1,0 +1,62 @@
+/* Structure */
+.table-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  min-width: 700px;
+}
+
+.example-header {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+  font-size: 20px;
+}
+
+.example-header {
+  min-height: 64px;
+  display: flex;
+  align-items: baseline;
+  padding: 8px 24px 0;
+  font-size: 20px;
+  justify-content: space-between;
+}
+
+.mat-input-container {
+  font-size: 14px;
+  flex-grow: 1;
+  margin-left: 32px;
+}
+
+.mat-table {
+  overflow: auto;
+}
+
+md-chip {
+  cursor: pointer;
+}
+
+.mat-cell:nth-child(1), .mat-header-cell:nth-child(1) {
+    flex: 0 0 70px;
+}
+.mat-cell:nth-child(2), .mat-header-cell:nth-child(2) {
+  flex: 0 0 120px;
+}
+.mat-cell:nth-child(3), .mat-header-cell:nth-child(3) {
+  flex: 0 0 250px;
+}
+.mat-cell:nth-child(4), .mat-header-cell:nth-child(4) {
+  flex: 0 0 300px;
+}
+.mat-cell:nth-child(5), .mat-header-cell:nth-child(5) {
+  flex: 0 0 100px;
+}
+.mat-cell:nth-child(6), .mat-header-cell:nth-child(6) {
+  flex: 0 0 200px;
+}
+.add-button {
+  position: fixed;
+  bottom: 10px;
+  left: 20px;
+}

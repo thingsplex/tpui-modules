@@ -1,0 +1,35 @@
+<div>
+    <div #nodebody >
+        <div *ngFor="let nod of node.Config.Expressions;let index = index;">
+            <mat-input-container style="width: 150px">
+                <input matInput [(ngModel)]="node.Config.Expressions[index].Name" placeholder="Name">
+            </mat-input-container>
+            <mat-input-container style="width: 200px">
+                <input matInput [(ngModel)]="node.Config.Expressions[index].Expression" placeholder="Expression">
+            </mat-input-container>
+            <mat-input-container style="width:200px">
+                    <input matInput [(ngModel)]="node.Config.Expressions[index].Comment" placeholder="Comment">
+            </mat-input-container>
+            <a href="https://godoc.org/github.com/robfig/cron#Job" target="_blank"> Help  </a>
+        </div>
+        <div style="margin-bottom: 30px" >
+                <mat-checkbox [(ngModel)]="node.Config.GenerateAstroTimeEvents" > Generate Astro time events </mat-checkbox>
+       </div>
+        <mat-input-container style="width: 150px">
+            <input matInput [(ngModel)]="node.Config.Latitude" type="number" placeholder="Latitude">
+        </mat-input-container>
+        <mat-input-container style="width: 150px">
+            <input matInput [(ngModel)]="node.Config.Longitude" type="number" placeholder="Longitude">
+        </mat-input-container>
+        <div>
+        <mat-input-container style="width: 150px">
+                <input matInput [(ngModel)]="node.Config.SunriseTimeOffset" type="number" placeholder="Sunrise Offset in minutes">
+        </mat-input-container>
+        <mat-input-container style="width: 150px">
+                <input matInput [(ngModel)]="node.Config.SunsetTimeOffset" type="number" placeholder="Sunset Offset in minutes">
+        </mat-input-container>
+        </div>
+    </div>
+
+
+</div>

@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Location editor</h1>
+<mat-dialog-content>
+        <p><mat-input-container>
+            <input style="width:350px" matInput placeholder="Alias" [(ngModel)]="alias" >
+        </mat-input-container></p>
+        <p><mat-input-container>
+            <input style="width:350px" matInput placeholder="Type" [(ngModel)]="type" >
+        </mat-input-container></p>
+        <p><mat-input-container>
+            <input style="width:350px" matInput placeholder="Address" [(ngModel)]="address" >
+        </mat-input-container></p>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button (click)="save()" >Save</button>
+    <button mat-raised-button mat-dialog-close>Close</button>
+</mat-dialog-actions>  

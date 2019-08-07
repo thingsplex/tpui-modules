@@ -1,0 +1,53 @@
+<mat-dialog-content class="node-editor-dialog">
+
+<div [ngSwitch]="node.Type"  >
+
+    <mat-input-container class="node-label-field">
+          <input matInput [(ngModel)]="node.Label" placeholder="Label" >
+    </mat-input-container>
+    <div *ngSwitchCase="'trigger'">
+        <trigger-node *ngIf="node.Ui.nodeType==''" [node]="node" [nodes]="flow.Nodes" [flowId]="flow.Id" ></trigger-node>
+        <vinc-trigger-node *ngIf="node.Ui.nodeType=='vinc_trigger'" [node]="node" [nodes]="flow.Nodes" [flowId]="flow.Id" ></vinc-trigger-node>
+    </div>
+    <div *ngSwitchCase="'wait'">
+      <wait-node [node]="node" [nodes]="flow.Nodes" > </wait-node>
+    </div>
+    <div *ngSwitchCase="'action'">
+         <action-node *ngIf="node.Ui.nodeType==''" [node]="node" [nodes]="flow.Nodes" [flowId]="flow.Id" > </action-node>
+         <vinc-action-node *ngIf="node.Ui.nodeType=='vinc_action'" [node]="node" [nodes]="flow.Nodes" ></vinc-action-node>
+         <notification-action-node *ngIf="node.Ui.nodeType=='notification_action'" [node]="node" [nodes]="flow.Nodes" [flowId]="flow.Id" ></notification-action-node>
+         <timeline-action-node *ngIf="node.Ui.nodeType=='timeline_action'" [node]="node" [nodes]="flow.Nodes" [flowId]="flow.Id" ></timeline-action-node>
+    </div>
+    <div *ngSwitchCase="'rest_action'">
+      <rest-action-node *ngIf="node.Ui.nodeType==''" [node]="node" [nodes]="flow.Nodes" > </rest-action-node>
+    </div>
+    <div *ngSwitchCase="'set_variable'">
+         <set-variable-node [node]="node" [nodes]="flow.Nodes" [flowId]="flow.Id" > </set-variable-node>
+    </div>
+    <div *ngSwitchCase="'transform'">
+      <transform-node [node]="node" [nodes]="flow.Nodes" [flowId]="flow.Id" > </transform-node>
+    </div>
+    <div *ngSwitchCase="'exec'">
+      <exec-node [node]="node" [nodes]="flow.Nodes" [flowId]="flow.Id" > </exec-node>
+    </div>
+    <div *ngSwitchCase="'receive'">
+         <receive-node [node]="node" [nodes]="flow.Nodes" > </receive-node>
+    </div>
+    <div *ngSwitchCase="'loop'">
+        <loop-node [node]="node" [nodes]="flow.Nodes" > </loop-node>
+    </div>
+    <div *ngSwitchCase="'time_trigger'">
+        <time-trigger-node [node]="node" [nodes]="flow.Nodes" > </time-trigger-node>
+   </div>
+    <div *ngSwitchCase="'if'">
+      <if-node [node]="node" [nodes]="flow.Nodes" [flowId]="flow.Id" > </if-node>
+    </div>
+ </div>
+</mat-dialog-content>
+ <mat-dialog-actions>
+    <button mat-raised-button (click)="cloneNode(node)" >Clone</button>
+    <button mat-raised-button (click)="deleteNode(node)" >Delete</button>
+    <button mat-raised-button (click)="showHelp(node)" >Help</button>
+    <button mat-button mat-dialog-close>Close</button>
+ </mat-dialog-actions>
+

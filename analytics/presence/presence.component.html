@@ -1,0 +1,12 @@
+<nav mat-tab-nav-bar>
+    <a mat-tab-link  [routerLink]="['/analytics/dashboard']" >Dashboard</a>
+    <a mat-tab-link [routerLink]="['/analytics/sensors']" >Sensors</a>
+    <a mat-tab-link active [routerLink]="['/analytics/presence']" >Presence</a>
+    <a mat-tab-link [routerLink]="['/analytics/presence']" >Energy</a>
+</nav>
+
+<div style="overflow: hidden" >
+
+<binary-sensor-chart [measurement]="'sensor_presence.evt.presence.report'" [groupByTime]="'1h'" [timeFromNow]="'1d'" [title]="'Motion'"></binary-sensor-chart>
+
+</div>

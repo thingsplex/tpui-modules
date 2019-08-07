@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Service selector</h1>
+<mat-dialog-content>
+    {{msgFlowDirectionD}}
+        <service-selector-wizard  [msgFlowDirection]="msgFlowDirectionD" (onSelect)="onSelected($event)" ></service-selector-wizard>
+</mat-dialog-content>
+<mat-dialog-actions>
+<button mat-raised-button mat-dialog-close>Close</button>
+</mat-dialog-actions>  

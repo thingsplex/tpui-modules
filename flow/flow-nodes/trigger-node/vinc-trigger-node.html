@@ -1,0 +1,25 @@
+<div>
+  <div style="margin-bottom: 30px;margin-top:10px" >
+    <mat-checkbox [(ngModel)]="node.Config.IsValueFilterEnabled" > Enable mode filter </mat-checkbox>
+  </div>
+  <br>
+  <div>
+
+    <div>
+      <mat-select #nodeTypeInput class="value-selector" placeholder="Mode filter" [(ngModel)]="node.Config.ValueFilter.Value">
+        <mat-option value="home">home</mat-option>
+        <mat-option value="away">away</mat-option>
+        <mat-option value="sleep">sleep</mat-option>
+        <mat-option value="vacation">vacation</mat-option>
+      </mat-select>
+    </div>
+ </div>
+  <p>
+    <mat-input-container class="node-transition-field">
+      <input matInput type="number" [(ngModel)]="node.Config.Timeout" placeholder="Timeout">
+    </mat-input-container>
+  </p>
+  <p>
+    <button mat-raised-button (click)="runFlow(node)" >Run</button>
+  </p>
+</div>

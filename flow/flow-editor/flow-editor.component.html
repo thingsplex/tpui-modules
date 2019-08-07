@@ -1,0 +1,140 @@
+
+<div class="flow-editor">
+
+  <button  style = "margin-bottom: 20px;" mat-raised-button [routerLink]="['/flow/overview']">  <mat-icon>chevron_left</mat-icon>  <mat-icon>network_check</mat-icon> Flows </button>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" opened="false" style="background-color:beige">
+    <!-- sidenav content -->
+    <mat-list>
+    <mat-list-item><h3> Nodes </h3></mat-list-item>
+    <mat-list-item> <button mat-raised-button (click)="addNode('trigger','')"  >
+        <mat-icon aria-label="Edit node">input</mat-icon> Trigger</button>
+    </mat-list-item>
+    <mat-list-item> <button mat-raised-button (click)="addNode('trigger','vinc_trigger')"  >
+        <mat-icon aria-label="Edit node">input</mat-icon> Home mode trigger</button>
+    </mat-list-item>
+    <mat-list-item> <button mat-raised-button (click)="addNode('trigger','scene_trigger')"  >
+          <mat-icon aria-label="Edit node">input</mat-icon>Scene trigger</button>
+    </mat-list-item>
+    <mat-list-item> <button mat-raised-button (click)="addNode('action','notification_action')"  >
+        <mat-icon aria-label="Edit node">send</mat-icon>Push notifications</button>
+    </mat-list-item>
+    <mat-list-item> <button mat-raised-button (click)="addNode('action','timeline_action')"  >
+          <mat-icon aria-label="Edit node">send</mat-icon>Publish timeline</button>
+    </mat-list-item>
+    <mat-list-item> <button mat-raised-button (click)="addNode('time_trigger','')" >
+        <mat-icon aria-label="Edit node">schedule</mat-icon> Time trigger</button>
+    </mat-list-item>
+    <mat-list-item> <button mat-raised-button (click)="addNode('action','')" >
+        <mat-icon  aria-label="Edit node">send</mat-icon> Action</button>
+    </mat-list-item>
+      <mat-list-item> <button mat-raised-button (click)="addNode('rest_action','')" >
+        <mat-icon  aria-label="Edit node">send</mat-icon> REST Action</button>
+      </mat-list-item>
+    <mat-list-item> <button mat-raised-button (click)="addNode('action','vinc_action')" >
+        <mat-icon  aria-label="Edit node">send</mat-icon> Modes & shortcuts action</button>
+    </mat-list-item>
+    <mat-list-item> <button mat-raised-button (click)="addNode('receive','')" >
+      <mat-icon aria-label="Edit node">input</mat-icon> Receive</button>
+    </mat-list-item>
+    <mat-list-item> <button mat-raised-button (click)="addNode('if','')" >
+      <mat-icon  aria-label="Edit node">call_split</mat-icon> If</button>
+    </mat-list-item>
+    <mat-list-item> <button mat-raised-button (click)="addNode('loop','')" >
+        <mat-icon  aria-label="Edit node">loop</mat-icon> Loop</button>
+    </mat-list-item>
+    <mat-list-item> <button mat-raised-button (click)="addNode('wait','')" >
+      <mat-icon aria-label="Edit node">update</mat-icon> Wait</button>
+    </mat-list-item>
+    <mat-list-item> <button mat-raised-button (click)="addNode('set_variable','')" >
+      <mat-icon aria-label="Edit node">edit</mat-icon> Set variable</button>
+    </mat-list-item>
+    <mat-list-item> <button mat-raised-button (click)="addNode('transform','')" >
+        <mat-icon aria-label="Edit node">transform</mat-icon> Transform</button>
+    </mat-list-item>
+    <mat-list-item> <button mat-raised-button (click)="addNode('exec','')" >
+        <mat-icon aria-label="Exec node">flash_on</mat-icon> Exec</button>
+    </mat-list-item>
+    </mat-list>
+  </mat-sidenav>
+
+  <mat-card class="flow-editor-main-card">
+    <mat-card-header>
+      <mat-card-title><h3>Flow : {{ flow.Name }} </h3></mat-card-title>
+    </mat-card-header>
+    <mat-card-content >
+      <p> Group: {{ flow.Group }} Description: {{ flow.Description }}
+        <button mat-icon-button (click)="showPropsDialog('ui')" >
+          <mat-icon aria-label="Edit node">edit</mat-icon>
+        </button>
+      </p>
+      <div id="flowEditorCanvasId" class="drag-area" (drop)="nodeDrop($event)" (dragstart)="nodeDragStart($event)" (dragover)="allowNodeDrop($event)"  >
+          <svg id="flow-connections" class = "connections" ></svg>
+          <mat-card id = "nodeId_{{node.Id}}" *ngFor="let node of flow.Nodes;let index = index;" class="node-card" [style.left.px]="node.Ui.x" [style.top.px]="node.Ui.y" draggable="true" >
+              <div id = "in_socket_nodeid_{{node.Id}}" *ngIf="node.Type!='trigger' && node.Type!='time_trigger' " class="socket socket-input" (drop)="lineDrop($event)" (dragstart)="lineDragStart($event)" (dragover)="allowLineDrop($event)"></div>
+              <mat-card-header >
+                <mat-card-title>
+                <button mat-icon-button [ngSwitch]="node.Type"  (click)="showNodeEditorDialog(flow,node)" color="primary" >
+                    <mat-icon *ngSwitchCase="'trigger'" aria-label="Edit node">input</mat-icon>
+                    <mat-icon *ngSwitchCase="'receive'" aria-label="Edit node">input</mat-icon>
+                    <mat-icon *ngSwitchCase="'time_trigger'" aria-label="Edit node">schedule</mat-icon>
+                    <mat-icon *ngSwitchCase="'wait'" aria-label="Edit node">update</mat-icon>
+                    <mat-icon *ngSwitchCase="'action'" aria-label="Edit node">send</mat-icon>
+                    <mat-icon *ngSwitchCase="'rest_action'" aria-label="Edit node">send</mat-icon>
+                    <mat-icon *ngSwitchCase="'if'" aria-label="Edit node">call_split</mat-icon>
+                    <mat-icon *ngSwitchCase="'loop'" aria-label="Edit node">loop</mat-icon>
+                    <mat-icon *ngSwitchCase="'set_variable'" aria-label="Edit node">edit</mat-icon>
+                    <mat-icon *ngSwitchCase="'transform'" aria-label="Edit node">transform</mat-icon>
+                    <mat-icon *ngSwitchCase="'exec'" aria-label="Exec node">flash_on</mat-icon>
+                    <mat-icon *ngSwitchDefault aria-label="Edit node">build</mat-icon>
+                  </button>
+                  {{ node.Type }}
+                </mat-card-title>
+                <mat-card-subtitle> {{ node.Label }} </mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+
+
+              </mat-card-content>
+
+              <div id = "out_socket_nodeid_succ_{{node.Id}}" *ngIf="node.Type!='if'" class="socket" draggable="true"></div>
+              <div id = "out_socket_nodeid_err_{{node.Id}}" *ngIf="node.Type!='if'" class="socket socket-error" draggable="true"></div>
+              <div id = "out_socket_nodeid_timeout_{{node.Id}}" *ngIf="node.Type=='trigger'" class="socket socket-timeout" draggable="true"></div>
+              <div id = "out_socket_nodeid_timeout_{{node.Id}}" *ngIf="node.Type=='receive'" class="socket socket-timeout" draggable="true"></div>
+
+              <div id = "out_socket_nodeid_iftrue_{{node.Id}}" *ngIf="node.Type=='if'" class="socket" draggable="true"></div>
+              <div id = "out_socket_nodeid_iffalse_{{node.Id}}" *ngIf="node.Type=='if'" class="socket socket-iffalse" draggable="true" ></div>
+
+          </mat-card>
+       </div>
+    <button mat-mini-fab class="example-fab" (click)="sidenav.toggle()">
+    <mat-icon>add</mat-icon>
+  </button>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button (click)="saveFlow()" color="primary" >Save</button>
+      <button mat-raised-button (click)="runFlow()" color="primary" >Run</button>
+      <button mat-raised-button (click)="showLog()" color="primary" >Log</button>
+      <button mat-raised-button (click)="showSource()" color="primary" >Show source</button>
+      <button mat-raised-button (click)="showContextDialog()" color="primary" >Show variables</button>
+      <button mat-raised-button (click)="sendFlowControllCommands('send-inclusion-report')" color="accent" >Register as device</button>
+      <button mat-raised-button (click)="sendFlowControllCommands('send-exclusion-report')" color="accent" >Unregister</button>
+      <button mat-raised-button (click)="shareFlow()" color="accent" >Publish to library</button>
+      <mat-slider
+        max="5000"
+        min="0"
+        step="20"
+        thumbLabel
+        [(ngModel)]="canvasHeight"
+        (change)="onCanvasSizeChange()" style="width:300px"> </mat-slider>
+    </mat-card-actions>
+  </mat-card>
+
+ <!-- primary content -->
+</mat-sidenav-container>
+
+</div>
+
+

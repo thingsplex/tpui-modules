@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Service editor</h1>
+<mat-dialog-content>
+        <location-selector [currentLocation]="locationId" (onSelect)="onLocationSelected($event)"></location-selector>
+        <p><mat-input-container>
+            <input style="width:350px" matInput placeholder="Alias" [(ngModel)]="alias" >
+        </mat-input-container></p>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button (click)="save()" >Save</button>
+    <button mat-raised-button mat-dialog-close>Close</button>
+</mat-dialog-actions>  

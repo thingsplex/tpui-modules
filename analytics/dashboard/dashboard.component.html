@@ -1,0 +1,12 @@
+<nav mat-tab-nav-bar>
+    <a mat-tab-link active [routerLink]="['/analytics/dashboard']" >Dashboard</a>
+    <a mat-tab-link [routerLink]="['/analytics/sensors']" >Sensors</a>
+    <a mat-tab-link [routerLink]="['/analytics/presence']" >Presence</a>
+    <a mat-tab-link [routerLink]="['/analytics/presence']" >Energy</a>
+</nav>
+
+<div style="overflow: hidden" >
+
+<line-chart [measurement]="'sensor_temp.evt.sensor.report'" [title]="'Temperature'"></line-chart>
+
+</div>

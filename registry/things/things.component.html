@@ -1,0 +1,73 @@
+<nav mat-tab-nav-bar>
+  <a mat-tab-link [routerLink]="['/registry/locations']" >Locations</a>
+  <a mat-tab-link active [routerLink]="['/registry/things/*/*']" >Things</a>
+  <a mat-tab-link [routerLink]="['/registry/services/*/*']" >Services</a>
+  <a mat-tab-link [routerLink]="['/registry/admin']" >Admin</a>
+  
+</nav>
+<br/>
+<div class="example-container mat-elevation-z8">
+  <div class="example-header">
+    <mat-form-field floatPlaceholder="never">
+      <input matInput #filterAddr placeholder="Filter address">
+    </mat-form-field>
+    <mat-form-field floatPlaceholder="never">
+      <input matInput #filterTech placeholder="Filter technology">
+    </mat-form-field>
+  </div>
+
+  <mat-table #table [dataSource]="dataSource">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- ID Column -->
+    <ng-container cdkColumnDef="id">
+      <mat-header-cell *cdkHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.id}} </mat-cell>
+    </ng-container>
+
+    <!-- Progress Column -->
+    <ng-container cdkColumnDef="alias">
+      <mat-header-cell *cdkHeaderCellDef> Alias </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.alias}} </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="locationAlias">
+      <mat-header-cell *cdkHeaderCellDef> Location </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.locationAlias}} </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container cdkColumnDef="address">
+      <mat-header-cell *cdkHeaderCellDef> Address </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{ row.commTech }}:{{row.address}} </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="manufacturerId">
+      <mat-header-cell *cdkHeaderCellDef> Manufacturer Id </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.manufacturerId}} </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="productId">
+      <mat-header-cell *cdkHeaderCellDef> Product Id </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.productId}} </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="productName">
+      <mat-header-cell *cdkHeaderCellDef> Product Name </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.productName}} </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="productHash">
+      <mat-header-cell *cdkHeaderCellDef> Product Hash </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.productHash}} </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="action">
+      <mat-header-cell *cdkHeaderCellDef> Action </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"><mat-chip-list> 
+        <mat-chip (click)="showThingEditorDialog(row)" > Edit </mat-chip>
+        <mat-chip [routerLink]="['/registry/services','thingId',row.id]"> Services </mat-chip> 
+        <mat-chip [routerLink]="['/thing-view',row.commTech,row.address]"> Explore </mat-chip> 
+        <mat-chip (click)="deleteThing(row.id)"> Delete </mat-chip> 
+      </mat-chip-list> </mat-cell>
+    </ng-container>
+    <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>

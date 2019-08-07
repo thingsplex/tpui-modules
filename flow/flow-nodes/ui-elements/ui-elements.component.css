@@ -1,0 +1,30 @@
+node-card {
+  /*padding: 0px;*/
+  margin-bottom: 20px;
+  
+}
+.value-selector {
+  /*padding: 0px;*/
+  margin-bottom: 10px;
+  width:200px;
+}
+.example-header-image {
+  background-size: cover;
+}
+
+.mat-grid-tile .mat-figure {
+    align-items:top;
+}
+.node-id-field {
+    width: 50px;
+}
+
+.node-type-field {
+    width: 100px;
+}
+.node-label-field {
+    width: 270px;
+}
+.node-transition-field {
+    width: 100x;
+}

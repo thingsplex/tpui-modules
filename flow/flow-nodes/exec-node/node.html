@@ -1,0 +1,28 @@
+<div>
+  <mat-form-field class="value-selector" >
+    <mat-select #nodeTypeInput  placeholder="Value type" [(ngModel)]="node.Config.ExecType">
+      <mat-option value="cmd">Command </mat-option>
+      <mat-option value="sh-cmd">Shell command</mat-option>
+      <mat-option value="python">Python script</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div>
+    <mat-input-container *ngIf="node.Config.ExecType=='cmd' || node.Config.ExecType=='sh-cmd' " style="width: 400px">
+      <input matInput [(ngModel)]="node.Config.Command" placeholder="Command">
+    </mat-input-container>
+    <mat-input-container *ngIf="node.Config.ExecType=='python'"  style="width: 600px">
+      <textarea mat-autosize wrap="off" minRows="6" matInput [(ngModel)]="node.Config.ScriptBody" > </textarea>
+    </mat-input-container>
+  </div>
+ <variable-selector [label]="'Input variable'" [variableName]="node.Config.InputVariableName" [isGlobal]="node.Config.IsInputVariableGlobal" [flowId]="flowId" (onSelect)="inputVariableSelected($event)" ></variable-selector>
+ <variable-selector [label]="'Output variable'" [variableName]="node.Config.OutputVariableName" [isGlobal]="node.Config.IsOutputVariableGlobal" [flowId]="flowId" (onSelect)="outputVariableSelected($event)" ></variable-selector>
+  <div style="margin-bottom: 5px" >
+    <mat-checkbox [(ngModel)]="node.Config.IsInputJson" >Is input JSON object </mat-checkbox>
+  </div>
+  <div style="margin-bottom: 5px" >
+    <mat-checkbox [(ngModel)]="node.Config.IsOutputJson" >Is output JSON object</mat-checkbox>
+  </div>
+
+
+</div>
+

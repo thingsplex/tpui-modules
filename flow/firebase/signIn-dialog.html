@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>SignIn</h1>
+<mat-dialog-content>
+        <mat-input-container style="width: 300px" class="node-transition-field">
+            <input  matInput placeholder="Email" [(ngModel)]="email" >
+        </mat-input-container>
+       <div>
+         <mat-input-container style="width: 300px" class="node-transition-field">
+           <input type="password"  matInput placeholder="Password" [(ngModel)]="password" >
+         </mat-input-container>
+       </div>
+      <div *ngIf="isRegisterMode">
+        <mat-input-container style="width: 300px"  class="node-transition-field">
+          <input type="password"  matInput placeholder="Password" [(ngModel)]="password2" >
+        </mat-input-container>
+      </div>
+      <div>{{errorMessage}}</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button *ngIf="!isRegisterMode" mat-raised-button (click)="signIn()" >Sign In</button>
+    <button *ngIf="isRegisterMode" mat-raised-button (click)="registerUser()" >Save</button>
+    <button *ngIf="!isRegisterMode" mat-raised-button (click)="switchRegisterMode()" > Register </button>
+    <button mat-raised-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

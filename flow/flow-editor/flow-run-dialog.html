@@ -1,0 +1,78 @@
+<h1 mat-dialog-title> Run the flow </h1>
+<mat-dialog-content>
+        <div [ngSwitch]="valueType">
+                <div *ngSwitchCase="'string'">
+                    <mat-input-container class="node-transition-field">
+                        <input matInput [(ngModel)]="value" placeholder="Default value">
+                    </mat-input-container>
+                </div>
+                <div *ngSwitchCase="'int'">
+                    <mat-input-container class="node-transition-field">
+                        <input matInput type="number" [(ngModel)]="value" placeholder="Default value">
+                    </mat-input-container>
+                </div>
+                <div *ngSwitchCase="'float'">
+                    <mat-input-container class="node-transition-field">
+                        <input matInput type="number" [(ngModel)]="value" placeholder="Default value">
+                    </mat-input-container>
+                </div>
+                <div *ngSwitchCase="''">
+
+                </div>
+                <div *ngSwitchCase="'bool'">
+                    <mat-radio-group class="example-radio-group" placeholder="Default value" [(ngModel)]="value">
+                        <mat-radio-button class="example-radio-button" [value]="true">
+                            true (On)
+                        </mat-radio-button>
+                        <mat-radio-button class="example-radio-button" [value]="false">
+                            false (Off)
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                 <div *ngSwitchCase="'str_array'">
+                       <json-input [label] = "'Default value : [\'1\',\'3\']'"  [(jData)]="value" ></json-input>
+                </div>
+                <div *ngSwitchCase="'int_array'">
+                    <mat-input-container class="node-transition-field">
+                        <input matInput [(ngModel)]="value" placeholder="Default value : [1,2] ">
+                    </mat-input-container>
+                </div>
+                <div *ngSwitchCase="'float_array'">
+                    <mat-input-container class="node-transition-field">
+                        <input matInput [(ngModel)]="value" placeholder="Default value : [1.2,0.5] ">
+                    </mat-input-container>
+                </div>
+                <div *ngSwitchCase="'bool_array'">
+                    <mat-input-container class="node-transition-field">
+                        <input matInput [(ngModel)]="value" placeholder="Default value : [true,false]">
+                    </mat-input-container>
+                </div>
+                <div *ngSwitchCase="'str_map'">
+                    <json-input [label] = "'Default value : {\'a\':\'a1\',\'b\':\'b2\'}'"  [(jData)]="value" ></json-input>
+                </div>
+                <div *ngSwitchCase="'int_map'">
+                    <mat-input-container class="node-transition-field">
+                        <input matInput [(ngModel)]="value" placeholder="Default value : {'a':1,'b':2}">
+                    </mat-input-container>
+                </div>
+                <div *ngSwitchCase="'float_map'">
+                    <mat-input-container class="node-transition-field">
+                        <input matInput [(ngModel)]="value" placeholder="Default value : {'a':0.5,'b':1.5}">
+                    </mat-input-container>
+                </div>
+                <div *ngSwitchCase="'bool_map'">
+                    <mat-input-container class="node-transition-field">
+                        <input matInput [(ngModel)]="value" placeholder="Default value : {'a':true,'b':false}">
+                    </mat-input-container>
+                </div>
+                <div *ngSwitchCase="'object'">
+                    <mat-input-container class="node-transition-field">
+                        <input matInput [(ngModel)]="value" placeholder="Default value : {'a':'b','b':3}">
+                    </mat-input-container>
+                </div>
+            </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+<button mat-raised-button color="warn" (click)="run()" >Run</button>
+<button mat-raised-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

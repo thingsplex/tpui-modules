@@ -1,0 +1,377 @@
+
+<div style = "width:270px">
+   <div *ngIf= "intf.lastValue">
+      <div [ngSwitch]="msgType">
+        <div *ngSwitchCase="'evt.sensor.report'"> <h3> {{intf.lastValue.val}} {{intf.lastValue.props.unit}}</h3>  </div>
+        <div *ngSwitchCase="'evt.scene.report'"> <h3> {{intf.lastValue.val}} </h3>  </div>
+        <div *ngSwitchCase="'evt.binary.report'"> <mat-chip-list>
+          <mat-chip style="width: 170px" color="primary" selected="{{intf.lastValue.val}}"> {{intf.lastValue.val}} </mat-chip>
+           </mat-chip-list> </div>
+        <div *ngSwitchCase="'evt.open.report'">
+          <mat-chip-list>
+              <mat-chip style="width: 170px" color="primary" selected="{{intf.lastValue.val}}"><h4>  {{intf.lastValue.val}}</h4> </mat-chip>
+           </mat-chip-list>
+        </div>
+        <div *ngSwitchCase="'evt.presence.report'">
+            <mat-chip-list>
+                <mat-chip style="width: 170px" color="primary" selected="{{intf.lastValue.val}}"><h4>  {{intf.lastValue.val}}</h4> </mat-chip>
+             </mat-chip-list>
+          </div>
+        <div *ngSwitchCase="'evt.config.report'">
+          <div *ngFor="let item of intf.lastValue.val|keys" >
+            {{item.key}} = {{item.value}}
+          </div>
+        </div>
+        <div *ngSwitchCase="'evt.modelvl.report'">
+          <div *ngFor="let item of intf.lastValue.val|keys" >
+            {{item.key}} = {{item.value}}
+          </div>
+        </div>
+        <div *ngSwitchCase="'evt.group.members_report'">
+          <p>Group :{{ intf.lastValue.val.group }} </p>
+          <p> Members :
+          <span *ngFor="let member of intf.lastValue.val.members" >
+            {{ member }},
+          </span>
+          </p>
+        </div>
+        <div *ngSwitchCase="'evt.alarm.report'">
+          <div>Event  = <b>{{ intf.lastValue.val.event }}</b> </div>
+          <div>Status = <b>{{ intf.lastValue.val.status }}</b> </div>
+        </div>
+        <div *ngSwitchCase="'evt.state.report'"> <h3> {{ intf.lastValue.val }} </h3> </div>
+        <div *ngSwitchCase="'evt.meter.report'">
+          {{ intf.lastValue.val }} {{ intf.lastValue.props.unit }}
+        </div>
+         <div *ngSwitchCase="'evt.setpoint.report'">
+          {{ intf.lastValue.val.type}} {{ intf.lastValue.val.temp }}
+        </div>
+        <div *ngSwitchCase="'evt.camera.image'">
+          {{ intf.lastValue.val.type}} <img width="600" [src]="_DomSanitizationService.bypassSecurityTrustUrl('data:image/jpeg;base64,'+intf.lastValue.val)"  alt="image" />
+        </div>
+        <div *ngSwitchCase="'evt.lock.report'">
+          <p>Is secured      = <mat-icon *ngIf="intf.lastValue.val.is_secured" >lock</mat-icon> <mat-icon *ngIf="!intf.lastValue.val.is_secured" >lock_open</mat-icon>  </p>
+          <p>Door is closed  = <mat-icon *ngIf="intf.lastValue.val.door_is_closed" >done</mat-icon> <mat-icon *ngIf="!intf.lastValue.val.door_is_closed" >close</mat-icon>   </p>
+          <p>Bolt is locked  = <mat-icon *ngIf="intf.lastValue.val.bolt_is_locked" >done</mat-icon> <mat-icon *ngIf="!intf.lastValue.val.bolt_is_locked" >close</mat-icon>   </p>
+          <p>Latch is closed = <mat-icon *ngIf="intf.lastValue.val.latch_is_closed" >done</mat-icon> <mat-icon *ngIf="!intf.lastValue.val.latch_is_closed" >close</mat-icon>   </p>
+        </div>
+        <div *ngSwitchDefault> {{intf.lastValue.val}}</div>
+      </div>
+    </div>
+  <div [ngSwitch]="msgType">
+      <div *ngSwitchCase="'cmd.binary.set'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td><button mat-raised-button (click)="cmdBinarySet(true)" >On</button>
+            <button mat-raised-button (click)="cmdBinarySet(false)" >Off</button></td>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.color.set'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-slider #colorLvlValue thumbLabel  min="0" max="255" step="1" value="0"></mat-slider>
+            </td>
+            <td><mat-input-container class="example-full-width">
+              <input #compNameValue matInput placeholder="componnent" type="text" >
+            </mat-input-container></td>
+            <td><button mat-raised-button (click)="cmdColorSet(compNameValue.value,colorLvlValue.value)" >Set</button></td>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.lvl.set'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td>
+              Max : {{serv.props.max_lvl}}
+              <mat-slider *ngIf="serv.props.max_lvl" #lvlValue thumbLabel style="width: 350px" [min]="serv.props.min_lvl" [max]="serv.props.max_lvl" step="1" value="0"  (change)="cmdLvlSet(lvlValue.value,durationValue.value)"></mat-slider>
+              <mat-slider  *ngIf="!serv.props.max_lvl" #lvlValue thumbLabel style="width: 350px" min="0" max="255" step="1" value="0"  (change)="cmdLvlSet(lvlValue.value,durationValue.value)"></mat-slider>
+            </td>
+            <td><mat-input-container class="example-full-width" style="width: 50px">
+              <input #durationValue matInput placeholder="Duration" type="number" value="0">
+            </mat-input-container></td>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.scene.set'">
+        <form class="intf-form">
+          <table class="table-full-width" cellspacing="0">
+            <tr>
+              <td><mat-input-container class="example-full-width">
+                <input #sceneValue matInput placeholder="Scene name" type="text" value="">
+              </mat-input-container></td>
+              <td><button mat-raised-button (click)="cmdModeSet(sceneValue.value)" >Set</button></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+       <div *ngSwitchCase="'cmd.lvl.start'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td><button mat-raised-button (click)="cmdLevelStart('up',durationValue.value)" >Up</button>
+            <td><button mat-raised-button (click)="cmdLevelStart('down',durationValue.value)" >Down</button>
+            <td><button mat-raised-button (click)="cmdLevelStart('auto',durationValue.value)" >Auto</button>
+            <td><mat-input-container class="example-full-width">
+              <input #durationValue matInput placeholder="Duration" type="number" value="0">
+            </mat-input-container></td>
+          </tr>
+          </table>
+        </form>
+      </div>
+       <div *ngSwitchCase="'cmd.lvl.stop'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td><button mat-raised-button (click)="cmdLevelStop()" >Stop</button>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.lvl.get_report'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td><button mat-raised-button (click)="cmdGetReportNull()" >Get report</button>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.state.get_report'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td class="control-first-td">&nbsp;</td>
+            <td><button mat-raised-button (click)="cmdGetReportNull()" >Get report</button>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.tstate.set'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+              <td class="control-first-td" ><mat-input-container class="example-full-width">
+                  <input #targetState matInput placeholder="mode">
+                </mat-input-container></td>
+            <td><button mat-raised-button (click)="cmdStateSet(targetState.value)" >Set target</button>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.notiftype.set'">
+          <form class="intf-form">
+          <table class="table-full-width" cellspacing="0">
+            <tr>
+              <td><mat-input-container class="example-full-width">
+                <input #notifTypeInput matInput placeholder="Notification type">
+              </mat-input-container></td>
+              <td>
+                <div style="margin-bottom: 15px;width:100px" >
+                    <mat-checkbox #notifTypeStateInput  >State</mat-checkbox>
+                </div>
+               </td>
+              <td><button mat-raised-button (click)="cmdSetBoolArrayOneItem(notifTypeInput.value,notifTypeStateInput.checked)" >Set</button></td>
+            </tr>
+            </table>
+          </form>
+      </div>
+      <div *ngSwitchCase="'cmd.notiftype.get_report'">
+          <form class="intf-form">
+          <table class="table-full-width" cellspacing="0">
+            <tr>
+              <td><button mat-raised-button (click)="cmdGetReportNull()" >Get report</button>
+            </tr>
+            </table>
+          </form>
+        </div>
+      <div *ngSwitchCase="'cmd.lock.set'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td><button mat-raised-button (click)="cmdBinarySet(true)" >Lock</button>
+            <button mat-raised-button (click)="cmdBinarySet(false)" >Unlock</button></td>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.binary.get_report'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td><button mat-raised-button (click)="cmdGetReportNull()" >Get report</button>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.setpoint.set'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td><mat-input-container class="example-full-width">
+              <input #setpointType matInput placeholder="type">
+            </mat-input-container></td>
+            <td><mat-input-container class="example-full-width">
+              <input #tempValue matInput placeholder="temp">
+            </mat-input-container></td>
+            <td><button mat-raised-button (click)="cmdSetpointSet(setpointType.value,tempValue.value)" >Set</button></td>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.modelvl.set'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td><mat-input-container class="example-full-width">
+              <input #modeName matInput placeholder="Mode name">
+            </mat-input-container></td>
+            <td><mat-input-container class="example-full-width">
+              <input type="number" #modeLevel matInput placeholder="level">
+            </mat-input-container></td>
+            <td><button mat-raised-button (click)="cmdModeLvlSet(modeName.value,modeLevel.value)" >Set</button></td>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.mode.set'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td><mat-input-container class="example-full-width">
+              <input #thermoMode matInput placeholder="mode">
+            </mat-input-container></td>
+            <td><button mat-raised-button (click)="cmdModeSet(thermoMode.value)" >Set</button></td>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.mode.get_report'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0"><tr>
+            <td><button mat-raised-button (click)="cmdGetReportNull()" >Get</button></td>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.setpoint.get_report'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0"><tr>
+            <td><mat-input-container class="example-full-width">
+              <input #setpointType matInput placeholder="setpoint type">
+            </mat-input-container></td>
+            <td><button mat-raised-button (click)="cmdSetpointReportGet(setpointType.value)" >Get</button></td>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.config.set'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td><mat-input-container class="example-full-width">
+              <input #confName matInput placeholder="name">
+            </mat-input-container></td>
+            <td><mat-input-container class="example-full-width">
+              <input #confValue matInput placeholder="value">
+            </mat-input-container></td>
+            <td><button mat-raised-button (click)="cmdConfigSet(confName.value,confValue.value)" >Set</button></td>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.config.get_report'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0"><tr>
+            <td class="control-first-td"><mat-input-container class="example-full-width">
+              <input #confName matInput placeholder="name">
+            </mat-input-container></td>
+            <td><button mat-raised-button (click)="cmdConfigReportGet(confName.value)" >Get</button></td>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.group.add_members'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td ><mat-input-container class="example-full-width">
+              <input #group matInput placeholder="group">
+            </mat-input-container></td>
+            <td><mat-input-container class="example-full-width">
+              <input #member matInput placeholder="member">
+            </mat-input-container></td>
+            <td><button mat-raised-button (click)="cmdGroupSet(group.value,member.value)" >Set</button></td>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.group.delete_members'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td><mat-input-container class="example-full-width">
+              <input #group matInput placeholder="group">
+            </mat-input-container></td>
+            <td><mat-input-container class="example-full-width">
+              <input #member matInput placeholder="member">
+            </mat-input-container></td>
+            <td><button mat-raised-button (click)="cmdGroupSet(group.value,member.value)" >Delete</button></td>
+          </tr>
+          </table>
+        </form>
+      </div>
+
+      <div *ngSwitchCase="'cmd.group.get_members'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0"><tr>
+            <td class="control-first-td"><mat-input-container class="example-full-width">
+              <input #groupName matInput placeholder="group">
+            </mat-input-container></td>
+            <td><button mat-raised-button (click)="cmdGroupReportGet(groupName.value)" >Get</button></td>
+          </tr>
+          </table>
+        </form>
+      </div>
+      <div *ngSwitchCase="'cmd.modelvl.get_report'">
+          <form class="intf-form">
+          <table class="table-full-width" cellspacing="0"><tr>
+              <td><mat-input-container class="example-full-width">
+                <input #modeName matInput placeholder="Mode name">
+              </mat-input-container></td>
+              <td><button mat-raised-button (click)="cmdModeLvlReportGet(modeName.value)" >Get</button></td>
+            </tr>
+            </table>
+          </form>
+        </div>
+
+      <div *ngSwitchCase="'cmd.meter.get_report'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0"><tr>
+            <td><mat-input-container class="example-full-width">
+              <input #meterUnit matInput placeholder="unit">
+            </mat-input-container></td>
+            <td><button mat-raised-button (click)="cmdMeterReportGet(meterUnit.value)" >Get</button></td>
+          </tr>
+          </table>
+        </form>
+      </div>
+
+      <div *ngSwitchCase="'cmd.sensor.get_report'">
+        <form class="intf-form">
+        <table class="table-full-width" cellspacing="0"><tr>
+            <td><button mat-raised-button (click)="cmdSensorReportGet('')" >Get</button></td>
+          </tr>
+          </table>
+        </form>
+      </div>
+
+  </div>
+</div>

@@ -1,0 +1,17 @@
+.flow {
+  padding: 20px;
+}
+.example-card {
+  /*width: 1200px;*/
+  min-width: 500px;
+}
+
+.example-header-image {
+  background-size: cover;
+}
+.open-chip {
+  color: green
+}
+md-chip {
+  cursor: pointer;
+}

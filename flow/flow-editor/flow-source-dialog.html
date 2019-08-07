@@ -1,0 +1,10 @@
+<h1 mat-dialog-title> Source </h1>
+<mat-dialog-content >
+<mat-input-container   style="width: 100%">
+    <textarea mat-autosize  minRows="6" matInput [(ngModel)]="flowSourceText" > </textarea> 
+</mat-input-container>
+</mat-dialog-content>
+<mat-dialog-actions >
+<button mat-raised-button color="warn" (click)="save()" >Save</button>
+<button mat-raised-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

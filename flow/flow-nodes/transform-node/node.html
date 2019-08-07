@@ -1,0 +1,177 @@
+<div #nodebody >
+      <div>
+        <span *ngIf="node.Config.TargetVariableName==''"> Input variable </span>
+        {{node.Config.TargetVariableName}} = <span *ngIf="node.Config.LVariableName==''"> Input variable </span>  {{ node.Config.LVariableName }}
+        <span *ngIf="node.Config.TransformType=='calc'" ><b>{{ node.Config.Operation }}</b></span>
+        <span *ngIf="node.Config.TransformType=='map'" ><b> is mapped using mapping below</b></span>
+        <span *ngIf="node.Config.TransformType=='template'" ><b> is used in template </b></span>
+        <span *ngIf="node.Config.RType=='var'"> {{node.Config.RVariableName }} </span>
+        <span *ngIf="node.Config.RType=='const'"> {{node.Config.RValue.Value }} </span>
+
+      </div>
+      <br>
+      <div>
+        <mat-form-field style="width: 200px">
+          <mat-select    style="width: 200px" placeholder="Transformation type"[(ngModel)]="node.Config.TransformType" >
+            <mat-option value = "calc">Calculate</mat-option>
+            <mat-option value = "map">Map</mat-option>
+            <mat-option value = "jpath">Json Path</mat-option>
+            <mat-option value = "xpath">Xml Path</mat-option>
+            <mat-option value = "template">Template</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div style="margin-top: 10px;">
+          <div *ngIf="node.Config.TransformType!='jpath' && node.Config.TransformType!='xpath'">
+            <variable-selector [label]="'Result'" [variableName]="node.Config.TargetVariableName" [isGlobal]="node.Config.IsTargetVariableGlobal" [flowId]="flowId" (onSelect)="resultVariableSelected($event)" ></variable-selector>
+          </div>
+          <div>
+            <variable-selector [label]="'Left variable'" [variableName]="node.Config.LVariableName" [isGlobal]="node.Config.IsLVariableGlobal" [flowId]="flowId" (onSelect)="lVariableSelected($event)" ></variable-selector>
+          </div>
+          <div *ngIf="node.Config.TransformType=='calc'">
+            <mat-form-field class="node-transition-field" style="width: 400px">
+              <input matInput [(ngModel)]="node.Config.Expression" placeholder="Expression" >
+            </mat-form-field>
+          </div>
+      </div>
+      <div *ngIf="node.Config.RType=='const' &&  node.Config.TransformType=='calc' ">
+
+         <span [ngSwitch]="node.Config.RValue.ValueType">
+              <span *ngSwitchCase="'string'">
+                  <mat-form-field cHeadersVariableNamelass="node-transition-field">
+                      <input matInput [(ngModel)]="node.Config.RValue.Value" placeholder=" Right value" >
+                  </mat-form-field>
+              </span>
+              <span *ngSwitchCase="'int'">
+                  <mat-form-field class="node-transition-field">
+                      <input matInput type="number" [(ngModel)]="node.Config.RValue.Value" placeholder="value" >
+                  </mat-form-field>
+              </span>
+              <span *ngSwitchCase="'float'">
+                  <mat-form-field class="node-transition-field">
+                      <input matInput type="number" [(ngModel)]="node.Config.RValue.Value" placeholder="value" >
+                  </mat-form-field>
+              </span>
+
+              <span *ngSwitchCase="'bool'">
+                <mat-radio-group class="example-radio-group" placeholder="value" [(ngModel)]="node.Config.RValue.Value">
+                  <mat-radio-button class="example-radio-button" [value] = "true">
+                    true (On)
+                  </mat-radio-button>
+                  <mat-radio-button class="example-radio-button" [value] = "false">
+                    false (Off)
+                  </mat-radio-button>
+                </mat-radio-group>
+              </span>
+         </span>
+
+          <mat-form-field style="width: 110px">
+            <mat-select    style="width: 110px"  placeholder="Value type" [(ngModel)]="node.Config.RValue.ValueType" >
+              <mat-option value = "int">int number</mat-option>
+              <mat-option value = "float">float number</mat-option>
+              <mat-option value = "string">string</mat-option>
+              <mat-option value = "bool">bool</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </div>
+      <div *ngIf="node.Config.TransformType=='map'">
+        <div *ngFor="let vmap of node.Config.ValueMapping;let index2 = index;trackBy:trackByIndex;">
+          <span [ngSwitch]="vmap.LValue.ValueType">
+                  <span *ngSwitchCase="'string'">
+                      <mat-form-field class="node-transition-field">
+                          <input matInput [(ngModel)]="vmap.LValue.Value" placeholder="From value" >
+                      </mat-form-field>
+                  </span>
+                  <span *ngSwitchCase="'int'">
+                      <mat-form-field class="node-transition-field">
+                          <input matInput type="number" [(ngModel)]="vmap.LValue.Value" placeholder="From value" >
+                      </mat-form-field>
+                  </span>
+                  <span *ngSwitchCase="'float'">
+                      <mat-form-field class="node-transition-field">
+                          <input matInput type="number" [(ngModel)]="vmap.LValue.Value" placeholder="From value" >
+                      </mat-form-field>
+                  </span>
+
+                  <span *ngSwitchCase="'bool'">
+                    <mat-radio-group class="example-radio-group" placeholder="value" [(ngModel)]="vmap.LValue.Value">
+                      <mat-radio-button class="example-radio-button" [value] = "true">
+                        true (On)
+                      </mat-radio-button>
+                      <mat-radio-button class="example-radio-button" [value] = "false">
+                        false (Off)
+                      </mat-radio-button>
+                    </mat-radio-group>
+                  </span>
+             </span>
+
+          <mat-form-field style="width: 110px">
+            <mat-select    style="width: 110px"  placeholder="Type" [(ngModel)]="vmap.LValue.ValueType" >
+              <mat-option value = "int">int number</mat-option>
+              <mat-option value = "float">float number</mat-option>
+              <mat-option value = "string">string</mat-option>
+              <mat-option value = "bool">bool</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          =
+          <span [ngSwitch]="vmap.RValue.ValueType">
+                  <span *ngSwitchCase="'string'">
+                      <mat-form-field class="node-transition-field">
+                          <input matInput [(ngModel)]="vmap.RValue.Value" placeholder="To value" >
+                      </mat-form-field>
+                  </span>
+                  <span *ngSwitchCase="'int'">
+                      <mat-form-field class="node-transition-field">
+                          <input matInput type="number" [(ngModel)]="vmap.RValue.Value" placeholder="To value" >
+                      </mat-form-field>
+                  </span>
+                  <span *ngSwitchCase="'float'">
+                      <mat-form-field class="node-transition-field">
+                          <input matInput type="number" [(ngModel)]="vmap.RValue.Value" placeholder="To value" >
+                      </mat-form-field>
+                  </span>
+
+                  <span *ngSwitchCase="'bool'">
+                    <mat-radio-group class="example-radio-group" placeholder="To value" [(ngModel)]="vmap.RValue.Value">
+                      <mat-radio-button class="example-radio-button" [value] = "true">
+                        true (On)
+                      </mat-radio-button>
+                      <mat-radio-button class="example-radio-button" [value] = "false">
+                        false (Off)
+                      </mat-radio-button>
+                    </mat-radio-group>
+                  </span>
+             </span>
+
+          <mat-form-field style="width: 140px">
+            <mat-select    style="width: 140px"  placeholder="Type" [(ngModel)]="vmap.RValue.ValueType" >
+              <mat-option value = "int">int number</mat-option>
+              <mat-option value = "float">float number</mat-option>
+              <mat-option value = "string">string</mat-option>
+              <mat-option value = "bool">bool</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-raised-button (click)="deleteMappingRecord(vmap)" >Delete</button>
+        </div>
+        <button mat-raised-button (click)="addValueMapping(node)" >Add mapping</button>
+      </div>
+
+      <div *ngIf="node.Config.TransformType=='jpath' || node.Config.TransformType=='xpath'">
+         <div style="display: flex" *ngFor="let vmap of node.Config.XPathMapping;let index2 = index;trackBy:trackByIndex;">
+            <mat-form-field class="node-transition-field" style="margin-right: 5px;width: 250px">
+              <input matInput type="text" [(ngModel)]="vmap.Path" placeholder="Path" >
+            </mat-form-field>
+           <variable-selector  [label]="'Target variable'" [variableName]="vmap.TargetVariableName"   [inMemory]="vmap.InMemory"  [isGlobal]="vmap.IsTargetVariableGlobal" [flowId]="flowId" (onSelect)="targetVariableSelected($event,vmap)" ></variable-selector>
+           <button style="margin-left: 20px;max-height: 40px;" mat-raised-button (click)="deleteXPathRecord(vmap)" >Delete</button>
+         </div>
+         <button mat-raised-button (click)="addXPathMapping(node)" >Add </button>
+      </div>
+      <div *ngIf="node.Config.TransformType=='template'">
+        <mat-input-container  style="width: 100%">
+          <textarea  mat-autosize  minRows="4" matInput placeholder="Template body" [(ngModel)]="node.Config.Template" > </textarea>
+        </mat-input-container>
+      </div>
+  <br>
+ </div>

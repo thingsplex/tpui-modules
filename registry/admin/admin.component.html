@@ -1,0 +1,41 @@
+<nav mat-tab-nav-bar>
+  <a mat-tab-link [routerLink]="['/registry/locations']" >Locations</a>
+  <a mat-tab-link active [routerLink]="['/registry/things/*/*']" >Things</a>
+  <a mat-tab-link [routerLink]="['/registry/services/*/*']" >Services</a>
+  <a mat-tab-link [routerLink]="['/registry/admin']" >Admin</a>
+</nav>
+
+<div style="padding: 20px">
+<mat-card class="admin-comp">
+  <mat-card-header>
+    <mat-card-title> Registry admin </mat-card-title>
+    <mat-card-subtitle> Set of registry tools </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item> <button mat-raised-button (click)="vinculumSyncRooms()">Vinculum Room sync</button> </mat-list-item>
+      <mat-list-item> <button mat-raised-button (click)="vinculumSyncDevices()">Vinculum Device sync</button> </mat-list-item>
+      <mat-list-item> <button mat-raised-button (click)="reindexRegistry()">Reindex registry</button>  </mat-list-item>
+      <mat-list-item> <button mat-raised-button (click)="clearRegistry()">Factory reset registry</button>  </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="admin-comp">
+  <mat-card-header>
+    <mat-card-title> Send thing exclusion event </mat-card-title>
+    <mat-card-subtitle> Exclusion event notifies other component of the system that devices was removed </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+      <mat-input-container class="example-full-width">
+        <input #adapter matInput placeholder="adapter" >
+      </mat-input-container>
+      <mat-input-container class="example-full-width">
+        <input #address matInput placeholder="address" >
+      </mat-input-container>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button (click)="sendExclusionEvent(adapter.value,address.value)" >Send</button>
+  </mat-card-actions>
+</mat-card>
+</div>

@@ -1,0 +1,8 @@
+<div>
+  <mat-form-field *ngIf="inputTypeValue=='text'"  style="width: 100%">
+    <input  matInput [(ngModel)]="jDataStr" placeholder="{{label}}" (input)="onChange($event.target.value)"  >
+  </mat-form-field>
+  <mat-input-container  *ngIf="inputTypeValue=='textarea'" style="width: 100%">
+    <textarea  mat-autosize  minRows="4" matInput placeholder="{{label}}" [(ngModel)]="jDataStr" (input)="onChange($event.target.value)"> </textarea>
+  </mat-input-container>
+</div>

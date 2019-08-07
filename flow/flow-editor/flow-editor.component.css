@@ -1,0 +1,129 @@
+.flow-editor{
+  padding: 20px;
+  min-height: 100%;
+}
+
+
+.example-card {
+  width: 700px;
+}
+.flow-editor-main-card {
+  /* width: 100%; */
+}
+.drag-area {
+  width:100%;
+  min-height:50vh;
+  border-color: gainsboro;
+  overflow: auto;
+}
+
+.socket {
+  display: inline-block;
+  cursor: pointer;
+  border: 2px solid white;
+  border-radius: 14px;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  z-index: 2;
+  background: #96b38a;
+  position: absolute;
+  left: 30px;
+  bottom: -12px;
+  }
+.socket:hover {
+    border-color: coral;
+  }
+
+.socket-input {
+  background: #199ac2;
+  top:-15px;
+  left:70px;
+  bottom:inherit;
+}
+
+.socket-error {
+  background: #e62727;
+  left:100px;
+}
+
+.socket-timeout {
+  background:rgb(255, 173, 65);
+  left:65px;
+}
+
+.socket-iffalse {
+  background: #f1f521;
+  left:100px;
+
+}
+
+.connections {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.node-card {
+  margin-bottom: 20px;
+  background-color: lightgoldenrodyellow;
+  padding: 10px;
+  width: 150px;
+  position: absolute;
+  border-radius:15px;
+}
+
+.node-card mat-card-content {
+  margin-bottom: 5px;
+}
+.node-card mat-card-subtitle {
+  height: 30px;
+  overflow: auto;
+}
+
+.value-selector {
+  /*padding: 0px;*/
+  margin-bottom: 10px;
+  margin-top: 10px;
+  width:200px;
+}
+
+.if-expression-div {
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+.example-header-image {
+  background-size: cover;
+}
+
+.mat-grid-tile .mat-figure {
+    align-items:top;
+}
+.node-id-field {
+    width: 50px;
+}
+
+.node-type-field {
+    width: 100px;
+}
+.node-label-field {
+    width: 270px;
+}
+.node-transition-field {
+    width: 100px;
+}
+
+.source-editor {
+      width: 100%;
+     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+     box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+md-chip {
+  cursor: pointer;
+}
+
+.node-editor-dialog {
+  max-width: 800px;
+}

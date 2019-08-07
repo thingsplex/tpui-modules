@@ -1,0 +1,92 @@
+<mat-select #nodeTypeInput class="value-selector" placeholder="Value type" [(ngModel)]="variable.ValueType">
+        <mat-option value="">The same as input </mat-option>
+        <mat-option value="string">string</mat-option>
+        <mat-option value="bool">bool</mat-option>
+        <mat-option value="int">int</mat-option>
+        <mat-option value="float">float</mat-option>
+        <mat-option value="null">null</mat-option>
+        <mat-option value="str_array">array of strings</mat-option>
+        <mat-option value="int_array">array of integers</mat-option>
+        <mat-option value="float_array">array of floats</mat-option>
+        <mat-option value="bool_array">array of floats</mat-option>
+        <mat-option value="str_map">map of string</mat-option>
+        <mat-option value="int_map">map of integers</mat-option>
+        <mat-option value="float_map">map of floats</mat-option>
+        <mat-option value="bool_map">map of booleans</mat-option>
+        <mat-option value="object">object</mat-option>
+</mat-select>
+<div [ngSwitch]="variable.ValueType">
+        <div *ngSwitchCase="'string'">
+            <mat-input-container class="node-transition-field">
+                <input mdInput [(ngModel)]="variable.Value" placeholder="Default value">
+            </mat-input-container>
+        </div>
+        <div *ngSwitchCase="'int'">
+            <mat-input-container class="node-transition-field">
+                <input mdInput type="number" [(ngModel)]="variable.Value" placeholder="Default value">
+            </mat-input-container>
+        </div>
+        <div *ngSwitchCase="'float'">
+            <mat-input-container class="node-transition-field">
+                <input mdInput type="number" [(ngModel)]="variable.Value" placeholder="Default value">
+            </mat-input-container>
+        </div>
+        <div *ngSwitchCase="''">
+
+        </div>
+        <div *ngSwitchCase="'bool'">
+            <mat-radio-group class="example-radio-group" placeholder="Default value" [(ngModel)]="node.Config.Value">
+                <mat-radio-button class="example-radio-button" [value]="true">
+                    true (On)
+                </mat-radio-button>
+                <mat-radio-button class="example-radio-button" [value]="false">
+                    false (Off)
+                </mat-radio-button>
+            </mat-radio-group>
+        </div>
+         <div *ngSwitchCase="'str_array'">
+            <mat-input-container class="node-transition-field">
+                <input mdInput [(ngModel)]="variable.Value" placeholder="Default value : ['abc','cde']">
+            </mat-input-container>
+        </div>
+        <div *ngSwitchCase="'int_array'">
+            <mat-input-container class="node-transition-field">
+                <input mdInput [(ngModel)]="variable.Value" placeholder="Default value : [1,2] ">
+            </mat-input-container>
+        </div>
+        <div *ngSwitchCase="'float_array'">
+            <mat-input-container class="node-transition-field">
+                <input mdInput [(ngModel)]="variable.Value" placeholder="Default value : [1.2,0.5] ">
+            </mat-input-container>
+        </div>
+        <div *ngSwitchCase="'bool_array'">
+            <mat-input-container class="node-transition-field">
+                <input mdInput [(ngModel)]="variable.Value" placeholder="Default value : [true,false]">
+            </mat-input-container>
+        </div>
+        <div *ngSwitchCase="'str_map'">
+            <mat-input-container class="node-transition-field">
+                <input mdInput [(ngModel)]="variable.Value" placeholder="Default value : {'a':'a1','b':'b2'}">
+            </mat-input-container>
+        </div>
+        <div *ngSwitchCase="'int_map'">
+            <mat-input-container class="node-transition-field">
+                <input mdInput [(ngModel)]="variable.Value" placeholder="Default value : {'a':1,'b':2}">
+            </mat-input-container>
+        </div>
+        <div *ngSwitchCase="'float_map'">
+            <mat-input-container class="node-transition-field">
+                <input mdInput [(ngModel)]="variable.Value" placeholder="Default value : {'a':0.5,'b':1.5}">
+            </mat-input-container>
+        </div>
+        <div *ngSwitchCase="'bool_map'">
+            <mat-input-container class="node-transition-field">
+                <input mdInput [(ngModel)]="variable.Value" placeholder="Default value : {'a':true,'b':false}">
+            </mat-input-container>
+        </div>
+        <div *ngSwitchCase="'object'">
+            <mat-input-container class="node-transition-field">
+                <input mdInput [(ngModel)]="variable.Value" placeholder="Default value : {'a':'b','b':3}">
+            </mat-input-container>
+        </div>
+</div>
