@@ -44,7 +44,7 @@ export class FlowOverviewComponent implements OnInit {
          groupsSet.forEach(value => {
            this.groups.push(value);
          })
-       console.dir(this.groups);
+       // console.dir(this.groups);
          // var it =  groupsSet.entries();
          // for (let gr3 of it) {
          //   this.groups.push(gr3[0]);
@@ -118,4 +118,6 @@ export class FlowOverviewComponent implements OnInit {
 
     });
   }
+
+
 }

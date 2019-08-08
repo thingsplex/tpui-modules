@@ -9,6 +9,7 @@ import { Injectable } from '@angular/core';
 import {FimpService} from "app/fimp/fimp.service";
 import { BACKEND_ROOT} from "app/globals";
 import {HttpClient} from "@angular/common/http";
+import {Subject} from "rxjs";
 
 
 
@@ -18,11 +19,11 @@ export class ThingsRegistryService{
   public services : any;
   public locations : any;
   public things :any;
+  private registryStateSource = new Subject<string>();
+  public registryState$ = this.registryStateSource.asObservable();
   constructor(private fimp: FimpService,private http: HttpClient) {
     console.log("registry service constructor")
-    this.loadLocations();
-    this.loadThings();
-    this.loadServices();
+    this.loadAllComponents();
   }
 
   public init() {
@@ -30,6 +31,11 @@ export class ThingsRegistryService{
 
   }
 
+  loadAllComponents() {
+    this.loadLocations();
+    this.loadThings();
+    this.loadServices();
+  }
 
   loadServices() {
     let params: URLSearchParams = new URLSearchParams();
@@ -38,12 +44,16 @@ export class ThingsRegistryService{
     this.http.get(BACKEND_ROOT+'/fimp/api/registry/services')
       .subscribe(result=>{
       this.services = result;
+      this.registryStateSource.next("servicesLoaded");
+      this.notifyRegistryState();
     });
   }
   loadLocations() {
     this.http.get(BACKEND_ROOT+'/fimp/api/registry/locations')
       .subscribe(result=>{
       this.locations = result;
+        this.registryStateSource.next("locationsLoaded");
+        this.notifyRegistryState();
     });
   }
 
@@ -51,8 +61,25 @@ export class ThingsRegistryService{
     this.http.get(BACKEND_ROOT+'/fimp/api/registry/things')
       .subscribe(result=>{
         this.things = result;
+        this.registryStateSource.next("thingsLoaded");
+        this.notifyRegistryState();
       });
   }
+
+  notifyRegistryState() {
+    if (this.isRegistryInitialized()) {
+      this.registryStateSource.next("allLoaded");
+    }
+  }
+
+  isRegistryInitialized():boolean {
+    if (this.things != undefined && this.locations != undefined && this.services != undefined)
+      return true;
+    else
+      return false;
+  }
+
+
   getLocationById(locationId:number) {
     return this.locations.filter(location => location.id == locationId)
   }

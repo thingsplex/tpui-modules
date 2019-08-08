@@ -1,7 +1,7 @@
 <nav mat-tab-nav-bar>
     <a mat-tab-link active [routerLink]="['/analytics/dashboard']" >Dashboard</a>
     <a mat-tab-link [routerLink]="['/analytics/sensors']" >Sensors</a>
-    <a mat-tab-link [routerLink]="['/analytics/presence']" >Presence</a>
+    <a mat-tab-link [routerLink]="['/analytics/presence']" >Activity</a>
     <a mat-tab-link [routerLink]="['/analytics/presence']" >Energy</a>
     <a mat-tab-link [routerLink]="['/analytics/explore']" >Explore</a>
 </nav>
@@ -9,7 +9,7 @@
 <div style="overflow: hidden" >
 
     <mat-card class="card">
-        <h3> What do you want to do today ? </h3>
+        <h3> What do you want to explore today ? </h3>
     </mat-card>
 
     <mat-card class="card">
@@ -20,7 +20,7 @@
         <mat-card-content>
             <p>Number of locations : {{totalLocations}}</p>
             <div class="chart-container">
-                <simple-pie-chart [data]="thingsPerLocation" [labels]="locationNames" [title]="'Things per location'" ></simple-pie-chart>
+                <simple-pie-chart #locationsChart [data]="thingsPerLocation" [labels]="locationNames" [title]="'Things per location'" ></simple-pie-chart>
             </div>
 
         </mat-card-content>
@@ -36,8 +36,8 @@
             <p>Number of services  : {{totalServices}}</p>
             <p></p>
             <div class="chart-container">
-                <simple-pie-chart [data]="thingsByTechnology" [labels]="thingsTechLabels" [title]="'Devices by technology'" ></simple-pie-chart>
-                <simple-pie-chart [data]="thingsByTechnology" [labels]="thingsTechLabels" [title]="'Devices by power supply'" ></simple-pie-chart>
+                <simple-pie-chart #thingsByTechChart  [data]="thingsByTechnology" [labels]="thingsTechLabels" [title]="'Things by technology'" ></simple-pie-chart>
+                <simple-pie-chart #thingsByPowerChart [data]="thingsByPower" [labels]="thingsPowerLabels" [title]="'Things by power supply'" ></simple-pie-chart>
             </div>
 
         </mat-card-content>
@@ -49,9 +49,12 @@
             <mat-card-subtitle ></mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-            <p>
-
-            </p>
+            <p>Number Flows  : {{totalFlows}}</p>
+            <p>Number Nodes  : {{totalFlowNodes}}</p>
+            <div class="chart-container">
+                <simple-pie-chart #flowExecutionStatsChart [data]="flowExecutionStats" [labels]="flowExecutionLabels" [title]="'Aggregated execution results'" ></simple-pie-chart>
+                <simple-pie-chart #flowStateChart [data]="flowStateStats" [labels]="flowStateLabels" [title]="'Flow states'" ></simple-pie-chart>
+            </div>
         </mat-card-content>
     </mat-card>
 

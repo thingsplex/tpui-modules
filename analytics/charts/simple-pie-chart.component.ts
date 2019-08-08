@@ -44,12 +44,17 @@ export class SimplePieChartComponent implements OnInit  {
   }
 
   ngOnInit() {
+    this.chartData.push({data:this.data,backgroundColor:[]})
+    this.applyColors();
+    this.initChart();
+  }
+
+  applyColors() {
     let colors:any[] = [];
-    for(let d of this.data) {
-      colors.push(this.random_rgba(0.5))
+    for(let d in this.chartData[0].data) {
+      this.chartData[0].backgroundColor.push(this.random_rgba(0.5))
     }
-    this.chartData.push({data:this.data,backgroundColor:colors})
-    this.initChart()
+    // this.chartData.push({data:this.data,backgroundColor:colors})
   }
 
   initChart() {
@@ -65,6 +70,14 @@ export class SimplePieChartComponent implements OnInit  {
         legend:{position:'right'}
       }
     });
+  }
+
+  update() {
+    console.log("Update command");
+    // this.initChart()
+    this.applyColors();
+
+    this.chart.update();
   }
 
 

@@ -101,23 +101,19 @@ export class LineChartComponent implements OnInit  {
     if (this.measurement==undefined)
       this.measurement = "sensor_temp.evt.sensor.report";
     if (this.groupByTag == undefined) {
-      console.log("filterByTopic = "+this.filterByTopic);
       if (this.filterByTopic != undefined) {
-        console.log("-------Topic filter is set---------");
         this.groupByTag = "none";
       }else
         this.groupByTag = "location_id"; // Also supported thing_id , service_id , topic
     }
     if (this.groupByTime == undefined)
       this.groupByTime = "30m";
-    console.log("groupByTag = "+this.groupByTag);
 
     this.initChart();
     this.globalSub = this.fimp.getGlobalObservable().subscribe((msg) => {
       let fimpMsg = NewFimpMessageFromString(msg.payload.toString());
       if (fimpMsg.service == "ecollector" && fimpMsg.corid ==this.lastRequestId ){
         if (fimpMsg.mtype == "evt.tsdb.query_report") {
-          console.log("Message from ecollector");
           if (fimpMsg.val) {
             this.transformData(fimpMsg.val);
             this.chart.update();
@@ -127,8 +123,13 @@ export class LineChartComponent implements OnInit  {
     });
     this.queryData();
   }
+  ngOnDestroy() {
+    if(this.globalSub)
+      this.globalSub.unsubscribe();
+  }
 
   queryData() {
+    console.log("Measurement = "+this.measurement);
     let query = ""
       // query = "SELECT last(value) AS last_value FROM \"default_20w\".\"sensor_temp.evt.sensor.report\" WHERE time > now()-48h  GROUP BY  location_id FILL(null)"
     if (this.filterByTopic!=undefined) {
@@ -148,10 +149,7 @@ export class LineChartComponent implements OnInit  {
 
 
 
-  ngOnDestroy() {
-    if(this.globalSub)
-      this.globalSub.unsubscribe();
-  }
+
 
   initChart() {
     var ctx = this.canvasElement.nativeElement.getContext('2d');
