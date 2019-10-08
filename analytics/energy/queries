@@ -1,0 +1,5 @@
+
+SELECT mean("value") AS "mean_value" FROM "default_20w"."electricity_meter_power" WHERE time > now()-1d GROUP BY time(10m),"location_id" FILL(previous)
+select DIFFERENCE("mean_value") as "mean_value" FROM (SELECT mean("value") AS "mean_value" FROM "default_20w"."electricity_meter_energy" WHERE time > now()-1d GROUP BY time(10m),"location_id" FILL(previous) )
+
+select DIFFERENCE("mean_value") FROM (SELECT mean("value") AS "mean_value" FROM "default_20w"."electricity_meter_energy" WHERE time > now()-1d GROUP BY time(1h) FILL(previous) )

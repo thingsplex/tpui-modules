@@ -28,6 +28,7 @@ import {LineChartComponent} from "./charts/line-chart.component";
 import {PresenceComponent} from "./presence/presence.component";
 import {SensorsComponent} from "./sensors/sensors.component";
 import {ExploreComponent} from "./explore/explore.component";
+import {EnergyComponent} from "./energy/energy.component";
 import {SimplePieChartComponent} from "./charts/simple-pie-chart.component";
 
 
@@ -58,6 +59,6 @@ import {SimplePieChartComponent} from "./charts/simple-pie-chart.component";
     RegistryModule
   ],
   exports:[],
-  declarations: [DashboardComponent,BinarySensorChartComponent,LineChartComponent,PresenceComponent,SensorsComponent,ExploreComponent,SimplePieChartComponent]
+  declarations: [DashboardComponent,BinarySensorChartComponent,LineChartComponent,PresenceComponent,SensorsComponent,ExploreComponent,EnergyComponent,SimplePieChartComponent]
 })
 export class AnalyticsModule { }

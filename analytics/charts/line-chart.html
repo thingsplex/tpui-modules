@@ -2,7 +2,7 @@
     <div>
         <canvas #canvas width="400" height="500px"></canvas>
     </div>
-    <button mat-raised-button color="primary" (click)="queryData()" >Reload</button>
+
     <mat-input-container style="height: 35px;margin: 10px;width: 120px" class="example-full-width">
         <input matInput [(ngModel)]="timeFromNow" placeholder="Time from now" >
     </mat-input-container>
@@ -30,6 +30,7 @@
                 <mat-option value="none">Disabled</mat-option>
             </mat-select>
     </mat-form-field>
+    <button mat-raised-button color="primary" (click)="queryData()" >Reload</button>
 
 
 

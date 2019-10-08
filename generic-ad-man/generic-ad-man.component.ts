@@ -23,7 +23,6 @@ export class GenericAdManComponent implements OnInit {
   }
 
 
-
   reloadListOfDevices(){
     if (this.adapter != undefined) {
       let msg  = new FimpMessage(this.adapter,"cmd.network.get_all_nodes","null",null,null,null)

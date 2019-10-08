@@ -92,6 +92,11 @@ export class ThingsRegistryService{
     return this.things.filter(thing => thing.id == thingId)[0]
   }
 
+  getThingByAddress(tech:string,address:string) {
+    // console.dir(this.things);
+    return this.things.filter(thing => (thing.address == address && thing.comm_tech == tech ))
+  }
+
   getServiceByAddress(address:string) {
     return this.services.filter(service => address.indexOf(service.address)>=0)
   }

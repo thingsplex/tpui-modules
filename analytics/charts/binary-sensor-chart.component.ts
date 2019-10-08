@@ -47,6 +47,10 @@ export class BinarySensorChartComponent implements OnInit  {
     this.chartData.splice(0,this.chartData.length)
 
     let areLabelsConfigured = false;
+    if (!queryResponse.Results[0].Series) {
+      console.log("Binary chart , Empty response")
+      return
+    }
 
     for (let val of queryResponse.Results[0].Series) {
       let data:any[] = [];

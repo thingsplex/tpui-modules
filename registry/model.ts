@@ -5,7 +5,7 @@ export class Thing {
     commTech :string ;
     productHash : string;
     manufacturerId : string;
-    productId : string ; 
+    productId : string ;
     productName : string;
     deviceId :string ;
     hwVersion :string ;
@@ -45,7 +45,7 @@ export class Interface {
 
 export class ServiceInterface {
     thingId: number;
-    thingAddress: string; "33" 
+    thingAddress: string; "33"
     thingTech: string; "zw"
     thingAlias: string;
     serviceId: number;
@@ -65,6 +65,7 @@ export class ServiceInterface {
 export class Location {
     id:number;
     type:string;
+    sub_type:string;
     alias:string;
     address:string;
     long:number;

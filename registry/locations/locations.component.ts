@@ -21,7 +21,7 @@ import {MatDialog, MatDialogRef,MatSnackBar} from '@angular/material';
   styleUrls: ['./locations.component.css']
 })
 export class LocationsComponent implements OnInit {
-displayedColumns = ['id','type','alias','address','geo','action'];
+displayedColumns = ['id','type','sub_type','alias','address','geo','action'];
 
 // displayedColumns = ['thingAddress', 'thingAlias',
 // 'serviceName','serviceAlias','intfMsgType'];
@@ -90,6 +90,7 @@ export class LocationsDataSource extends DataSource<any> {
             let loc = new Location();
             loc.id = result[key].id;
             loc.type = result[key].type;
+            loc.sub_type = result[key].sub_type;
             loc.alias = result[key].alias;
             loc.address = result[key].address;
             loc.long = result[key].long;

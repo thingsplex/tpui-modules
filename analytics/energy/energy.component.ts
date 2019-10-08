@@ -9,13 +9,14 @@ import {ThingsRegistryService} from "../../registry/registry.service";
 
 @Component({
   selector: 'app-analytics-explore',
-  templateUrl: './explore.component.html',
-  styleUrls: ['./explore.component.css']
+  templateUrl: './energy.component.html',
+  styleUrls: ['./energy.component.css']
 })
-export class ExploreComponent implements OnInit {
-  public query : string;
+export class EnergyComponent implements OnInit {
+  public queryPower : string;
+  public queryEnergy: string;
   constructor(private registry:ThingsRegistryService) {
-
+   this.queryPower = "SELECT mean(\"value\") AS \"mean_value\" FROM \"default_20w\".\"electricity_meter_power\" WHERE time > now()-1d GROUP BY time(10m),\"location_id\" FILL(previous)"
   }
   ngOnInit() {
 

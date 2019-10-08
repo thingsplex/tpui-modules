@@ -1,0 +1,10 @@
+.table-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  min-width: 700px;
+}
+
+.mat-cell:nth-child(0), .mat-header-cell:nth-child(0) {
+    flex: 0 0 250px;
+}

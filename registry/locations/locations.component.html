@@ -8,14 +8,14 @@
 <br/>
 <div class="table-container mat-elevation-z8">
   <div class="example-header">
-    
+
   </div>
 
   <mat-table #table [dataSource]="dataSource">
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
-  
+
     <!-- Progress Column -->
     <ng-container cdkColumnDef="id">
       <mat-header-cell  *cdkHeaderCellDef> ID </mat-header-cell>
@@ -24,6 +24,10 @@
     <ng-container cdkColumnDef="type">
       <mat-header-cell *cdkHeaderCellDef> Type </mat-header-cell>
       <mat-cell *cdkCellDef="let row"> {{row.type}} </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="sub_type">
+      <mat-header-cell *cdkHeaderCellDef> Sub Type </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.sub_type}} </mat-cell>
     </ng-container>
      <ng-container cdkColumnDef="alias">
       <mat-header-cell *cdkHeaderCellDef> Alias </mat-header-cell>
@@ -42,13 +46,13 @@
 
     <ng-container cdkColumnDef="action">
       <mat-header-cell *cdkHeaderCellDef> Action </mat-header-cell>
-      <mat-cell *cdkCellDef="let row"><mat-chip-list> 
+      <mat-cell *cdkCellDef="let row"><mat-chip-list>
         <mat-chip (click)="showLocationEditorDialog(row)" > Edit </mat-chip>
-        <mat-chip [routerLink]="['/registry/things','locationId',row.id]"> Things </mat-chip> 
-        <mat-chip (click)="deleteLocation(row.id)"> Delete </mat-chip> 
+        <mat-chip [routerLink]="['/registry/things','locationId',row.id]"> Things </mat-chip>
+        <mat-chip (click)="deleteLocation(row.id)"> Delete </mat-chip>
       </mat-chip-list> </mat-cell>
     </ng-container>
-    
+
     <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>

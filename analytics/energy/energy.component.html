@@ -1,7 +1,7 @@
 <nav mat-tab-nav-bar>
     <a mat-tab-link [routerLink]="['/analytics/dashboard']" >Dashboard</a>
     <a mat-tab-link [routerLink]="['/analytics/sensors']" >Sensors</a>
-    <a mat-tab-link [routerLink]="['/analytics/presence']" >Activity</a>
+    <a mat-tab-link [routerLink]="['/analytics/presence']" >Presence</a>
     <a mat-tab-link [routerLink]="['/analytics/energy']" >Energy</a>
     <a mat-tab-link active [routerLink]="['/analytics/explore']" >Explore</a>
 </nav>
@@ -9,9 +9,8 @@
 <div style="overflow: hidden" >
 
 
-<line-chart [query]="query" [title]="'Explorer'"></line-chart>
+<line-chart [measurement]="'electricity_meter_power'" [title]="'Power (W)'" [groupByTag]="'thing_id'"  [groupByTime]="'1h'"></line-chart>
 
-  <mat-input-container style="height: 35px;margin: 10px;width: 100%" class="example-full-width">
-    <input matInput [(ngModel)]="query" placeholder="query" >
-  </mat-input-container>
+<line-chart [measurement]="'electricity_meter_energy'" [title]="'Energy (kWh)'" [groupByTag]="'thing_id'" [groupByTime]="'1h'" ></line-chart>
+
 </div>

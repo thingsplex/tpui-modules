@@ -9,9 +9,9 @@ import { ThingViewComponent } from "app/thing-view/thing-view.component";
 
 @NgModule({
   imports: [RouterModule.forChild([
+    { path: 'registry/locations', component: LocationsComponent },
     { path: 'registry/things/:filterName/:filterValue', component: ThingsComponent },
     { path: 'registry/services/:filterName/:filterValue', component: ServicesMainComponent },
-    { path: 'registry/locations', component: LocationsComponent },
     { path: 'registry/admin', component: AdminComponent },
     { path: 'fimp/thing-view/:ad/:id', component: ThingViewComponent },
   ])],

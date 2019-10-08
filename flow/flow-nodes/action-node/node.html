@@ -24,6 +24,9 @@
                 <input matInput [(ngModel)]="node.Address" placeholder="Address">
             </mat-input-container>
         </p>
+        <mat-input-container style="width: 450px">
+            <input matInput [(ngModel)]="node.Config.ResponseToTopic" placeholder="Response topic">
+        </mat-input-container>
       <div style="margin-bottom: 5px" >
         <mat-checkbox [(ngModel)]="node.Config.RegisterAsVirtualService" >Register as virtual service</mat-checkbox>
       </div>

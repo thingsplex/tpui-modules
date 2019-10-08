@@ -97,7 +97,8 @@ export class ActionNodeComponent implements OnInit {
         "Props": {},
         "RegisterAsVirtualService": false,
         "VirtualServiceGroup":"",
-        "VirtualServiceProps":{}
+        "VirtualServiceProps":{},
+        "ResponseToTopic":""
       };
       this.node.Config["DefaultValue"] = {"Value": "", "ValueType": ""};
       if (this.node.Ui.nodeType) {

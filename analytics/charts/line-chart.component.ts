@@ -25,6 +25,8 @@ export class LineChartComponent implements OnInit  {
   @Input() groupByTag  : string;
   @Input() filterById  : string;
   @Input() filterByTopic   : string;
+  @Input() query       : string;
+
   @ViewChild('canvas')
   canvasElement: ElementRef;
 
@@ -42,11 +44,19 @@ export class LineChartComponent implements OnInit  {
   }
 
   transformData(queryResponse:any) {
+    console.dir(queryResponse);
     this.chartLabels.splice(0,this.chartLabels.length)
     this.chartData.splice(0,this.chartData.length)
 
     let areLabelsConfigured = false;
-
+    if (!queryResponse.Results) {
+      console.log("transformData:Empty response");
+      return
+    }
+    if (!queryResponse.Results[0].Series) {
+      console.log("transformData:Empty response");
+      return;
+    }
     for (let val of queryResponse.Results[0].Series) {
       let data:any[] = [];
       for (let v of val["values"]) {
@@ -99,7 +109,7 @@ export class LineChartComponent implements OnInit  {
     if(this.timeFromNow == undefined)
       this.timeFromNow = "24h";
     if (this.measurement==undefined)
-      this.measurement = "sensor_temp.evt.sensor.report";
+      this.measurement = ""; //sensor_temp.evt.sensor.report
     if (this.groupByTag == undefined) {
       if (this.filterByTopic != undefined) {
         this.groupByTag = "none";
@@ -131,6 +141,8 @@ export class LineChartComponent implements OnInit  {
   queryData() {
     console.log("Measurement = "+this.measurement);
     let query = ""
+    if (!this.measurement && !this.query)
+      return
       // query = "SELECT last(value) AS last_value FROM \"default_20w\".\"sensor_temp.evt.sensor.report\" WHERE time > now()-48h  GROUP BY  location_id FILL(null)"
     if (this.filterByTopic!=undefined) {
       query = "SELECT value FROM \"default_20w\".\""+this.measurement+"\" WHERE time > now()-"+this.timeFromNow+" and topic='"+this.filterByTopic+"' FILL(previous)"
@@ -141,6 +153,8 @@ export class LineChartComponent implements OnInit  {
       query = "SELECT mean(\"value\") AS \"mean_value\" FROM \"default_20w\".\""+this.measurement+"\" WHERE time > now()-"+this.timeFromNow+" and topic='"+this.filterByTopic+"' GROUP BY time("+this.groupByTime+") FILL(previous)"
 
     }
+    if(this.query != undefined && this.query != "")
+      query = this.query
     let msg  = new FimpMessage("ecollector","cmd.tsdb.query","str_map",{"query":query},null,null)
     msg.src = "tplex-ui"
     this.lastRequestId = msg.uid;
