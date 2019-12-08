@@ -66,7 +66,7 @@ import {ContextRecord} from "./model"
     }
     delete() {
     this.http
-      .delete(BACKEND_ROOT+'/fimp/api/flow/context/record/'+this.ctxRec.Name)
+      .delete(BACKEND_ROOT+'/fimp/api/flow/context/record/'+this.ctxRec.FlowId+'/'+this.ctxRec.Name)
       .subscribe ((result) => {
         this.dialogRef.close("ok");
       });

@@ -39,10 +39,6 @@
       <mat-header-cell *cdkHeaderCellDef> Address </mat-header-cell>
       <mat-cell *cdkCellDef="let row"> {{row.address}} </mat-cell>
     </ng-container>
-    <ng-container cdkColumnDef="geo">
-      <mat-header-cell *cdkHeaderCellDef> Geo position </mat-header-cell>
-      <mat-cell *cdkCellDef="let row">Long:{{row.long}} Lat:{{row.lat}} </mat-cell>
-    </ng-container>
 
     <ng-container cdkColumnDef="action">
       <mat-header-cell *cdkHeaderCellDef> Action </mat-header-cell>

@@ -74,12 +74,33 @@
         <table class="table-full-width" cellspacing="0">
           <tr>
             <td>
-              <mat-slider #colorLvlValue thumbLabel  min="0" max="255" step="1" value="0"></mat-slider>
+              Red&nbsp;&nbsp;:<mat-slider #colorLvlRedValue thumbLabel  min="0" max="255" step="1" value="0" (change)="updateBackgroundColor(colorLvlRedValue.value,colorLvlGreenValue.value,colorLvlBlueValue.value)"></mat-slider>
             </td>
-            <td><mat-input-container class="example-full-width">
-              <input #compNameValue matInput placeholder="componnent" type="text" >
-            </mat-input-container></td>
-            <td><button mat-raised-button (click)="cmdColorSet(compNameValue.value,colorLvlValue.value)" >Set</button></td>
+          </tr><tr>
+            <td>
+              Green:<mat-slider #colorLvlGreenValue thumbLabel  min="0" max="255" step="1" value="0" (change)="updateBackgroundColor(colorLvlRedValue.value,colorLvlGreenValue.value,colorLvlBlueValue.value)"></mat-slider>
+            </td>
+          </tr><tr>
+            <td>
+              Blue&nbsp;: <mat-slider #colorLvlBlueValue thumbLabel  min="0" max="255" step="1" value="0" (change)="updateBackgroundColor(colorLvlRedValue.value,colorLvlGreenValue.value,colorLvlBlueValue.value)"></mat-slider>
+            </td>
+          </tr><tr>
+            <td>
+              <div style="width: 250px;height: 50px"  [style.background-color]="backgroundColor"></div>
+            </td>
+          </tr><tr>
+            <td><button  mat-raised-button (click)="cmdSendMap({'red':colorLvlRedValue.value,'green':colorLvlGreenValue.value,'blue':colorLvlBlueValue.value})" >Set rgb</button></td>
+          </tr><tr>
+            <td>
+              Hue: <mat-slider #colorLvlHueValue thumbLabel  min="0" max="65535" step="100" value="0"></mat-slider>
+            </td>
+          </tr><tr>
+            <td>
+              Sat: <mat-slider #colorLvlSatValue thumbLabel  min="0" max="254" step="1" value="0"></mat-slider>
+            </td>
+
+          </tr><tr>
+            <td><button mat-raised-button (click)="cmdSendMap({'hue':colorLvlHueValue.value,'sat':colorLvlSatValue.value})" >Set hue-sat</button></td>
           </tr>
           </table>
         </form>
@@ -382,6 +403,51 @@
           </table>
         </form>
       </div>
+
+    <div *ngSwitchCase="'cmd.doorman.integration'">
+      <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td><mat-input-container class="example-full-width">
+                <input  #doormanSlotNumber matInput placeholder="Slot number"  >
+              </mat-input-container></td>
+            <td><mat-input-container class="example-full-width">
+                <input  #doormanCodeType matInput placeholder="Code type"  >
+              </mat-input-container></td>
+            <td><mat-input-container class="example-full-width">
+                <input  #doormanCode matInput placeholder="Slot number"  >
+              </mat-input-container></td>
+            <td><button mat-raised-button   (click)="cmdSendStringMap({'slot':doormanSlotNumber.value,'code_type':doormanCodeType.value,'code':doormanCode.value})" >Set</button></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+
+    <div *ngSwitchCase="'cmd.doorman.set_param'">
+      <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td><mat-input-container class="example-full-width">
+                <input  #doormanParameterId matInput placeholder="Parameter id"  >
+              </mat-input-container></td>
+            <td><mat-input-container class="example-full-width">
+                <input  #doormanValue matInput placeholder="Value"  >
+              </mat-input-container></td>
+            <td><button mat-raised-button   (click)="cmdSendMap({'parameter_id':doormanParameterId.value,'value':doormanValue.value})" >Set</button></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+
+    <div *ngSwitchCase="'cmd.doorman.get_params'">
+      <form class="intf-form">
+        <table class="table-full-width" cellspacing="0"><tr>
+            <td><button mat-raised-button (click)="cmdGetReportNull()" >Get</button></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+
 
   </div>
 </div>

@@ -21,7 +21,7 @@ import {MatDialog, MatDialogRef,MatSnackBar} from '@angular/material';
   styleUrls: ['./locations.component.css']
 })
 export class LocationsComponent implements OnInit {
-displayedColumns = ['id','type','sub_type','alias','address','geo','action'];
+displayedColumns = ['id','type','sub_type','alias','address','action'];
 
 // displayedColumns = ['thingAddress', 'thingAlias',
 // 'serviceName','serviceAlias','intfMsgType'];

@@ -22,16 +22,15 @@
            <mat-icon mat-list-icon *ngIf="flow.State!='RUNNING'" style="color: #ff3928">device_hub</mat-icon>
            <h3 mat-line style="font-size: 21px">  {{flow.Name}} </h3>
            <p mat-line> Description : {{flow.Description}} </p>
-           <p mat-line> State : {{flow.State }} Executed : {{flow.TriggerCounter}} Failed : {{flow.ErrorCounter}} Nodes : {{ flow.Stats.NumberOfNodes}}  Triggers : {{flow.Stats.NumberOfTriggers}} Active triggers : {{flow.Stats.NumberOfActiveTriggers}} Active flows {{flow.Stats.NumberOfActiveSubflows}} </p>
+           <p mat-line> State : {{flow.State }} <ng-container *ngIf="flow.IsDisabled==true" > and is disabled </ng-container> </p>
+           <p mat-line> Executed : {{flow.TriggerCounter}} Failed : {{flow.ErrorCounter}} Nodes : {{ flow.Stats.NumberOfNodes}}  Triggers : {{flow.Stats.NumberOfTriggers}} Active triggers : {{flow.Stats.NumberOfActiveTriggers}} Active flows {{flow.Stats.NumberOfActiveSubflows}} </p>
            <p mat-line> Started at : {{flow.Stats.StartedAt | date:'yyyy-MM-dd H:mm:ss'}} Duration : {{flow.Stats.LastExecutionTime }} </p>
 
            <p mat-line>
              <mat-chip-list style="margin:10px">
-                <mat-chip class="open-chip" [routerLink]="['/flow/editor',flow.Id]">Run</mat-chip>
-                <mat-chip class="open-chip" [routerLink]="['/flow/editor',flow.Id]">Edit</mat-chip>
+                <mat-chip class="open-chip" [routerLink]="['/flow/editor',flow.Id]">Open</mat-chip>
                 <mat-chip class="open-chip" (click)="sendFlowControlCommand(flow.Id,'start')">Start</mat-chip>
                 <mat-chip class="open-chip" (click)="sendFlowControlCommand(flow.Id,'stop')">Stop</mat-chip>
-                <mat-chip class="open-chip" [routerLink]="['/flow/editor',flow.Id]">Duplicate</mat-chip>
                 <mat-chip color="warn" (click)="deleteFlow(flow.Id)">Delete</mat-chip>
              </mat-chip-list>
            </p>
@@ -46,6 +45,7 @@
     <mat-card-actions>
       <button mat-raised-button [routerLink]="['/flow/editor','-']" color="primary" > Add new flow</button>
       <button mat-raised-button (click)="openFlowImportWindow()" color="primary" > Import  </button>
+      <button mat-raised-button (click)="openFlowImportWindow()" color="primary" > Backup  </button>
       <button mat-raised-button (click)="showLog()" color="primary" >Log</button>
       <button mat-raised-button (click)="loadListOfFlows()">Refresh</button>
     </mat-card-actions>

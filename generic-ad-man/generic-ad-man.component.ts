@@ -5,6 +5,7 @@ import { Subscription } from "rxjs/Subscription";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
 // import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatSnackBar} from '@angular/material';
+import {ThingsRegistryService} from "../registry/registry.service";
 
 // import {AddDeviceDialog} from "../zwave-man/zwave-man.component";
 
@@ -18,8 +19,9 @@ export class GenericAdManComponent implements OnInit {
   globalSub : Subscription;
   adapter : string; // Name of the adapter
   listOfAdapters : string[];
-  constructor(public dialog: MatDialog,private fimp:FimpService,private snackBar: MatSnackBar) {
+  constructor(public dialog: MatDialog,private fimp:FimpService,private snackBar: MatSnackBar,public registry:ThingsRegistryService) {
     this.listOfAdapters = [];
+
   }
 
 
@@ -34,7 +36,6 @@ export class GenericAdManComponent implements OnInit {
   discover() {
     this.listOfAdapters = [];
     this.fimp.discoverResources()
-
   }
 
 
@@ -89,6 +90,13 @@ export class GenericAdManComponent implements OnInit {
         if(fimpMsg.mtype == "evt.network.all_nodes_report" )
         {
           this.nodes = fimpMsg.val;
+          for (let n of this.nodes) {
+            let things = this.registry.getThingByAddress(this.adapter,n.address);
+            if (things.length>0) {
+             n["location"] = things[0].location_alias;
+             n["name"] = things[0].alias;
+            }
+          }
           localStorage.setItem(this.adapter+"NodesList", JSON.stringify(this.nodes));
         }else if (fimpMsg.mtype == "evt.thing.exclusion_report" || fimpMsg.mtype == "evt.thing.inclusion_report"){
             console.log("Reloading nodes 2");

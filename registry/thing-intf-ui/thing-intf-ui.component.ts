@@ -15,16 +15,21 @@ export class ThingIntfUiComponent implements OnInit {
   @Input() msgType : string;
   @Input() addr: string;
   @Input() service :string;
-
+  backgroundColor :string
   constructor(private fimp:FimpService, public _DomSanitizationService: DomSanitizer) {
 
     // this.fimp.getGlobalObservable().subscribe((msg) => {
     // let fimpMsg = NewFimpMessageFromString(msg.payload.toString());
     // });
+    this.backgroundColor = 'rgb(0,0 ,0)';
    }
 
   ngOnInit() {
   }
+  updateBackgroundColor(r:number,g:number,b:number) {
+    this.backgroundColor = "rgb("+r+","+g+" ,"+b+")";
+  }
+
   cmdBinarySet(val:boolean){
     let msg  = new FimpMessage(this.service,this.intf.msgType,this.intf.valueType,val,null,null)
     this.fimp.publish("pt:j1/mt:cmd"+this.addr,msg.toString());
@@ -125,6 +130,10 @@ export class ThingIntfUiComponent implements OnInit {
   }
   cmdSensorReportGet(unit:string){
     let msg  = new FimpMessage(this.service,this.intf.msgType,this.intf.valueType,unit,null,null)
+    this.fimp.publish("pt:j1/mt:cmd"+this.addr,msg.toString());
+  }
+  cmdSendMap(val:any) {
+    let msg  = new FimpMessage(this.service,this.intf.msgType,this.intf.valueType,val,null,null)
     this.fimp.publish("pt:j1/mt:cmd"+this.addr,msg.toString());
   }
 
