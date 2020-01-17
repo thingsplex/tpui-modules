@@ -226,7 +226,7 @@ export class BinarySensorChartComponent implements OnInit  {
 //
 // }
 
-// queryData() {
+// initDatasets() {
 //   let query = ""
 //   if (this.limit==0) {
 //     query = "SELECT last(value) AS last_value FROM \"default_20w\".\"sensor_presence.evt.presence.report\" WHERE time > now()-48h  GROUP BY  location_id FILL(null)"
