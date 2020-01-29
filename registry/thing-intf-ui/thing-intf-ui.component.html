@@ -55,6 +55,28 @@
           <p>Bolt is locked  = <mat-icon *ngIf="intf.lastValue.val.bolt_is_locked" >done</mat-icon> <mat-icon *ngIf="!intf.lastValue.val.bolt_is_locked" >close</mat-icon>   </p>
           <p>Latch is closed = <mat-icon *ngIf="intf.lastValue.val.latch_is_closed" >done</mat-icon> <mat-icon *ngIf="!intf.lastValue.val.latch_is_closed" >close</mat-icon>   </p>
         </div>
+        <div *ngSwitchCase="'evt.doorman.activity_report'">
+          <table>
+            <tr><td>Event type :</td> <td>{{ intf.lastValue.val.event_type }}</td> </tr>
+            <tr><td>Status     :</td> <td>{{ intf.lastValue.val.status }}</td> </tr>
+            <tr><td>Error code :</td> <td>{{ intf.lastValue.val.error_code }}</td> </tr>
+            <tr><td>User status:</td> <td>{{ intf.lastValue.val.user_status }}</td> </tr>
+            <tr><td>Slot number:</td> <td>{{ intf.lastValue.val.slot_number }}</td> </tr>
+            <tr><td>Alarm type :</td> <td>{{ intf.lastValue.val.alarm_type }}</td> </tr>
+            <tr><td>Alarm level :</td> <td>{{ intf.lastValue.val.alarm_level }}</td> </tr>
+            <tr><td>Arming parameter :</td> <td>{{ intf.lastValue.val.arming_parameter }}</td> </tr>
+            <tr><td>Sequence_number :</td> <td>{{ intf.lastValue.val.sequence_number }}</td> </tr>
+            <tr><td>Card uid data :</td> <td>{{ intf.lastValue.val.card_uid_data }}</td> </tr>
+          </table>
+        </div>
+        <div *ngSwitchCase="'evt.doorman.session_report'">
+          <p>Sessions report = {{ intf.lastValue.val }}</p>
+        </div>
+        <div *ngSwitchCase="'evt.doorman.param_report'">
+          <p>Param report = {{ intf.lastValue.val }}</p>
+        </div>
+
+
         <div *ngSwitchDefault> {{intf.lastValue.val}}</div>
       </div>
     </div>
@@ -415,9 +437,9 @@
                 <input  #doormanCodeType matInput placeholder="Code type"  >
               </mat-input-container></td>
             <td><mat-input-container class="example-full-width">
-                <input  #doormanCode matInput placeholder="Slot number"  >
+                <input  #doormanCode matInput placeholder="Code"  >
               </mat-input-container></td>
-            <td><button mat-raised-button   (click)="cmdSendStringMap({'slot':doormanSlotNumber.value,'code_type':doormanCodeType.value,'code':doormanCode.value})" >Set</button></td>
+            <td><button mat-raised-button   (click)="cmdSendMap({'slot':doormanSlotNumber.value,'code_type':doormanCodeType.value,'code':doormanCode.value})" >Set</button></td>
           </tr>
         </table>
       </form>
@@ -434,6 +456,51 @@
                 <input  #doormanValue matInput placeholder="Value"  >
               </mat-input-container></td>
             <td><button mat-raised-button   (click)="cmdSendMap({'parameter_id':doormanParameterId.value,'value':doormanValue.value})" >Set</button></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+
+    <div *ngSwitchCase="'cmd.doorman.arm_confirm'">
+      <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td><mat-input-container class="example-full-width">
+                <input  #doormanArmSeq matInput placeholder="Sequence number"  >
+              </mat-input-container></td>
+            <td><mat-input-container class="example-full-width">
+                <input  #doormanArmOpParam matInput placeholder="Operating parameter"  >
+              </mat-input-container></td>
+            <td><button mat-raised-button   (click)="cmdSendMap({'sequence_number':doormanArmSeq.value,'operating_parameter':doormanArmOpParam.value})" >Set</button></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+
+    <div *ngSwitchCase="'cmd.doorman.set_user'">
+      <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td><mat-input-container class="example-full-width">
+                <input  #doormanSetUserSlot matInput placeholder="Slot number"  >
+              </mat-input-container></td>
+            <td><mat-input-container class="example-full-width">
+                <input  #doormanSetUserCode matInput placeholder="Code"  >
+              </mat-input-container></td>
+            <td><button mat-raised-button   (click)="cmdSendMap({'slot_number':doormanSetUserSlot.value,'code':doormanSetUserCode.value})" >Set</button></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+
+    <div *ngSwitchCase="'cmd.doorman.clear_user'">
+      <form class="intf-form">
+        <table class="table-full-width" cellspacing="0">
+          <tr>
+            <td><mat-input-container class="example-full-width">
+                <input  #doormanClearUserSlot matInput placeholder="Slot number"  >
+              </mat-input-container></td>
+            <td><button mat-raised-button   (click)="cmdSendMap({'slot_number':doormanClearUserSlot.value})" >Clear</button></td>
           </tr>
         </table>
       </form>
