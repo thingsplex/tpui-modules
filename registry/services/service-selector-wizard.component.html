@@ -7,9 +7,9 @@
       <mat-option *ngFor="let thing of things" [value]="thing.id" >{{ thing.alias }} ({{thing.product_id}}) </mat-option>
     </mat-select>
     </p>
-    <p>        
+    <p>
     <mat-select #serviceInput placeholder="Service" style="width:400px" [(ngModel)]="selectedServiceId" (change)="onServiceSelected()" >
-        <mat-option *ngFor="let service of services" [value]="service.id" >{{ service.alias }} ({{service.name}} {{service.groups}} ) </mat-option>
+        <mat-option *ngFor="let service of services" [value]="service.name" >{{ service.alias }} ({{service.name}} {{service.groups}} ) </mat-option>
     </mat-select>
     </p>
     <p>

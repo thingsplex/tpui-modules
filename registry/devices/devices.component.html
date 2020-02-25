@@ -1,7 +1,7 @@
 <nav mat-tab-nav-bar>
   <a mat-tab-link [routerLink]="['/registry/locations']" >Locations</a>
-  <a mat-tab-link active [routerLink]="['/registry/things/*/*']" >Things</a>
-  <a mat-tab-link [routerLink]="['/registry/devices/*/*']" >Devices</a>
+  <a mat-tab-link [routerLink]="['/registry/things/*/*']" >Things</a>
+  <a mat-tab-link active [routerLink]="['/registry/devices/*/*']" >Devices</a>
   <a mat-tab-link [routerLink]="['/registry/services/*/*']" >Services</a>
   <a mat-tab-link [routerLink]="['/registry/admin']" >Admin</a>
 
@@ -16,6 +16,8 @@
       <input matInput #filterTech placeholder="Filter technology">
     </mat-form-field>
   </div>
+
+  <p > These devices are part of <b>{{parentObjectName}} </b> </p>
 
   <mat-table #table [dataSource]="dataSource">
 
@@ -33,38 +35,20 @@
       <mat-header-cell *cdkHeaderCellDef> Alias </mat-header-cell>
       <mat-cell *cdkCellDef="let row"> {{row.alias}} </mat-cell>
     </ng-container>
+    <ng-container cdkColumnDef="type">
+      <mat-header-cell *cdkHeaderCellDef> Type </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.type}} </mat-cell>
+    </ng-container>
     <ng-container cdkColumnDef="locationAlias">
       <mat-header-cell *cdkHeaderCellDef> Location </mat-header-cell>
       <mat-cell *cdkCellDef="let row"> {{row.locationAlias}} </mat-cell>
     </ng-container>
 
-    <!-- Name Column -->
-    <ng-container cdkColumnDef="address">
-      <mat-header-cell *cdkHeaderCellDef> Address </mat-header-cell>
-      <mat-cell *cdkCellDef="let row"> {{ row.commTech }}:{{row.address}} </mat-cell>
-    </ng-container>
-    <ng-container cdkColumnDef="manufacturerId">
-      <mat-header-cell *cdkHeaderCellDef> Manufacturer Id </mat-header-cell>
-      <mat-cell *cdkCellDef="let row"> {{row.manufacturerId}} </mat-cell>
-    </ng-container>
-    <ng-container cdkColumnDef="productId">
-      <mat-header-cell *cdkHeaderCellDef> Product Id </mat-header-cell>
-      <mat-cell *cdkCellDef="let row"> {{row.productId}} </mat-cell>
-    </ng-container>
-    <ng-container cdkColumnDef="productName">
-      <mat-header-cell *cdkHeaderCellDef> Product Name </mat-header-cell>
-      <mat-cell *cdkCellDef="let row"> {{row.productName}} </mat-cell>
-    </ng-container>
-    <ng-container cdkColumnDef="productHash">
-      <mat-header-cell *cdkHeaderCellDef> Product Hash </mat-header-cell>
-      <mat-cell *cdkCellDef="let row"> {{row.productHash}} </mat-cell>
-    </ng-container>
     <ng-container cdkColumnDef="action">
       <mat-header-cell *cdkHeaderCellDef> Action </mat-header-cell>
       <mat-cell *cdkCellDef="let row"><mat-chip-list>
         <mat-chip (click)="showThingEditorDialog(row)" > Edit </mat-chip>
-        <mat-chip [routerLink]="['/registry/devices','thingId',row.id]"> Devices </mat-chip>
-        <mat-chip [routerLink]="['/thing-view',row.commTech,row.address]"> Explore </mat-chip>
+        <mat-chip [routerLink]="['/registry/services','thingId',row.id]"> Services </mat-chip>
         <mat-chip (click)="deleteThing(row.id)"> Delete </mat-chip>
       </mat-chip-list> </mat-cell>
     </ng-container>

@@ -13,6 +13,8 @@ import {Location} from '../model';
 import { BACKEND_ROOT } from "app/globals";
 import { LocationEditorDialog} from './location-editor.component'
 import {MatDialog, MatDialogRef,MatSnackBar} from '@angular/material';
+import {ThingsRegistryService} from "../registry.service";
+import {Subscription} from "rxjs";
 // import {MatTableDataSource} from '@angular/material';
 
 @Component({
@@ -26,13 +28,27 @@ displayedColumns = ['id','type','sub_type','alias','address','action'];
 // displayedColumns = ['thingAddress', 'thingAlias',
 // 'serviceName','serviceAlias','intfMsgType'];
   dataSource: LocationsDataSource | null;
-
-  constructor(private http : Http,public dialog: MatDialog) {
+  private registrySub: Subscription = null;
+  constructor(private http : Http,public dialog: MatDialog,private registry:ThingsRegistryService) {
 
   }
 
   ngOnInit() {
-    this.dataSource = new LocationsDataSource(this.http);
+    this.dataSource = new LocationsDataSource(this.http,this.registry);
+
+    if (!this.registry.isRegistryInitialized()) {
+      if (!this.registrySub) {
+        this.registrySub = this.registry.registryState$.subscribe((state) => {
+          if(state=="allLoaded") {
+           this.dataSource.getData();
+          }
+          console.log("new registry state = "+state);
+
+        });
+      }
+    }else {
+      this.dataSource.getData();
+    }
 
   }
   deleteLocation(id:string) {
@@ -61,21 +77,22 @@ export class LocationsDataSource extends DataSource<any> {
   locations : Location[] = [];
   locationsObs = new BehaviorSubject<Location[]>([]);
 
-  constructor(private http : Http) {
+  constructor(private http : Http,private registry:ThingsRegistryService) {
     super();
-    this.getData();
+    // this.getData();
   }
 
   getData() {
     let params: URLSearchParams = new URLSearchParams();
-    this.http
-        .get(BACKEND_ROOT+'/fimp/api/registry/locations',{search:params})
-        .map((res: Response)=>{
-          let result = res.json();
-          return this.mapThings(result);
-        }).subscribe(result=>{
-          this.locationsObs.next(result);
-        });
+    // this.http
+    //     .get(BACKEND_ROOT+'/fimp/api/registry/locations',{search:params})
+    //     .map((res: Response)=>{
+    //       let result = res.json();
+    //       return this.mapThings(result);
+    //     }).subscribe(result=>{
+    //       this.locationsObs.next(result);
+    //     });
+    this.locationsObs.next(this.registry.locations)
 
   }
 
@@ -115,17 +132,18 @@ export class LocationSelectorWizardComponent implements OnInit {
     this.loadLocations();
     this.selectedLocationId = this.currentLocation;
   }
-  constructor(private http : Http,) {
+  constructor(private http : Http,private registry:ThingsRegistryService) {
   }
 
   loadLocations() {
-    this.http.get(BACKEND_ROOT+'/fimp/api/registry/locations',{})
-    .map((res: Response)=>{
-      let result = res.json();
-      return result;
-    }).subscribe(result=>{
-      this.locations = result;
-    });
+    // this.http.get(BACKEND_ROOT+'/fimp/api/registry/locations',{})
+    // .map((res: Response)=>{
+    //   let result = res.json();
+    //   return result;
+    // }).subscribe(result=>{
+    //   this.locations = result;
+    // });
+    this.locations = this.registry.locations
   }
   onSelected() {
      this.onSelect.emit(this.selectedLocationId);

@@ -14,6 +14,8 @@ import { Thing } from '../model';
 import { ActivatedRoute } from '@angular/router';
 import { BACKEND_ROOT } from "app/globals";
 import { ThingEditorDialog} from './thing-editor.component'
+import {ThingsRegistryService} from "../registry.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-things',
@@ -24,21 +26,34 @@ export class ThingsComponent implements OnInit {
   displayedColumns = ['id', 'alias','locationAlias', 'address','manufacturerId','productName','productHash','action'];
   dataSource: ThingsDataSource | null;
   locationId:string;
-
+  private registrySub: Subscription = null;
   @ViewChild('filterAddr') filter: ElementRef;
 
-  constructor(private http : Http,private route: ActivatedRoute,public dialog: MatDialog) {
+  constructor(private http : Http,private route: ActivatedRoute,public dialog: MatDialog,private registry:ThingsRegistryService) {
 
   }
 
   ngOnInit() {
     this.locationId = this.route.snapshot.params['filterValue'];
-    this.dataSource = new ThingsDataSource(this.http);
+    this.dataSource = new ThingsDataSource(this.http,this.registry);
     if (this.locationId=="*"){
       this.locationId = "";
     }
 
-    this.dataSource.getData(this.locationId);
+    if (!this.registry.isRegistryInitialized()) {
+      if (!this.registrySub) {
+        this.registrySub = this.registry.registryState$.subscribe((state) => {
+          if(state=="allLoaded") {
+            this.dataSource.getData(this.locationId);
+          }
+          console.log("new registry state = "+state);
+
+        });
+      }
+    }else {
+      this.dataSource.getData(this.locationId);
+    }
+
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
         .debounceTime(150)
         .distinctUntilChanged()
@@ -83,22 +98,27 @@ export class ThingsDataSource extends DataSource<any> {
   get filter(): string { return this._filterChange.value; }
   set filter(filter: string) { this.getData("") }
 
-  constructor(private http : Http) {
+  constructor(private http : Http,private registry:ThingsRegistryService) {
     super();
     // this.getData("");
   }
 
   getData(locationId:string) {
-    let params: URLSearchParams = new URLSearchParams();
-    params.set('locationId', locationId);
-    this.http
-        .get(BACKEND_ROOT+'/fimp/api/registry/things',{search:params})
-        .map((res: Response)=>{
-          let result = res.json();
-          return this.mapThings(result);
-        }).subscribe(result=>{
-          this.thingsObs.next(result);
-        });
+    // let params: URLSearchParams = new URLSearchParams();
+    // params.set('locationId', locationId);
+    // this.http
+    //     .get(BACKEND_ROOT+'/fimp/api/registry/things',{search:params})
+    //     .map((res: Response)=>{
+    //       let result = res.json();
+    //       return this.mapThings(result);
+    //     }).subscribe(result=>{
+    //       this.thingsObs.next(result);
+    //     });
+    if (locationId == "") {
+      this.thingsObs.next(this.registry.things);
+    }else {
+      this.thingsObs.next(this.registry.getThingsForLocation(parseInt(locationId)));
+    }
 
   }
 

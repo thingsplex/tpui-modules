@@ -18,7 +18,14 @@ export class Thing {
     category:string;
     propertySets : Map<string,Map<string,any>>;
     techSpecificProps : Map<string,string>;
+}
 
+export class Device {
+  id:number;
+  alias:number;
+  locationId:number;
+  thingId:number;
+  locationAlias:string;
 }
 
 export class Service {

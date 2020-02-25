@@ -6,8 +6,9 @@
     <mat-input-container floatPlaceholder="never">
       <input matInput #filterThingAddr placeholder="Service address">
     </mat-input-container>
-    
+
   </div>
+  <p > These services are part of <b>{{parentObjectName}} </b> </p>
 
   <mat-table #table [dataSource]="dataSource">
 
@@ -28,7 +29,7 @@
       <mat-cell *cdkCellDef="let row"> {{row.locationAlias}} </mat-cell>
     </ng-container>
     <ng-container cdkColumnDef="action">
-      <mat-header-cell *cdkHeaderCellDef> Action </mat-header-cell>  
+      <mat-header-cell *cdkHeaderCellDef> Action </mat-header-cell>
       <mat-cell *cdkCellDef="let row"><mat-chip-list> <mat-chip (click)="showServiceEditorDialog(row)" >Edit</mat-chip>  </mat-chip-list> </mat-cell>
     </ng-container>
     <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>

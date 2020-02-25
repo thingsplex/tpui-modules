@@ -17,6 +17,7 @@ import { getFimpServiceList} from "app/fimp/service-lookup"
 // import {ThingIntfUiComponent} from 'app/registry/thing-intf-ui/thing-intf-ui.component'
 import {ServiceEditorDialog} from './service-editor.component'
 import {ThingsRegistryService} from "../registry.service";
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -42,7 +43,7 @@ export class ServiceSelectorWizardComponent implements OnInit {
   @Input() inputServiceName: string;
   @Input() inputInterfaceName: string;
   public selectedLocationId :number;
-  public selectedServiceId:number;
+  public selectedServiceId:string;
   public selectedThingId :number;
   public selectedInterfaceName:any;
   public fimpServiceList :any;
@@ -82,7 +83,7 @@ export class ServiceSelectorWizardComponent implements OnInit {
 
 
   onLocationSelected() {
-    this.things = this.registry.getThingsForLocation(this.selectedLocationId);
+    this.things = this.registry.getDevicesForLocation(this.selectedLocationId);
     console.log("THings for location:")
     console.dir(this.things)
   }
@@ -95,7 +96,7 @@ export class ServiceSelectorWizardComponent implements OnInit {
 
   onServiceSelected(){
     // this.loadServices(this.selectedService,"");
-    this.activeService = this.registry.getServiceById(this.selectedServiceId)
+    this.activeService = this.registry.getServiceByDeviceIdAndName(this.selectedThingId,this.selectedServiceId)
     console.dir(this.activeService);
   }
 
@@ -125,21 +126,39 @@ export class ServiceSelectorWizardComponent implements OnInit {
 export class ServicesComponent implements OnInit {
   displayedColumns = ['name','alias','locationAlias','address','action'];
   thingId : string ;
+  parentObjectName :string;
   dataSource: ServicesDataSource | null;
   // usage (onSelect)="onSelected($event)">
+  private registrySub: Subscription = null;
   @Output() onSelect = new EventEmitter<ServiceInterface>();
   @ViewChild('filterThingAddr') filterThingAddr: ElementRef;
   @ViewChild('filterServiceName') filterServiceName: ElementRef;
 
-  constructor(private http : Http,private route: ActivatedRoute,public dialog: MatDialog) {
+  constructor(private http : Http,private route: ActivatedRoute,public dialog: MatDialog,private registry:ThingsRegistryService) {
 
   }
 
   ngOnInit() {
     this.thingId = this.route.snapshot.params['filterValue'];
     console.log("Thing id  = ",this.thingId);
-    this.dataSource = new ServicesDataSource(this.http);
-    this.dataSource.getData("","",this.thingId);
+    this.dataSource = new ServicesDataSource(this.http,this.registry);
+
+    if (!this.registry.isRegistryInitialized()) {
+      if (!this.registrySub) {
+        this.registrySub = this.registry.registryState$.subscribe((state) => {
+          if(state=="allLoaded") {
+            this.dataSource.getData("","",this.thingId);
+            this.setParentObjectName();
+          }
+          console.log("new registry state = "+state);
+
+        });
+      }
+    }else {
+      this.dataSource.getData("","",this.thingId);
+      this.setParentObjectName();
+    }
+
     Observable.fromEvent(this.filterThingAddr.nativeElement, 'keyup')
         .debounceTime(500)
         .distinctUntilChanged()
@@ -156,6 +175,11 @@ export class ServicesComponent implements OnInit {
         });
 
   }
+
+  setParentObjectName () {
+      this.parentObjectName = this.registry.getDeviceById(parseInt(this.thingId)).alias
+  }
+
   showServiceEditorDialog(service:Service) {
     let dialogRef = this.dialog.open(ServiceEditorDialog,{
             width: '400px',
@@ -179,25 +203,30 @@ export class ServicesDataSource extends DataSource<any> {
   services : Service[] = [];
   servicesObs = new BehaviorSubject<Service[]>([]);
 
-  constructor(private http : Http) {
+  constructor(private http : Http,private registry:ThingsRegistryService) {
     super();
   }
 
   getData(thingAddr:string ,serviceName:string,thingId:string) {
-    let params: URLSearchParams = new URLSearchParams();
-    params.set('serviceName', serviceName);
-    params.set('thingId', thingId);
-    if (thingId!="*") {
-      params.set('thingId', thingId);
+    // let params: URLSearchParams = new URLSearchParams();
+    // params.set('serviceName', serviceName);
+    // params.set('thingId', thingId);
+    // if (thingId!="*") {
+    //   params.set('thingId', thingId);
+    // }
+    // this.http
+    //     .get(BACKEND_ROOT+'/fimp/api/registry/services',{search:params})
+    //     .map((res: Response)=>{
+    //       let result = res.json();
+    //       return this.mapThings(result);
+    //     }).subscribe(result=>{
+    //       this.servicesObs.next(result);
+    //     });
+    if (thingId!="" && thingId!="*") {
+      this.servicesObs.next(this.registry.getServicesForDevice(parseInt(thingId)));
+    }else {
+      this.servicesObs.next(this.registry.services);
     }
-    this.http
-        .get(BACKEND_ROOT+'/fimp/api/registry/services',{search:params})
-        .map((res: Response)=>{
-          let result = res.json();
-          return this.mapThings(result);
-        }).subscribe(result=>{
-          this.servicesObs.next(result);
-        });
 
   }
 

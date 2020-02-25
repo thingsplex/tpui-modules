@@ -1,6 +1,7 @@
 <nav mat-tab-nav-bar>
-  <a mat-tab-link [routerLink]="['/registry/locations']" >Locations</a>
-  <a mat-tab-link active [routerLink]="['/registry/things/*/*']" >Things</a>
+  <a mat-tab-link active [routerLink]="['/registry/locations']" >Locations</a>
+  <a mat-tab-link [routerLink]="['/registry/things/*/*']" >Things</a>
+  <a mat-tab-link [routerLink]="['/registry/devices/*/*']" >Devices</a>
   <a mat-tab-link [routerLink]="['/registry/services/*/*']" >Services</a>
   <a mat-tab-link [routerLink]="['/registry/admin']" >Admin</a>
 </nav>
@@ -45,6 +46,7 @@
       <mat-cell *cdkCellDef="let row"><mat-chip-list>
         <mat-chip (click)="showLocationEditorDialog(row)" > Edit </mat-chip>
         <mat-chip [routerLink]="['/registry/things','locationId',row.id]"> Things </mat-chip>
+        <mat-chip [routerLink]="['/registry/devices','locationId',row.id]"> Devices </mat-chip>
         <mat-chip (click)="deleteLocation(row.id)"> Delete </mat-chip>
       </mat-chip-list> </mat-cell>
     </ng-container>

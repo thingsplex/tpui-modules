@@ -44,10 +44,10 @@ md-chip {
   flex: 0 0 250px;
 }
 .mat-cell:nth-child(3), .mat-header-cell:nth-child(3) {
-  flex: 0 0 100px;
+  flex: 0 0 150px;
 }
 .mat-cell:nth-child(4), .mat-header-cell:nth-child(4) {
-  flex: 0 0 150px;
+  flex: 0 0 200px;
 }
 .mat-cell:nth-child(5), .mat-header-cell:nth-child(5) {
   flex: 0 0 200px;

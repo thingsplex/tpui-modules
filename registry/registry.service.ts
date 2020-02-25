@@ -19,6 +19,7 @@ export class ThingsRegistryService{
   public services : any;
   public locations : any;
   public things :any;
+  public devices :any;
   private registryStateSource = new Subject<string>();
   public registryState$ = this.registryStateSource.asObservable();
   constructor(private fimp: FimpService,private http: HttpClient) {
@@ -34,6 +35,7 @@ export class ThingsRegistryService{
   loadAllComponents() {
     this.loadLocations();
     this.loadThings();
+    this.loadDevices();
     this.loadServices();
   }
 
@@ -66,6 +68,15 @@ export class ThingsRegistryService{
       });
   }
 
+  loadDevices() {
+    this.http.get(BACKEND_ROOT+'/fimp/api/registry/devices')
+      .subscribe(result=>{
+        this.devices = result;
+        this.registryStateSource.next("devicesLoaded");
+        this.notifyRegistryState();
+      });
+  }
+
   notifyRegistryState() {
     if (this.isRegistryInitialized()) {
       this.registryStateSource.next("allLoaded");
@@ -85,11 +96,23 @@ export class ThingsRegistryService{
   }
 
   getThingsForLocation(locationId:number) {
-      return this.things.filter(thing => thing.location_id == locationId)
+      return this.devices.filter(thing => thing.location_id == locationId)
+  }
+
+  getDevicesForLocation(locationId:number) {
+    return this.devices.filter(device => device.location_id == locationId)
+  }
+
+  getDevicesForThing(thingId:number) {
+    return this.devices.filter(device => device.thing_id == thingId)
   }
 
   getThingById(thingId:number) {
     return this.things.filter(thing => thing.id == thingId)[0]
+  }
+
+  getDeviceById(devId:number) {
+    return this.devices.filter(dev => dev.id == devId)[0]
   }
 
   getThingByAddress(tech:string,address:string) {
@@ -105,9 +128,16 @@ export class ThingsRegistryService{
       return this.services.filter(service => service.container_id == thingId)
   }
 
+  getServicesForDevice(deviceId:number) {
+    return this.services.filter(service => service.container_id == deviceId && service.container_type == "dev")
+  }
 
   getServiceById(serviceId:number) {
       return this.services.filter(service => service.id == serviceId)[0]
+  }
+
+  getServiceByDeviceIdAndName(deviceId:number,name: string) {
+    return this.services.filter(service => service.container_id == deviceId && service.container_type == "dev" && service.name == name )[0]
   }
 
 

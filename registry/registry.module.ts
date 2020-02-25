@@ -19,6 +19,7 @@ import { MatTableModule,
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { ThingsComponent } from './things/things.component';
+import { DevicesComponent } from './devices/devices.component';
 import { ServicesComponent ,ServicesMainComponent,ServiceSelectorWizardComponent } from './services/services.component';
 import { LocationsComponent,LocationSelectorWizardComponent } from './locations/locations.component';
 import { AdminComponent } from './admin/admin.component';
@@ -29,6 +30,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { FimpService } from 'app/fimp/fimp.service'
 import { ServiceEditorDialog }from './services/service-editor.component'
 import { ThingEditorDialog }from './things/thing-editor.component'
+import { DeviceEditorDialog }from './devices/device-editor.component'
 import { LocationEditorDialog }from './locations/location-editor.component'
 import {ThingsRegistryService} from "./registry.service";
 
@@ -63,6 +65,7 @@ import {ThingsRegistryService} from "./registry.service";
 
   declarations: [
     ThingsComponent,
+    DevicesComponent,
     ServicesComponent,
     ServicesMainComponent,
     LocationsComponent,
@@ -73,9 +76,10 @@ import {ThingsRegistryService} from "./registry.service";
     KeysPipe,
     ServiceEditorDialog,
     ThingEditorDialog,
+    DeviceEditorDialog,
     LocationEditorDialog
   ],
   providers:[ThingsRegistryService],
-  entryComponents: [ServiceEditorDialog,ThingEditorDialog,LocationEditorDialog]
+  entryComponents: [ServiceEditorDialog,ThingEditorDialog,DeviceEditorDialog,LocationEditorDialog]
 })
 export class RegistryModule { }
