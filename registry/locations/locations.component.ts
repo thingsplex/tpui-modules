@@ -15,6 +15,8 @@ import { LocationEditorDialog} from './location-editor.component'
 import {MatDialog, MatDialogRef,MatSnackBar} from '@angular/material';
 import {ThingsRegistryService} from "../registry.service";
 import {Subscription} from "rxjs";
+import {FimpMessage} from "../../../fimp/Message";
+import {FimpService} from "../../../fimp/fimp.service";
 // import {MatTableDataSource} from '@angular/material';
 
 @Component({
@@ -29,7 +31,7 @@ displayedColumns = ['id','type','sub_type','alias','address','action'];
 // 'serviceName','serviceAlias','intfMsgType'];
   dataSource: LocationsDataSource | null;
   private registrySub: Subscription = null;
-  constructor(private http : Http,public dialog: MatDialog,private registry:ThingsRegistryService) {
+  constructor(private http : Http,public dialog: MatDialog,private registry:ThingsRegistryService,private fimp:FimpService) {
 
   }
 
@@ -51,6 +53,15 @@ displayedColumns = ['id','type','sub_type','alias','address','action'];
     }
 
   }
+
+  public sync(){
+    let msg  = new FimpMessage("tpflow","cmd.registry.sync_rooms","null",null,null,null)
+    this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:registry/ad:1",msg.toString());
+    setTimeout( ()=> {
+        this.registry.loadAllComponents()
+    },1000)
+  }
+
   deleteLocation(id:string) {
     this.http
      .delete(BACKEND_ROOT+'/fimp/api/registry/location/'+id)

@@ -96,7 +96,7 @@ export class ThingsRegistryService{
   }
 
   getThingsForLocation(locationId:number) {
-      return this.devices.filter(thing => thing.location_id == locationId)
+      return this.things.filter(thing => thing.location_id == locationId)
   }
 
   getDevicesForLocation(locationId:number) {
@@ -117,7 +117,14 @@ export class ThingsRegistryService{
 
   getThingByAddress(tech:string,address:string) {
     // console.dir(this.things);
-    return this.things.filter(thing => (thing.address == address && thing.comm_tech == tech ))
+    let fullAddress = "/rn:"+tech+"/ad:1/ad:"+address;
+    let things = this.things.filter(thing => (thing.address == fullAddress ))
+    return things
+  }
+
+  getThingByFullAddress(address:string) {
+    // console.dir(this.things);
+    return this.things.filter(thing => (thing.address == address ))
   }
 
   getServiceByAddress(address:string) {

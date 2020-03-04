@@ -3,6 +3,7 @@ import { BACKEND_ROOT } from "app/globals";
 import { Http, Response,URLSearchParams }  from '@angular/http';
 import {FimpService} from "app/fimp/fimp.service";
 import {FimpMessage} from "app/fimp/Message";
+import {ThingsRegistryService} from "../registry.service";
 
 @Component({
   selector: 'app-admin',
@@ -11,7 +12,7 @@ import {FimpMessage} from "app/fimp/Message";
 })
 export class AdminComponent implements OnInit {
 
-  constructor(private http : Http, private fimp:FimpService) { }
+  constructor(private http : Http, private fimp:FimpService,private registry:ThingsRegistryService) { }
 
   ngOnInit() {
   }
@@ -20,6 +21,9 @@ export class AdminComponent implements OnInit {
   public vinculumSyncRooms(){
     let msg  = new FimpMessage("tpflow","cmd.registry.sync_rooms","null",null,null,null)
     this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:registry/ad:1",msg.toString());
+    setTimeout( ()=> {
+      this.registry.loadAllComponents()
+    },1000)
   }
 
   public vinculumSyncDevices(){

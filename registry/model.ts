@@ -26,6 +26,7 @@ export class Device {
   locationId:number;
   thingId:number;
   locationAlias:string;
+  type:string;
 }
 
 export class Service {

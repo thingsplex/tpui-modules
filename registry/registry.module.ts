@@ -29,6 +29,7 @@ import { RegistryRoutingModule } from "./registry-routing.module";
 import { CdkTableModule } from '@angular/cdk/table';
 import { FimpService } from 'app/fimp/fimp.service'
 import { ServiceEditorDialog }from './services/service-editor.component'
+import { ServiceRunDialog }from './services/service-run.component'
 import { ThingEditorDialog }from './things/thing-editor.component'
 import { DeviceEditorDialog }from './devices/device-editor.component'
 import { LocationEditorDialog }from './locations/location-editor.component'
@@ -75,11 +76,12 @@ import {ThingsRegistryService} from "./registry.service";
     LocationSelectorWizardComponent,
     KeysPipe,
     ServiceEditorDialog,
+    ServiceRunDialog,
     ThingEditorDialog,
     DeviceEditorDialog,
     LocationEditorDialog
   ],
   providers:[ThingsRegistryService],
-  entryComponents: [ServiceEditorDialog,ThingEditorDialog,DeviceEditorDialog,LocationEditorDialog]
+  entryComponents: [ServiceEditorDialog,ServiceRunDialog,ThingEditorDialog,DeviceEditorDialog,LocationEditorDialog]
 })
 export class RegistryModule { }

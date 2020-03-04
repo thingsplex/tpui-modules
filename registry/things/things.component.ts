@@ -115,9 +115,9 @@ export class ThingsDataSource extends DataSource<any> {
     //       this.thingsObs.next(result);
     //     });
     if (locationId == "") {
-      this.thingsObs.next(this.registry.things);
+      this.thingsObs.next(this.mapThings(this.registry.things));
     }else {
-      this.thingsObs.next(this.registry.getThingsForLocation(parseInt(locationId)));
+      this.thingsObs.next(this.mapThings(this.registry.getThingsForLocation(parseInt(locationId))));
     }
 
   }

@@ -135,18 +135,18 @@ export class DevicesDataSource extends DataSource<any> {
     console.log("Total devices in registry = "+this.registry.devices.length);
     if (filterName == "locationId") {
       if (id == "") {
-        this.devicesObs.next(this.registry.devices);
+        this.devicesObs.next(this.mapDevices(this.registry.devices));
       }else {
-        this.devicesObs.next(this.registry.getDevicesForLocation(parseInt(id)));
+        this.devicesObs.next(this.mapDevices(this.registry.getDevicesForLocation(parseInt(id))));
       }
     }else if (filterName == "thingId") {
       if (id == "") {
-        this.devicesObs.next(this.registry.devices);
+        this.devicesObs.next(this.mapDevices(this.registry.devices));
       }else {
-        this.devicesObs.next(this.registry.getDevicesForThing(parseInt(id)));
+        this.devicesObs.next(this.mapDevices(this.registry.getDevicesForThing(parseInt(id))));
       }
     }else {
-      this.devicesObs.next(this.registry.devices);
+      this.devicesObs.next(this.mapDevices(this.registry.devices));
     }
 
 
@@ -168,6 +168,7 @@ export class DevicesDataSource extends DataSource<any> {
             device.locationId = result[key].location_id;
             device.thingId = result[key].thing_id;
             device.locationAlias = result[key].location_alias;
+            device.type = result[key].type;
             devices.push(device)
      }
      return devices;

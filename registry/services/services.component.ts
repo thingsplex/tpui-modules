@@ -18,6 +18,7 @@ import { getFimpServiceList} from "app/fimp/service-lookup"
 import {ServiceEditorDialog} from './service-editor.component'
 import {ThingsRegistryService} from "../registry.service";
 import {Subscription} from "rxjs";
+import {ServiceRunDialog} from "./service-run.component";
 
 
 @Component({
@@ -58,7 +59,7 @@ export class ServiceSelectorWizardComponent implements OnInit {
       let svcs = this.registry.getServiceByAddress(this.inputServiceAddress)
       if (svcs.length > 0) {
 
-        this.selectedServiceId = svcs[0].id;
+        this.selectedServiceId = svcs[0].name;
         this.selectedLocationId = svcs[0].location_id;
         this.selectedInterfaceName = this.inputInterfaceName;
         this.selectedThingId = svcs[0].container_id;
@@ -124,7 +125,7 @@ export class ServiceSelectorWizardComponent implements OnInit {
   styleUrls: ['./services.component.css']
 })
 export class ServicesComponent implements OnInit {
-  displayedColumns = ['name','alias','locationAlias','address','action'];
+  displayedColumns = ['name','alias','address','action'];
   thingId : string ;
   parentObjectName :string;
   dataSource: ServicesDataSource | null;
@@ -177,7 +178,9 @@ export class ServicesComponent implements OnInit {
   }
 
   setParentObjectName () {
-      this.parentObjectName = this.registry.getDeviceById(parseInt(this.thingId)).alias
+    let dev = this.registry.getDeviceById(parseInt(this.thingId))
+    if (dev)
+        this.parentObjectName = dev.alias
   }
 
   showServiceEditorDialog(service:Service) {
@@ -192,6 +195,20 @@ export class ServicesComponent implements OnInit {
         }
     });
   }
+
+  showServiceRunDialog(service:Service) {
+    let dialogRef = this.dialog.open(ServiceRunDialog,{
+      width: '400px',
+      data:service
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result)
+      {
+
+      }
+    });
+  }
+
   selectInterface(intf:ServiceInterface) {
     console.dir(intf);
     this.onSelect.emit(intf);
@@ -248,6 +265,7 @@ export class ServicesDataSource extends DataSource<any> {
             service.locationAlias = result[key].location_alias;
             service.props = result[key].props;
             service.interfaces = result[key].interfaces;
+
             services.push(service)
      }
      return services;

@@ -1,0 +1,14 @@
+<table  matLine>
+  <tr>
+    <th>type</th>
+    <th>msg</th>
+    <th>val. type</th>
+    <th ></th>
+  </tr>
+  <tr *ngFor="let intf of interfaces">
+    <td >{{ intf.type }}</td>
+    <td >{{ intf.msgType }}</td>
+    <td >{{ intf.valueType }}</td>
+    <td><thing-intf-ui [intf]="intf" [serv]="row" [msgType]="intf.msg_t" [addr]="row.address" [service]="row.name" > </thing-intf-ui></td>
+  </tr>
+</table>

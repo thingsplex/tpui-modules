@@ -54,8 +54,8 @@
     <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
-<div style="width:100%;height:60px">&nbsp; </div>
+<div>&nbsp; </div>
   <div>
-    <button class="add-button" (click)="showLocationEditorDialog(null)" mat-mini-fab>Add</button>
+    <button mat-raised-button color="primary" (click)="sync()" >Reload</button>
   </div>
 </div>
