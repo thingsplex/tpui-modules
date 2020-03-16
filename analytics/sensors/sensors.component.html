@@ -4,6 +4,7 @@
     <a mat-tab-link [routerLink]="['/analytics/presence']" >Activity</a>
     <a mat-tab-link [routerLink]="['/analytics/energy']" >Energy</a>
     <a mat-tab-link [routerLink]="['/analytics/explore']" >Explore</a>
+    <a mat-tab-link [routerLink]="['/analytics/settings']" >Settings</a>
 </nav>
 
 <div style="overflow: hidden" >
@@ -19,7 +20,7 @@
 </p>
 <line-chart #sensorChart [measurement]="selectedSensorType" [title]="''"></line-chart>
 <br>
-<line-chart [measurement]="'battery.evt.lvl.report'" [groupByTag]="'thing_id'" [groupByTime]="'5h'" [timeFromNow]="'1w'" [title]="'Battery levels'"></line-chart>
+<line-chart [measurement]="'battery.evt.lvl.report'" [groupByTag]="'dev_id'" [groupByTime]="'5h'" [timeFromNow]="'1w'" [title]="'Battery levels'"></line-chart>
 <br>
 
 

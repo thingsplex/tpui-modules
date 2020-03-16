@@ -64,27 +64,31 @@ export class LineChartComponent implements OnInit  {
       }
       areLabelsConfigured = true;
       let label = "unknown";
-      switch (this.groupByTag) {
-        case "location_id":
-          let locationId = val.tags.location_id;
-          let loc = this.registry.getLocationById(Number(locationId))
-          if (loc) {
-            if ((loc.length)>0)
-              label = loc[0].alias;
-          }
-          break;
-        case "service_id":
-          let service = this.registry.getServiceById(Number(val.tags.service_id))
-          if (service) {
+      if (val.tags) {
+        switch (this.groupByTag) {
+          case "location_id":
+            let locationId = val.tags.location_id;
+            let loc = this.registry.getLocationById(Number(locationId))
+            if (loc) {
+              if ((loc.length)>0)
+                label = loc[0].alias;
+            }
+            break;
+          case "service_id":
+            let service = this.registry.getServiceById(Number(val.tags.service_id))
+            if (service) {
               label = service.alias;
-          }
-          break;
-        case "thing_id":
-          let thing = this.registry.getThingById(Number(val.tags.thing_id))
-          if (thing) {
-              label = thing.alias +" in "+ thing.location_alias;
-          }
-          break;
+            }
+            break;
+          case "dev_id":
+            let dev = this.registry.getDeviceById(Number(val.tags.dev_id))
+            if (dev) {
+              label = dev.alias +" in "+ dev.location_alias;
+            }else {
+              console.log("No device for id = ",val.tags.dev_id)
+            }
+            break;
+        }
       }
 
       this.chartData.push({
@@ -157,6 +161,7 @@ export class LineChartComponent implements OnInit  {
       query = this.query
     let msg  = new FimpMessage("ecollector","cmd.tsdb.query","str_map",{"query":query},null,null)
     msg.src = "tplex-ui"
+    msg.resp_to = "pt:j1/mt:rsp/rt:app/rn:tplex-ui/ad:1"
     this.lastRequestId = msg.uid;
     this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:ecollector/ad:1",msg.toString());
   }

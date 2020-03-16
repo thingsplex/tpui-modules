@@ -3,6 +3,8 @@ import {FlowRunDialog, MetaNode, ServiceLookupDialog} from "../../flow-editor/fl
 import {MatDialog} from "@angular/material";
 import {ServiceInterface} from "../../../registry/model";
 import {FimpService} from "../../../../fimp/fimp.service";
+import {FimpMessage, NewFimpMessageFromString} from "../../../../fimp/Message";
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -124,33 +126,59 @@ export class VincTriggerNodeComponent implements OnInit {
   @Input() nodes:MetaNode[];
   @Input() flowId:string;
   shortcuts:any[];
+  globalSub : Subscription;
   constructor(public dialog: MatDialog, private fimp:FimpService) {
 
   }
   ngOnInit() {
     this.loadDefaultConfig()
+    this.globalSub = this.fimp.getGlobalObservable().subscribe((msg) => {
+      let fimpMsg = NewFimpMessageFromString(msg.payload.toString());
+      if (fimpMsg.service == "vinculum" ){
+        if (fimpMsg.mtype == "evt.pd7.response") {
+          if (fimpMsg.val) {
+            this.shortcuts = fimpMsg.val.param.shortcut;
+            this.shortcuts.forEach(sh =>  {
+              sh.id = String(sh.id);
+            })
+            console.log("Shortcuts update");
+            console.dir(this.shortcuts);
+          }else
+            this.shortcuts = [];
+        }
+      }
+
+    });
+    this.loadShortcuts()
 
   }
-
+  ngOnDestroy() {
+    if(this.globalSub)
+      this.globalSub.unsubscribe();
+  }
   loadDefaultConfig() {
 
     if (this.node.Config==null) {
       this.node.Config = {};
       this.node.Config["Timeout"] = 0;
-      this.node.Config["VirtualServiceGroup"] = "";
-      this.node.Config["VirtualServiceProps"] = {};
-      this.node.Config["RegisterAsVirtualService"] = false;
-      this.node.Config["ValueFilter"] = {"Value":"","ValueType":"string"};
+      this.node.Config["ValueFilter"] = "";
       this.node.Config["IsValueFilterEnabled"] = false;
-      this.node.Config["ValueJPath"] = "$.param.current";
-      this.node.Config["ValueJPathResultType"] = "string";
-      this.node.Address = "pt:j1/mt:evt/rt:app/rn:vinculum/ad:1"
-      this.node.ServiceInterface = "evt.pd7.notify"
-      this.node.Service = "vinculum"
-      this.node.Label = "Home mode trigger"
+      this.node.Config["EventType"] = "mode";
+      this.node.Label = "Home event trigger"
     }
   }
 
+  loadShortcuts() {
+    let val = {"cmd":"get","component":null,"id":null,"param":{"components":["shortcut"]}};
+    var props = new Map<string,string>();
+    let msg  = new FimpMessage("vinculum","cmd.pd7.request","object",val,props,null)
+    msg.resp_to = "pt:j1/mt:rsp/rt:app/rn:thingsplex-ui/ad:1"
+    this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:vinculum/ad:1",msg.toString());
+
+  }
+  onSelected($event) {
+    this.node.Config.ValueFilter = String(this.node.Config.ValueFilter)
+  }
   runFlow(node:MetaNode) {
     let dialogRef = this.dialog.open(FlowRunDialog,{
       // height: '95%',

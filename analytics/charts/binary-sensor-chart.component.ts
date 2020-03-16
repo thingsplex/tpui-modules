@@ -74,8 +74,8 @@ export class BinarySensorChartComponent implements OnInit  {
             label = service.alias;
           }
           break;
-        case "thing_id":
-          let thing = this.registry.getThingById(Number(val.tags.thing_id))
+        case "dev_id":
+          let thing = this.registry.getDeviceById(Number(val.tags.dev_id))
           if (thing) {
             label = thing.alias +" in "+ thing.location_alias;
           }
@@ -148,6 +148,7 @@ export class BinarySensorChartComponent implements OnInit  {
     let msg  = new FimpMessage("ecollector","cmd.tsdb.query","str_map",{"query":query},null,null)
     msg.src = "tplex-ui"
     this.lastRequestId = msg.uid;
+    msg.resp_to = "pt:j1/mt:rsp/rt:app/rn:tplex-ui/ad:1"
     this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:ecollector/ad:1",msg.toString());
   }
 

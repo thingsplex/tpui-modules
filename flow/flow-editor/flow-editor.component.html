@@ -11,8 +11,8 @@
     <mat-list-item> <button mat-raised-button (click)="addNode('trigger','')"  >
         <mat-icon aria-label="Edit node">input</mat-icon> Trigger</button>
     </mat-list-item>
-    <mat-list-item> <button mat-raised-button (click)="addNode('trigger','vinc_trigger')"  >
-        <mat-icon aria-label="Edit node">input</mat-icon> Home mode trigger</button>
+    <mat-list-item> <button mat-raised-button (click)="addNode('vinc_trigger','')"  >
+        <mat-icon aria-label="Edit node">input</mat-icon> Home event trigger</button>
     </mat-list-item>
     <mat-list-item> <button mat-raised-button (click)="addNode('trigger','scene_trigger')"  >
           <mat-icon aria-label="Edit node">input</mat-icon>Scene trigger</button>
@@ -56,6 +56,9 @@
     <mat-list-item> <button mat-raised-button (click)="addNode('exec','')" >
         <mat-icon aria-label="Exec node">flash_on</mat-icon> Exec</button>
     </mat-list-item>
+    <mat-list-item> <button mat-raised-button (click)="addNode('log_action','')" >
+          <mat-icon aria-label="Exec node">flash_on</mat-icon> Log</button>
+    </mat-list-item>
     </mat-list>
   </mat-sidenav>
 
@@ -77,6 +80,7 @@
                 <mat-card-title>
                 <button mat-icon-button [ngSwitch]="node.Type"  (click)="showNodeEditorDialog(flow,node)" color="primary" >
                     <mat-icon *ngSwitchCase="'trigger'" aria-label="Edit node">input</mat-icon>
+                    <mat-icon *ngSwitchCase="'vinc_trigger'" aria-label="Edit node">input</mat-icon>
                     <mat-icon *ngSwitchCase="'receive'" aria-label="Edit node">input</mat-icon>
                     <mat-icon *ngSwitchCase="'time_trigger'" aria-label="Edit node">schedule</mat-icon>
                     <mat-icon *ngSwitchCase="'wait'" aria-label="Edit node">update</mat-icon>
@@ -87,6 +91,7 @@
                     <mat-icon *ngSwitchCase="'set_variable'" aria-label="Edit node">edit</mat-icon>
                     <mat-icon *ngSwitchCase="'transform'" aria-label="Edit node">transform</mat-icon>
                     <mat-icon *ngSwitchCase="'exec'" aria-label="Exec node">flash_on</mat-icon>
+                    <mat-icon *ngSwitchCase="'log_action'" aria-label="Log node">edit</mat-icon>
                     <mat-icon *ngSwitchDefault aria-label="Edit node">build</mat-icon>
                   </button>
                   {{ node.Type }}

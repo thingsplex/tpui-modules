@@ -7,9 +7,18 @@
   <mat-input-container class="example-full-width">
     <input matInput [(ngModel)]="flow.Group" placeholder="Group" >
   </mat-input-container>
-  <mat-input-container >
-    <input style="width: 300px" matInput [(ngModel)]="flow.Description" placeholder="Description" >
+  <mat-input-container style="width: 370px" >
+    <input  matInput [(ngModel)]="flow.Description" placeholder="Description" >
   </mat-input-container>
+  <div>
+  <mat-form-field style="width: 370px" class="value-selector" >
+    <mat-select #nodeTypeInput placeholder="How to start new flow instance ?" [(ngModel)]="flow.ParallelExecution">
+      <mat-option value="parallel">Run all instances in parallel </mat-option>
+      <mat-option value="keep_first">Keep already running instance and skip new instance</mat-option>
+      <mat-option value="keep_last">Keep new instance and abort already running instance</mat-option>
+    </mat-select>
+  </mat-form-field>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
 <button mat-raised-button color="warn" (click)="save()" >Save</button>

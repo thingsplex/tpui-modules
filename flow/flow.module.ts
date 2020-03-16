@@ -13,6 +13,7 @@ import { TriggerNodeComponent,VincTriggerNodeComponent,SceneTriggerNodeComponent
 import { IfNodeComponent } from './flow-nodes/if-node/node.component';
 import { TransformNodeComponent  } from './flow-nodes/transform-node/node.component';
 import { ExecNodeComponent  } from './flow-nodes/exec-node/node.component';
+import { LogNodeComponent  } from './flow-nodes/log-node/node.component';
 import { ActionNodeComponent,VincActionNodeComponent,NotificationActionNodeComponent,TimelineActionNodeComponent } from './flow-nodes/action-node/node.component';
 import { ReceiveNodeComponent } from './flow-nodes/flow-nodes.component';
 import { FlowRoutingModule } from "app/tpui-modules/flow/flow-routing.module";
@@ -103,6 +104,7 @@ import {FlowPropsDialog} from "./flow-editor/flow-props-editor.component";
      IfNodeComponent,
      TransformNodeComponent,
      ExecNodeComponent,
+     LogNodeComponent,
      WaitNodeComponent,
      VincTriggerNodeComponent,
      VincActionNodeComponent,

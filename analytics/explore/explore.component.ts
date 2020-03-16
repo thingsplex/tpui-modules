@@ -15,7 +15,7 @@ import {ThingsRegistryService} from "../../registry/registry.service";
 export class ExploreComponent implements OnInit {
   public query : string;
   constructor(private registry:ThingsRegistryService) {
-
+    this.query = "SELECT mean(\"value\") AS \"mean_value\" FROM \"default_20w\".\"electricity_meter_power\" WHERE time > now()-1d GROUP BY time(60m),\"location_id\" FILL(previous)"
   }
   ngOnInit() {
 

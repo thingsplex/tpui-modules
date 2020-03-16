@@ -1,0 +1,17 @@
+<div>
+  <mat-form-field class="value-selector" >
+    <mat-select #nodeTypeInput  placeholder="Value type" [(ngModel)]="node.Config.LogLevel">
+      <mat-option value="debug">debug</mat-option>
+      <mat-option value="info">info</mat-option>
+      <mat-option value="error">error</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div>
+    <mat-input-container  style="width: 400px">
+      <input matInput [(ngModel)]="node.Config.Text" placeholder="Text">
+    </mat-input-container>
+  </div>
+ <variable-selector [label]="'Input variable'" [variableName]="node.Config.VariableName" [isGlobal]="node.Config.IsVariableGlobal" [flowId]="flowId" (onSelect)="inputVariableSelected($event)" ></variable-selector>
+
+</div>
+

@@ -9,6 +9,9 @@
         <trigger-node *ngIf="node.Ui.nodeType==''" [node]="node" [nodes]="flow.Nodes" [flowId]="flow.Id" ></trigger-node>
         <vinc-trigger-node *ngIf="node.Ui.nodeType=='vinc_trigger'" [node]="node" [nodes]="flow.Nodes" [flowId]="flow.Id" ></vinc-trigger-node>
     </div>
+    <div *ngSwitchCase="'vinc_trigger'">
+      <vinc-trigger-node *ngIf="node.Ui.nodeType==''" [node]="node" [nodes]="flow.Nodes" [flowId]="flow.Id" ></vinc-trigger-node>
+    </div>
     <div *ngSwitchCase="'wait'">
       <wait-node [node]="node" [nodes]="flow.Nodes" > </wait-node>
     </div>
@@ -29,6 +32,9 @@
     </div>
     <div *ngSwitchCase="'exec'">
       <exec-node [node]="node" [nodes]="flow.Nodes" [flowId]="flow.Id" > </exec-node>
+    </div>
+    <div *ngSwitchCase="'log_action'">
+      <log-node [node]="node" [nodes]="flow.Nodes" [flowId]="flow.Id" > </log-node>
     </div>
     <div *ngSwitchCase="'receive'">
          <receive-node [node]="node" [nodes]="flow.Nodes" > </receive-node>

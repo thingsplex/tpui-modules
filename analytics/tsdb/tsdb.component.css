@@ -1,0 +1,15 @@
+.tsdb-config-card {
+  /*display: flex;*/
+  /*flex-direction: column;*/
+}
+
+.form-full-width {
+  width: 80%;
+}
+.form-filters {
+
+}
+
+.delete-button {
+  margin-left: 20px;
+}

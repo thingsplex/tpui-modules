@@ -1,0 +1,251 @@
+<nav mat-tab-nav-bar>
+  <a mat-tab-link [routerLink]="['/analytics/dashboard']" >Dashboard</a>
+  <a mat-tab-link [routerLink]="['/analytics/sensors']" >Sensors</a>
+  <a mat-tab-link [routerLink]="['/analytics/presence']" >Activity</a>
+  <a mat-tab-link [routerLink]="['/analytics/presence']" >Energy</a>
+  <a mat-tab-link [routerLink]="['/analytics/explore']" >Explore</a>
+  <a mat-tab-link active [routerLink]="['/analytics/settings']" >Settings</a>
+</nav>
+
+<br/>
+
+
+<mat-card style="margin: 5px">
+  <mat-card-header>
+    <mat-card-title><h3>List of event collectors</h3></mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <thead>
+        <th style="width: 150px"> Name</th>
+        <th style="width: 70px"> State </th>
+        <th style="width: 80px"> Action </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let proc of procList">
+          <td>{{proc.Config.Name}}</td>
+          <td style="width: 150px">{{proc.State}}</td>
+          <td style="width: 300px">
+            <mat-chip-list >
+              <mat-chip color="warn" (click)="selectProc(proc.Config)">Configure</mat-chip>
+              <mat-chip color="warn" (click)="procCtrl('start',procData.ID)">Start</mat-chip>
+              <mat-chip color="warn" (click)="procCtrl('stop',procData.ID)">Stop</mat-chip>
+            </mat-chip-list>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <mat-card-actions>
+
+    </mat-card-actions>
+  </mat-card-content>
+</mat-card>
+
+
+<mat-card style="margin: 5px">
+    <mat-card-header>
+      <!--<div mat-card-avatar class="example-header-image"></div>-->
+      <mat-card-title><h3>Process configurations</h3></mat-card-title>
+      <!--<mat-card-subtitle>Dog Breed</mat-card-subtitle>-->
+    </mat-card-header>
+    <mat-card-content *ngIf="procData">
+      <div  class="tsdb-config-card">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Process name" [(ngModel)]="procData.Name" >
+      </mat-form-field>
+      <p>
+      <mat-form-field class="example-full-width">
+        <input  matInput placeholder="Mqtt broker host" [(ngModel)]="procData.MqttBrokerAddr" >
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+          <input  matInput placeholder="username" [(ngModel)]="procData.MqttBrokerUsername" >
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+          <input  matInput placeholder="password" [(ngModel)]="procData.MqttBrokerPassword" >
+      </mat-form-field>
+      </p>
+
+        <p>
+          <mat-form-field class="example-full-width">
+            <input  matInput placeholder="InfluxDB host" [(ngModel)]="procData.InfluxAddr" >
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input  matInput placeholder="username" [(ngModel)]="procData.InfluxUsername" >
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input  matInput placeholder="password" [(ngModel)]="procData.InfluxPassword" >
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field class="example-full-width">
+            <input  matInput placeholder="DB name" [(ngModel)]="procData.InfluxDB" >
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input  matInput placeholder="batch size" [(ngModel)]="procData.BatchMaxSize" >
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input  matInput placeholder="batch save interval" [(ngModel)]="procData.SaveInterval" >
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field class="example-full-width" style="width: 400px">
+            <input  matInput placeholder="Site Id" [(ngModel)]="procData.SiteId" >
+          </mat-form-field>
+        </p>
+        <div style="margin-bottom: 5px;margin-top: 10px" >
+          <mat-checkbox [(ngModel)]="procData.Autostart" >Auto start</mat-checkbox>
+        </div>
+      </div>
+      <div style="margin-top: 10px">
+        <button mat-raised-button (click)="procCtrl('save',procData.ID)"> Save </button>
+        <button mat-raised-button (click)="resetConfigsToDefault()" color="warn" >Reset configs to default</button>
+      </div>
+      <mat-expansion-panel style="margin-top: 20px;">
+        <mat-expansion-panel-header>
+          <mat-panel-title> Selectors </mat-panel-title>
+        </mat-expansion-panel-header>
+      <mat-card >
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item *ngFor="let sel of procData.Selectors">
+              <mat-form-field class="form-full-width">
+                <input  matInput placeholder="Topic" [(ngModel)]="sel.Topic" >
+              </mat-form-field>
+
+              <button *ngIf="sel.ID==-1" class="delete-button" mat-raised-button (click)="saveSelector(sel)"> Save</button>
+              <button class="delete-button" mat-raised-button (click)="removeSelector(sel.ID)"> Delete</button>
+            </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button (click)="addSelector()"> Add </button>
+        </mat-card-actions>
+      </mat-card>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel style="margin-top: 20px;">
+        <mat-expansion-panel-header>
+          <mat-panel-title> Filters </mat-panel-title>
+        </mat-expansion-panel-header>
+
+      <mat-card>
+        <mat-card-content>
+          <mat-list>
+          <mat-list-item *ngFor="let sel of procData.Filters">
+            <mat-form-field class="form-filters">
+              <input  matInput placeholder="Name" [(ngModel)]="sel.Name" >
+            </mat-form-field>
+              <mat-form-field style="width:200px">
+                <input  matInput placeholder="Topic" [(ngModel)]="sel.Topic" >
+              </mat-form-field>
+            <mat-form-field class="form-filters">
+              <input  matInput placeholder="Service" [(ngModel)]="sel.Service" >
+            </mat-form-field>
+            <mat-form-field class="form-filters">
+                <input  matInput placeholder="MsgType" [(ngModel)]="sel.MsgType" >
+            </mat-form-field>
+              -->>
+              <mat-form-field class="form-filters">
+                <input  matInput placeholder="measurement Id" [(ngModel)]="sel.MeasurementID" >
+              </mat-form-field>
+            <div style="margin-bottom: 5px;margin-top: 10px;margin-left: 5px" >
+              <mat-checkbox [(ngModel)]="sel.Negation" > Exclude </mat-checkbox>
+            </div>
+            <button *ngIf="sel.ID==-1" class="delete-button" mat-raised-button (click)="saveFilter(sel)"> Save</button>
+            <button class="delete-button" mat-raised-button (click)="removeFilter(sel.ID)"> Delete</button>
+          </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button (click)="addFilter()"> Add </button>
+        </mat-card-actions>
+      </mat-card>
+
+      </mat-expansion-panel>
+
+      <mat-expansion-panel style="margin-top: 20px;">
+        <mat-expansion-panel-header>
+          <mat-panel-title> Measurements </mat-panel-title>
+        </mat-expansion-panel-header>
+
+      <mat-card >
+
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item *ngFor="let sel of procData.Measurements">
+              <mat-form-field class="form-filters">
+                <input  matInput placeholder="Id" [(ngModel)]="sel.ID" >
+              </mat-form-field>
+                <mat-form-field style="width:200px">
+                  <input  matInput placeholder="Name" [(ngModel)]="sel.Name" >
+                </mat-form-field>
+                <mat-form-field class="form-filters">
+                  <input  matInput placeholder="Retention duration" [(ngModel)]="sel.RetentionPolicyDuration" >
+                </mat-form-field>
+                <div style="margin-bottom: 5px;margin-top: 10px" >
+                  <mat-checkbox [(ngModel)]="sel.UseServiceAsMeasurementName" >Use service as name</mat-checkbox>
+                </div>
+              <button *ngIf="sel.IsNew" class="delete-button" mat-raised-button (click)="saveMeasurement(sel)"> Save</button>
+              <button class="delete-button" mat-raised-button (click)="removeMeasurement(sel.ID)"> Delete</button>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button (click)="addMeasurement()"> Add </button>
+        </mat-card-actions>
+      </mat-card>
+      </mat-expansion-panel>
+
+    </mat-card-content>
+</mat-card>
+
+
+<mat-card style="margin: 5px">
+  <mat-card-header>
+    <!--<div mat-card-avatar class="example-header-image"></div>-->
+    <mat-card-title><h3>DB configuration and monitoring</h3></mat-card-title>
+    <!--<mat-card-subtitle>Dog Breed</mat-card-subtitle>-->
+  </mat-card-header>
+  <mat-card-content>
+
+    <mat-expansion-panel style="margin-top: 20px;">
+      <mat-expansion-panel-header>
+        <mat-panel-title> Measurements </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-card >
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item *ngFor="let sel of listOfMeasurements">
+              <span style="width: 400px">{{ sel }}</span>
+              <button class="delete-button" mat-raised-button (click)="deleteDbObject('measurement',sel)"> Delete</button>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+        <mat-card-actions>
+        </mat-card-actions>
+      </mat-card>
+    </mat-expansion-panel>
+    <mat-expansion-panel style="margin-top: 20px;">
+      <mat-expansion-panel-header>
+        <mat-panel-title> Retention policies </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-card >
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item *ngFor="let sel of listOfRetensions">
+              <span style="width: 400px">{{ sel }}</span>
+              <button class="delete-button" mat-raised-button (click)="deleteDbObject('retention_policy',sel)"> Delete</button>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+        <mat-card-actions>
+        </mat-card-actions>
+      </mat-card>
+    </mat-expansion-panel>
+  </mat-card-content>
+</mat-card>
+
+
+
+
+

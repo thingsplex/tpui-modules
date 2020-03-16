@@ -5,6 +5,7 @@ import {PresenceComponent} from "./presence/presence.component";
 import {SensorsComponent} from "./sensors/sensors.component";
 import {ExploreComponent} from "./explore/explore.component";
 import {EnergyComponent} from "./energy/energy.component";
+import {TsdbConfigComponent} from "./tsdb/tsdb-config.component";
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import {EnergyComponent} from "./energy/energy.component";
     { path: 'analytics/presence', component: PresenceComponent },
     { path: 'analytics/explore', component: ExploreComponent },
     { path: 'analytics/energy', component: EnergyComponent },
+    { path: 'analytics/settings', component: TsdbConfigComponent },
   ])],
   exports: [RouterModule]
 })
