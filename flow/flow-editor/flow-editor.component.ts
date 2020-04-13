@@ -82,6 +82,7 @@ export class FlowEditorComponent implements OnInit {
       }).subscribe ((result) => {
          this.flow = result;
          this.enhanceNodes();
+         console.dir(this.flow);
          setTimeout(()=>{this.redrawAllLines()},100);
          var canvas = document.getElementById("flowEditorCanvasId");
          this.canvasInitHeight = canvas.clientHeight;
