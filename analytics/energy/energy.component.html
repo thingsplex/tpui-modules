@@ -13,4 +13,7 @@
 
 <line-chart [measurement]="'electricity_meter_energy'" [title]="'Energy (kWh)'" [groupByTag]="'thing_id'" [groupByTime]="'1h'" ></line-chart>
 
+
+<br>
+<line-chart [measurement]="'battery.evt.lvl.report'" [groupByTag]="'dev_id'" [groupByTime]="'5h'" [timeFromNow]="'1w'" [title]="'Battery levels'"></line-chart>
 </div>

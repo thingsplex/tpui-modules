@@ -2,36 +2,36 @@
     <div>
         <canvas #canvas width="400" height="500px"></canvas>
     </div>
+    <ng-container *ngIf="isFilterEnabled">
+      <mat-input-container style="height: 35px;margin: 10px;width: 120px" class="example-full-width">
+          <input matInput [(ngModel)]="timeFromNow" placeholder="Time from now" >
+      </mat-input-container>
+      <mat-form-field style="height: 35px;margin: 10px;width: 150px"  >
+          <mat-select matNativeControl [(value)]="groupByTime"  placeholder="Group by time" >
+              <mat-option value="5m">1 min</mat-option>
+              <mat-option value="5m">5 min</mat-option>
+              <mat-option value="10m">10 min</mat-option>
+              <mat-option value="30m">30 min</mat-option>
+              <mat-option value="1h">1 hours</mat-option>
+              <mat-option value="2h">2 hours</mat-option>
+              <mat-option value="5h">5 hours</mat-option>
+              <mat-option value="1d">1 day</mat-option>
+              <mat-option value="2d">2 day</mat-option>
+              <mat-option value="7d">1 week</mat-option>
+              <mat-option value="1m">1 month</mat-option>
+              <mat-option value="none">Disabled</mat-option>
+          </mat-select>
+      </mat-form-field>
 
-    <mat-input-container style="height: 35px;margin: 10px;width: 120px" class="example-full-width">
-        <input matInput [(ngModel)]="timeFromNow" placeholder="Time from now" >
-    </mat-input-container>
-    <mat-form-field style="height: 35px;margin: 10px;width: 150px"  >
-        <mat-select matNativeControl [(value)]="groupByTime"  placeholder="Group by time" >
-            <mat-option value="5m">1 min</mat-option>
-            <mat-option value="5m">5 min</mat-option>
-            <mat-option value="10m">10 min</mat-option>
-            <mat-option value="30m">30 min</mat-option>
-            <mat-option value="1h">1 hours</mat-option>
-            <mat-option value="2h">2 hours</mat-option>
-            <mat-option value="5h">5 hours</mat-option>
-            <mat-option value="1d">1 day</mat-option>
-            <mat-option value="2d">2 day</mat-option>
-            <mat-option value="7d">1 week</mat-option>
-            <mat-option value="1m">1 month</mat-option>
-            <mat-option value="none">Disabled</mat-option>
-        </mat-select>
-    </mat-form-field>
-    <mat-form-field style="height: 35px;margin: 10px;width: 150px"  >
-            <mat-select matNativeControl [(value)]="groupByTag"  placeholder="Group by" >
-                <mat-option value="location_id">Location</mat-option>
-                <mat-option value="dev_id">Device</mat-option>
-                <mat-option value="service_id">Service</mat-option>
-                <mat-option value="none">Disabled</mat-option>
-            </mat-select>
-    </mat-form-field>
-    <button mat-raised-button color="primary" (click)="queryData()" >Reload</button>
+      <mat-form-field style="height: 35px;margin: 10px;width: 150px"  >
+              <mat-select matNativeControl [(value)]="groupByTag"  placeholder="Group by" >
+                  <mat-option value="location_id">Location</mat-option>
+                  <mat-option value="dev_id">Device</mat-option>
+                  <mat-option value="service_id">Service</mat-option>
+                  <mat-option value="none">Disabled</mat-option>
+              </mat-select>
+      </mat-form-field>
 
-
-
+      <button mat-raised-button color="primary" (click)="queryData()" >Reload</button>
+    </ng-container>
  </div>

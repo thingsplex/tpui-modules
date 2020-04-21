@@ -8,3 +8,8 @@
 .mat-cell:nth-child(0), .mat-header-cell:nth-child(0) {
     flex: 0 0 250px;
 }
+
+.sensor-panel {
+  margin: 10px;
+  padding: 15px;
+}

@@ -25,27 +25,53 @@ var sensorTypeMap = {
   styleUrls: ['./sensors.component.css']
 })
 export class SensorsComponent implements OnInit {
-  public selectedSensorType :string = "sensor_temp.evt.sensor.report";
-  public listOfSensorTypes : any[] = [{type:"sensor_temp.evt.sensor.report",name:"Temperature"}];
+  public selectedSensorTypes :any[] = ["sensor_temp.evt.sensor.report"];
+  public listOfSensorTypes : any[] = [{type:"sensor_temp.evt.sensor.report",name:"Temperature",isSelected:true}];
   private lastRequestId : string ;
   private globalSub : Subscription;
+  private
+  timeFromNow :string = "2d";
+  groupByTime :string = "1h";
+  groupByTag  :string = "location_id";
+  private _refreshRate :number = 60;
+  gSize : number = 300;
+  reloadSignal:boolean;
+  intervalTimer:any;
+
   @ViewChild('sensorChart') sensorChartRef: LineChartComponent;
+
+  set refreshRate(rate : number) {
+    this._refreshRate = rate;
+    if (this.intervalTimer!=undefined) {
+      clearInterval(this.intervalTimer);
+    }
+    this.intervalTimer = setInterval(r=>this.reload(),this._refreshRate*1000);
+
+  }
+  get refreshRate():number {
+    return this._refreshRate;
+  }
 
   constructor(private registry:ThingsRegistryService,private fimp : FimpService) {
 
   }
 
   ngOnInit() {
+    this.loadFromLocalStorage();
     this.loadListOfSensorTypes();
-
-
   }
 
   ngOnDestroy() {
     if(this.globalSub)
       this.globalSub.unsubscribe();
   }
-
+  reload() {
+    if(this.reloadSignal)
+      this.reloadSignal = false;
+    else {
+      this.reloadSignal = true;
+    }
+  }
   loadListOfSensorTypes() {
     this.globalSub = this.fimp.getGlobalObservable().subscribe((msg) => {
       let fimpMsg = NewFimpMessageFromString(msg.payload.toString());
@@ -61,21 +87,52 @@ export class SensorsComponent implements OnInit {
                 if (name == undefined) {
                   name = t.replace(".evt.sensor.report","")
                 }
-                this.listOfSensorTypes.push({type:t,name:name});
+                this.listOfSensorTypes.push({type:t,name:name,isSelected:false});
               }
 
             }
+            this.updateListOfSensorTypes();
           }
         }
       }
     });
     this.queryData();
   }
-
+  //(change)="updateChart($event)"
   updateChart(event) {
     this.sensorChartRef.measurement = event.value;
     this.sensorChartRef.title  = "";
     this.sensorChartRef.queryData();
+  }
+
+  updateSelectedSensorTypes() {
+    this.updateListOfSensorTypes();
+    this.saveToLocalStorage();
+  }
+
+  updateListOfSensorTypes() {
+    for (let st of this.listOfSensorTypes) {
+      let isSelected = false;
+      for(let selSenT of this.selectedSensorTypes) {
+        if (st.type == selSenT) {
+          isSelected = true;
+          break;
+        }
+      }
+      st.isSelected = isSelected;
+    }
+  }
+
+  saveToLocalStorage() {
+    localStorage.setItem("analyticsSelectedSensors", JSON.stringify(this.selectedSensorTypes));
+  }
+
+  loadFromLocalStorage():boolean {
+    if (localStorage.getItem("analyticsSelectedSensors")!=null){
+      this.selectedSensorTypes = JSON.parse(localStorage.getItem("analyticsSelectedSensors"));
+      return true;
+    }
+    return false;
   }
 
   queryData() {

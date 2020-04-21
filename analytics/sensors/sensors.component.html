@@ -12,15 +12,87 @@
 <p>
 
     <mat-form-field style="height: 35px;margin: 10px;width: 250px"  >
-        <mat-select matNativeControl [(ngModel)]="selectedSensorType"  placeholder="Sensor type" (change)="updateChart($event)" >
+        <mat-label> Sensor types </mat-label>
+        <mat-select matNativeControl [(ngModel)]="selectedSensorTypes" multiple  placeholder="Sensor type" (change)="updateSelectedSensorTypes()"  >
             <mat-option  *ngFor="let e of listOfSensorTypes" [value]="e.type">{{e.name}}</mat-option>
         </mat-select>
     </mat-form-field>
+    <mat-form-field style="height: 35px;margin: 10px;width: 100px"  >
+      <mat-label> Resolution </mat-label>
+      <mat-select matNativeControl [(value)]="groupByTime"  placeholder="Resolution" >
+        <mat-option value="5m">1 min</mat-option>
+        <mat-option value="5m">5 min</mat-option>
+        <mat-option value="10m">10 min</mat-option>
+        <mat-option value="30m">30 min</mat-option>
+        <mat-option value="1h">1 hours</mat-option>
+        <mat-option value="2h">2 hours</mat-option>
+        <mat-option value="5h">5 hours</mat-option>
+        <mat-option value="1d">1 day</mat-option>
+        <mat-option value="2d">2 day</mat-option>
+        <mat-option value="7d">1 week</mat-option>
+        <mat-option value="1m">1 month</mat-option>
+        <mat-option value="none">None</mat-option>
+      </mat-select>
+    </mat-form-field>
+  <mat-form-field style="height: 35px;margin: 10px;width: 130px"  >
+    <mat-label> Time from now </mat-label>
+    <mat-select matNativeControl [(value)]="timeFromNow"  placeholder="Time from now" >
+      <mat-option value="1h">1 hours</mat-option>
+      <mat-option value="6h">6 hours</mat-option>
+      <mat-option value="12h">12 hours</mat-option>
+      <mat-option value="1d">1 day</mat-option>
+      <mat-option value="2d">2 days</mat-option>
+      <mat-option value="1w">1 week</mat-option>
+      <mat-option value="2w">2 weeks</mat-option>
+      <mat-option value="4w">1 month</mat-option>
+      <mat-option value="12w">3 month</mat-option>
+      <mat-option value="24w">6 month</mat-option>
+      <mat-option value="48w">1 year</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field style="height: 35px;margin: 10px;width: 150px"  >
+    <mat-label> Group by </mat-label>
+    <mat-select matNativeControl [(value)]="groupByTag"  placeholder="Group by" >
+      <mat-option value="location_id">Location</mat-option>
+      <mat-option value="dev_id">Device</mat-option>
+      <mat-option value="service_id">Service</mat-option>
+      <mat-option value="none">Disabled</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field style="height: 35px;margin: 10px;width: 150px"  >
+    <mat-label> Auto reload </mat-label>
+    <mat-select matNativeControl [(value)]="refreshRate"  placeholder="reload every" >
+      <mat-option value="20">every 20 sec</mat-option>
+      <mat-option value="60">every 1 min</mat-option>
+      <mat-option value="180">every 3 min</mat-option>
+      <mat-option value="300">every 5 min</mat-option>
+      <mat-option value="600">every 10 min</mat-option>
+      <mat-option value="-1"> Disable </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field style="height: 35px;margin: 10px;width: 150px"  >
+    <mat-label> Graph size </mat-label>
+    <mat-select matNativeControl [(value)]="gSize"  placeholder="size" >
+      <mat-option value="150">XS</mat-option>
+      <mat-option value="250">S</mat-option>
+      <mat-option value="350">M</mat-option>
+      <mat-option value="450">L</mat-option>
+      <mat-option value="550">XL</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="reload()" >Reload</button>
+
 
 </p>
-<line-chart #sensorChart [measurement]="selectedSensorType" [title]="''"></line-chart>
-<br>
-<line-chart [measurement]="'battery.evt.lvl.report'" [groupByTag]="'dev_id'" [groupByTime]="'5h'" [timeFromNow]="'1w'" [title]="'Battery levels'"></line-chart>
+  <ng-container *ngFor="let e of listOfSensorTypes">
+    <mat-card *ngIf="e.isSelected" class="sensor-panel">
+       <h3>{{e.name}}</h3>
+       <line-chart #sensorChart [measurement]="e.type" [isFilterEnabled]="false" [title]="''" [(timeFromNow)]="timeFromNow" [groupByTime]="groupByTime" [groupByTag]="groupByTag" [height]="gSize" [change]="reloadSignal" ></line-chart>
+    </mat-card>
+  </ng-container>
 <br>
 
 

@@ -18,14 +18,54 @@ declare var Chart: any;
   templateUrl: './line-chart.html'
 })
 export class LineChartComponent implements OnInit  {
+  private _groupByTime : string;
+  private _timeFromNow : string;
+  private _groupByTag  : string;
+  private _height:string;
+
   @Input() measurement : string;
   @Input() title       : string;
-  @Input() timeFromNow : string;
-  @Input() groupByTime : string;
-  @Input() groupByTag  : string;
+  @Input() set timeFromNow(tm:string) {
+    this._timeFromNow = tm;
+    this.queryData();
+  }
+  get timeFromNow():string {
+    return this._timeFromNow;
+  }
+
+  @Input() set groupByTime(tm:string) {
+    this._groupByTime = tm;
+    this.queryData();
+  }
+  get groupByTime():string {
+    return this._groupByTime;
+  }
+  @Input() set groupByTag(tm:string){
+    this._groupByTag = tm;
+    this.queryData();
+  }
+  get groupByTag():string {
+    return this._groupByTag;
+  }
   @Input() filterById  : string;
-  @Input() filterByTopic   : string;
+  @Input() filterByTopic : string;
   @Input() query       : string;
+  @Input() isFilterEnabled : boolean;
+  @Input() set height (val: number) {
+    this._height = String(val)+"px";
+    this.canvasElement.nativeElement.style.height = this._height;
+  }
+  get height():number {
+    return 0;
+  }
+
+  @Input() set change(v:boolean) {
+    this.queryData();
+  }
+  get change(){
+    return true;
+  }
+
 
   @ViewChild('canvas')
   canvasElement: ElementRef;
@@ -41,6 +81,7 @@ export class LineChartComponent implements OnInit  {
   private lastRequestId : string ;
 
   constructor(private registry:ThingsRegistryService,private fimp : FimpService) {
+
   }
 
   transformData(queryResponse:any) {
@@ -122,6 +163,14 @@ export class LineChartComponent implements OnInit  {
     }
     if (this.groupByTime == undefined)
       this.groupByTime = "30m";
+
+    if (this.isFilterEnabled == undefined)
+      this.isFilterEnabled = true;
+
+    if(this._height == undefined){
+      this._height = "400px";
+    }
+    this.canvasElement.nativeElement.style.height = this._height;
 
     this.initChart();
     this.globalSub = this.fimp.getGlobalObservable().subscribe((msg) => {
