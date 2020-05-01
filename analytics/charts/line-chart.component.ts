@@ -9,6 +9,8 @@ import {ThingsRegistryService} from "../../registry/registry.service";
 import {FimpService} from "../../../fimp/fimp.service";
 import {Subscription} from "rxjs";
 import {FimpMessage, NewFimpMessageFromString} from "../../../fimp/Message";
+import {HttpClient} from "@angular/common/http";
+import {AnalyticsSettingsService} from "./settings.service";
 
 declare var moment: any;
 declare var Chart: any;
@@ -80,7 +82,7 @@ export class LineChartComponent implements OnInit  {
 
   private lastRequestId : string ;
 
-  constructor(private registry:ThingsRegistryService,private fimp : FimpService) {
+  constructor(private registry:ThingsRegistryService,private fimp : FimpService,private settings:AnalyticsSettingsService) {
 
   }
 
@@ -135,7 +137,7 @@ export class LineChartComponent implements OnInit  {
       this.chartData.push({
         data:data,
         label:label,
-        borderColor:this.random_rgba(0.9),
+        borderColor:this.settings.getColor(label),
         fill:false,
         pointRadius:1.5,
         lineTension:0.2
@@ -144,10 +146,6 @@ export class LineChartComponent implements OnInit  {
     }
   }
 
-  random_rgba(a) {
-    var o = Math.round, r = Math.random, s = 255;
-    return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + a + ')';
-  }
 
   ngOnInit() {
 
@@ -180,6 +178,7 @@ export class LineChartComponent implements OnInit  {
           if (fimpMsg.val) {
             this.transformData(fimpMsg.val);
             this.chart.update();
+            this.settings.save();
           }
         }
       }
@@ -214,9 +213,6 @@ export class LineChartComponent implements OnInit  {
     this.lastRequestId = msg.uid;
     this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:ecollector/ad:1",msg.toString());
   }
-
-
-
 
 
   initChart() {

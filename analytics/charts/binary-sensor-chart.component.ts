@@ -9,6 +9,7 @@ import {ThingsRegistryService} from "../../registry/registry.service";
 import {FimpService} from "../../../fimp/fimp.service";
 import {Subscription} from "rxjs";
 import {FimpMessage, NewFimpMessageFromString} from "../../../fimp/Message";
+import {AnalyticsSettingsService} from "./settings.service";
 
 declare var moment: any;
 declare var Chart: any;
@@ -39,7 +40,7 @@ export class BinarySensorChartComponent implements OnInit  {
 
   private lastRequestId : string ;
 
-  constructor(private registry:ThingsRegistryService,private fimp : FimpService) {
+  constructor(private registry:ThingsRegistryService,private fimp : FimpService,private settings:AnalyticsSettingsService) {
   }
 
   transformData(queryResponse:any) {
@@ -89,15 +90,11 @@ export class BinarySensorChartComponent implements OnInit  {
         fill:false,
         pointRadius:1.5,
         lineTension:0.2,
-        backgroundColor: this.random_rgba(0.9),
+        backgroundColor: this.settings.getColor(label),
       });
     }
   }
 
-  random_rgba(a) {
-    var o = Math.round, r = Math.random, s = 255;
-    return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + a + ')';
-  }
 
   ngOnInit() {
 
@@ -126,6 +123,7 @@ export class BinarySensorChartComponent implements OnInit  {
           if (fimpMsg.val) {
             this.transformData(fimpMsg.val);
             this.chart.update();
+            this.settings.save();
           }
         }
       }

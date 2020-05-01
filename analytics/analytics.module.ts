@@ -31,6 +31,7 @@ import {ExploreComponent} from "./explore/explore.component";
 import {EnergyComponent} from "./energy/energy.component";
 import {TsdbConfigComponent} from "./tsdb/tsdb-config.component";
 import {SimplePieChartComponent} from "./charts/simple-pie-chart.component";
+import {AnalyticsSettingsService} from "./charts/settings.service";
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import {SimplePieChartComponent} from "./charts/simple-pie-chart.component";
     RegistryModule
   ],
   exports:[],
+  providers:[AnalyticsSettingsService],
   declarations: [DashboardComponent,BinarySensorChartComponent,LineChartComponent,PresenceComponent,SensorsComponent,ExploreComponent,EnergyComponent,SimplePieChartComponent,TsdbConfigComponent]
 })
 export class AnalyticsModule { }

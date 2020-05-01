@@ -10,14 +10,20 @@
 <div style="overflow: hidden" >
 
 <p>
+  <mat-expansion-panel style="margin: 5px" >
+    <mat-expansion-panel-header>
+      Filters and settings
+    </mat-expansion-panel-header>
+    <mat-panel-description>
 
-    <mat-form-field style="height: 35px;margin: 10px;width: 250px"  >
+    </mat-panel-description>
+  <mat-form-field style="height: 35px;margin: 10px;width: 250px"  >
         <mat-label> Sensor types </mat-label>
         <mat-select matNativeControl [(ngModel)]="selectedSensorTypes" multiple  placeholder="Sensor type" (change)="updateSelectedSensorTypes()"  >
             <mat-option  *ngFor="let e of listOfSensorTypes" [value]="e.type">{{e.name}}</mat-option>
         </mat-select>
     </mat-form-field>
-    <mat-form-field style="height: 35px;margin: 10px;width: 100px"  >
+  <mat-form-field style="height: 35px;margin: 10px;width: 100px"  >
       <mat-label> Resolution </mat-label>
       <mat-select matNativeControl [(value)]="groupByTime"  placeholder="Resolution" >
         <mat-option value="5m">1 min</mat-option>
@@ -85,7 +91,7 @@
   </mat-form-field>
   <button mat-raised-button color="primary" (click)="reload()" >Reload</button>
 
-
+  </mat-expansion-panel>
 </p>
   <ng-container *ngFor="let e of listOfSensorTypes">
     <mat-card *ngIf="e.isSelected" class="sensor-panel">

@@ -8,7 +8,36 @@
 </nav>
 
 <br/>
+<mat-accordion>
+<mat-expansion-panel style="margin: 5px" >
+  <mat-expansion-panel-header>
+    Data visualization global settings
+  </mat-expansion-panel-header>
+  <mat-panel-description>
 
+  </mat-panel-description>
+  <p> Color settings </p>
+  <table>
+    <thead>
+    <th style="width: 250px"> Label </th>
+    <th style="width: 70px"> Color </th>
+    </thead>
+    <tbody>
+    <tr *ngFor="let c of colors">
+      <td>{{c.label}}</td>
+      <td style="width: 150px;" ><input type="color" (change)="colorUpdate(c.label,$event)" [value]="c.color"> </td>
+    </tr>
+    </tbody>
+  </table>
+</mat-expansion-panel>
+
+<mat-expansion-panel style="margin: 5px" >
+  <mat-expansion-panel-header>
+    Data collection settings
+  </mat-expansion-panel-header>
+  <mat-panel-description>
+    Configure data collection rules and filters
+  </mat-panel-description>
 
 <mat-card style="margin: 5px">
   <mat-card-header>
@@ -245,7 +274,7 @@
   </mat-card-content>
 </mat-card>
 
-
-
+</mat-expansion-panel>
+</mat-accordion>
 
 

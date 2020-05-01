@@ -10,6 +10,7 @@ import {FimpService} from "../../../fimp/fimp.service";
 import {Subscription} from "rxjs";
 import {FimpMessage, NewFimpMessageFromString} from "../../../fimp/Message";
 import {randomBytes} from "crypto";
+import {AnalyticsSettingsService} from "./settings.service";
 
 declare var moment: any;
 declare var Chart: any;
@@ -35,13 +36,9 @@ export class SimplePieChartComponent implements OnInit  {
 
   private lastRequestId : string ;
 
-  constructor(private registry:ThingsRegistryService,private fimp : FimpService) {
+  constructor(private registry:ThingsRegistryService,private fimp : FimpService,private settings:AnalyticsSettingsService) {
   }
 
-  random_rgba(a) {
-    var o = Math.round, r = Math.random, s = 255;
-    return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + a + ')';
-  }
 
   ngOnInit() {
     this.chartData.push({data:this.data,backgroundColor:[]})
@@ -51,8 +48,12 @@ export class SimplePieChartComponent implements OnInit  {
 
   applyColors() {
     let colors:any[] = [];
+    let i = 0;
     for(let d in this.chartData[0].data) {
-      this.chartData[0].backgroundColor.push(this.random_rgba(0.5))
+      let label = this.labels[i];
+      let labelSplit = label.split(":");
+      this.chartData[0].backgroundColor.push(this.settings.getColor(labelSplit[0]))
+      i++;
     }
     // this.chartData.push({data:this.data,backgroundColor:colors})
   }

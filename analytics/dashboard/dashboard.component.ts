@@ -10,6 +10,7 @@ import {BACKEND_ROOT} from "../../../globals";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {SimplePieChartComponent} from "../charts/simple-pie-chart.component";
 import {Subscription} from "rxjs";
+import {AnalyticsSettingsService} from "../charts/settings.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -54,7 +55,7 @@ export class DashboardComponent implements OnInit {
 
   private registrySub: Subscription = null;
 
-  constructor(private registry:ThingsRegistryService,private http:HttpClient) {
+  constructor(private registry:ThingsRegistryService,private http:HttpClient,private settings:AnalyticsSettingsService ) {
 
   }
 

@@ -1,19 +1,16 @@
 
 import {Component, ElementRef, ViewChild,OnInit,Input,Output,EventEmitter} from '@angular/core';
-import {DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromEvent';
-import { BACKEND_ROOT } from "app/globals";
 import {MatSnackBar,MatTableDataSource,MatSort} from '@angular/material';
 import {FimpService} from "../../../fimp/fimp.service";
 import {Subscription} from "rxjs";
 import {FimpMessage, NewFimpMessageFromString} from "../../../fimp/Message";
+import {AnalyticsSettingsService} from "../charts/settings.service";
 
 
 @Component({
@@ -28,8 +25,12 @@ export class TsdbConfigComponent implements OnInit {
   listOfRetensions:string[];
   private globalSub : Subscription;
   private lastRequestId : string ;
-  constructor(private fimp : FimpService) {
-
+  colors = [];
+  constructor(private fimp : FimpService,private settings:AnalyticsSettingsService) {
+    let colors = settings.getAllColors();
+    for (let key in colors) {
+      this.colors.push({"label":key,"color":colors[key]});
+    }
   }
 
   ngOnInit() {
@@ -63,6 +64,19 @@ export class TsdbConfigComponent implements OnInit {
     if(this.globalSub)
       this.globalSub.unsubscribe();
   }
+
+  colorUpdate(label,$event) {
+    let color = $event.target.value;
+    console.log("color event "+label+ " "+color);
+    console.debug($event);
+    this.settings.setColor(label,color);
+    this.settings.save();
+  }
+
+  hexToRGBA(hex, opacity) {
+    return 'rgba(' + (hex = hex.replace('#', '')).match(new RegExp('(.{' + hex.length/3 + '})', 'g')).map(function(l) { return parseInt(hex.length%2 ? l+l : l, 16) }).concat(opacity||1).join(',') + ')';
+  }
+
 
   loadData(procId:number) {
     let msg  = new FimpMessage("ecollector","cmd.ecprocess.get_list","null",null,null,null)

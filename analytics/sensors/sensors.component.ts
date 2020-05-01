@@ -30,7 +30,7 @@ export class SensorsComponent implements OnInit {
   private lastRequestId : string ;
   private globalSub : Subscription;
   private
-  timeFromNow :string = "2d";
+  timeFromNow :string = "1d";
   groupByTime :string = "1h";
   groupByTag  :string = "location_id";
   private _refreshRate :number = 60;
