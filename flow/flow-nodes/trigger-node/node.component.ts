@@ -34,6 +34,7 @@ export class TriggerNodeComponent implements OnInit {
   }
 
   onServiceConfigured(service:ServiceInterface) {
+    console.log("---Sevice configured event--- "+service.intfAddress)
     this.node.Address = service.intfAddress;
     this.node.Service = service.serviceName;
     this.node.ServiceInterface = service.intfMsgType;

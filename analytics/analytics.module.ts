@@ -25,7 +25,7 @@ import { MatTableModule,
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {BinarySensorChartComponent} from "./charts/binary-sensor-chart.component";
 import {LineChartComponent} from "./charts/line-chart.component";
-import {PresenceComponent} from "./presence/presence.component";
+import {ActivityComponent} from "./activity/activity.component";
 import {SensorsComponent} from "./sensors/sensors.component";
 import {ExploreComponent} from "./explore/explore.component";
 import {EnergyComponent} from "./energy/energy.component";
@@ -62,6 +62,6 @@ import {AnalyticsSettingsService} from "./charts/settings.service";
   ],
   exports:[],
   providers:[AnalyticsSettingsService],
-  declarations: [DashboardComponent,BinarySensorChartComponent,LineChartComponent,PresenceComponent,SensorsComponent,ExploreComponent,EnergyComponent,SimplePieChartComponent,TsdbConfigComponent]
+  declarations: [DashboardComponent,BinarySensorChartComponent,LineChartComponent,ActivityComponent,SensorsComponent,ExploreComponent,EnergyComponent,SimplePieChartComponent,TsdbConfigComponent]
 })
 export class AnalyticsModule { }

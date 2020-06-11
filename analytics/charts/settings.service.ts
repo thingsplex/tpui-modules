@@ -10,6 +10,7 @@ export class AnalyticsSettingsService{
   globalSub : Subscription;
   colors = {};
   changeDetected = false;
+  dashboardConfigStore = {};
   private registryStateSource = new BehaviorSubject<string>("");
   public registryState$ = this.registryStateSource.asObservable();
 
@@ -44,7 +45,6 @@ export class AnalyticsSettingsService{
       this.colors[label] = result;
       this.changeDetected = true;
     }
-    console.log(result);
     return result;
   }
 
@@ -78,6 +78,15 @@ export class AnalyticsSettingsService{
     return "#" + r + g + b;
   }
 
+  updateDashboardConfigs(dashboardName:string,data:any) {
+    this.dashboardConfigStore[dashboardName] = data;
+    this.changeDetected = true;
+  }
+
+  getDashboardConfigs(dashboardName):any {
+    return this.dashboardConfigStore[dashboardName];
+  }
+
   save() {
     if (this.changeDetected)
       this.saveToLocalStorage();
@@ -87,12 +96,16 @@ export class AnalyticsSettingsService{
   }
   saveToLocalStorage() {
     localStorage.setItem("colorMap", JSON.stringify(this.colors));
+    localStorage.setItem("dashboardsConfigs",JSON.stringify(this.dashboardConfigStore))
     this.changeDetected = false;
   }
 
   loadFromLocalStorage():boolean {
     if (localStorage.getItem("colorMap")!=null){
       this.colors =  JSON.parse(localStorage.getItem("colorMap")) as Map<string,string>;
+    }
+    if (localStorage.getItem("dashboardsConfigs")!=null){
+      this.dashboardConfigStore =  JSON.parse(localStorage.getItem("dashboardsConfigs")) ;
       return true;
     }
     return false;
@@ -113,6 +126,11 @@ export class AnalyticsSettingsService{
         result = result["apps"];
 
       });
+  }
+
+  resetToDefaults() {
+    localStorage.removeItem("colorMap");
+    this.colors = {};
   }
 
 

@@ -147,6 +147,16 @@ export class ThingsRegistryService{
     return this.services.filter(service => service.container_id == deviceId && service.container_type == "dev" && service.name == name )[0]
   }
 
+  getDevicesFilteredByService(serviceName:string) {
+    let services = this.services.filter(service => service.container_type == "dev" && service.name == serviceName )
+    let result = [];
+    for(let svc of services) {
+      let dev = this.getDeviceById(svc.container_id)
+      if(dev)
+        result.push(dev)
+    }
+    return result;
+  }
 
 }
 

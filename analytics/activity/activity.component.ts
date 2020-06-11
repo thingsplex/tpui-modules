@@ -6,17 +6,19 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromEvent';
 import {ThingsRegistryService} from "../../registry/registry.service";
+import {Subscription} from "rxjs";
 import {AnalyticsSettingsService} from "../charts/settings.service";
 
 @Component({
-  selector: 'app-analytics-explore',
-  templateUrl: './energy.component.html',
-  styleUrls: ['./energy.component.css']
+  selector: 'app-analytics-presence',
+  templateUrl: './activity.component.html',
+  styleUrls: ['./activity.component.css']
 })
-export class EnergyComponent implements OnInit {
-  public queryPower : string;
-  public queryEnergy: string;
-  selectedSensorTypes = [];
+export class ActivityComponent implements OnInit {
+  public selectedActivityTypes :any[] = ["sensor_presence.evt.presence.report","sensor_contact.evt.open.report"];
+  public listOfActivityTypes : any[] ; // {type:"sensor_temp.evt.sensor.report",name:"Temperature",isSelected:true}
+  private lastRequestId : string ;
+  private globalSub : Subscription;
   timeFromNow :string = "1d";
   groupByTime :string = "1h";
   groupByTag  :string = "location_id";
@@ -40,10 +42,20 @@ export class EnergyComponent implements OnInit {
     return this._refreshRate;
   }
   constructor(private registry:ThingsRegistryService,private settings:AnalyticsSettingsService) {
-   this.queryPower = "SELECT mean(\"value\") AS \"mean_value\" FROM \"default_20w\".\"electricity_meter_power\" WHERE time > now()-1d GROUP BY time(10m),\"location_id\" FILL(previous)"
+
   }
+
   ngOnInit() {
+    this.listOfActivityTypes = [
+      {type:"sensor_presence.evt.presence.report",name:"Motion intensity",isSelected:true},
+      {type:"sensor_contact.evt.open.report",name:"Open/close reports",isSelected:true},
+      {type:"out_bin_switch.evt.binary.report",name:"On/off reports",isSelected:false},
+      {type:"out_lvl_switch.evt.binary.report",name:"Level-on/off change reports",isSelected:false},
+      {type:"out_lvl_switch.evt.lvl.report",name:"Level change reports",isSelected:false},
+      // {type:"scene_ctrl.evt.scene.report",name:"Scene/mode reports",isSelected:false},
+    ];
     this.loadFromStorage();
+    this.updateListOfActivityTypes();
   }
 
   reload() {
@@ -57,9 +69,22 @@ export class EnergyComponent implements OnInit {
     this.saveToStorage()
   }
 
+  updateListOfActivityTypes() {
+    for (let st of this.listOfActivityTypes) {
+      let isSelected = false;
+      for(let selSenT of this.selectedActivityTypes) {
+        if (st.type == selSenT) {
+          isSelected = true;
+          break;
+        }
+      }
+      st.isSelected = isSelected;
+    }
+  }
+
   saveToStorage() {
     let configs = {};
-    configs["selectedSensorTypes"] = this.selectedSensorTypes;
+    configs["selectedActivityTypes"] = this.selectedActivityTypes;
     configs["groupByTag"] = this.groupByTag;
     configs["groupByTime"] = this.groupByTime;
     configs["timeFromNow"] = this.timeFromNow;
@@ -67,14 +92,14 @@ export class EnergyComponent implements OnInit {
     configs["refreshRate"] = this.refreshRate;
     configs["fillGaps"] = this.fillGaps;
     configs["dataProcFunc"] = this.dataProcFunc;
-    this.settings.updateDashboardConfigs("genericEnergy",configs);
+    this.settings.updateDashboardConfigs("genericActivity",configs);
     this.settings.save();
   }
 
   loadFromStorage():boolean {
-    let configs = this.settings.getDashboardConfigs("genericEnergy");
+    let configs = this.settings.getDashboardConfigs("genericActivity");
     if (configs) {
-      this.selectedSensorTypes = configs["selectedSensorTypes"];
+      this.selectedActivityTypes = configs["selectedActivityTypes"];
       this.groupByTag = configs["groupByTag"];
       this.groupByTime = configs["groupByTime"];
       this.timeFromNow = configs["timeFromNow"];
@@ -86,5 +111,4 @@ export class EnergyComponent implements OnInit {
     }
     return false;
   }
-
 }

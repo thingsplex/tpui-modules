@@ -9,7 +9,6 @@ import {ThingsRegistryService} from "../../registry/registry.service";
 import {FimpService} from "../../../fimp/fimp.service";
 import {Subscription} from "rxjs";
 import {FimpMessage, NewFimpMessageFromString} from "../../../fimp/Message";
-import {HttpClient} from "@angular/common/http";
 import {AnalyticsSettingsService} from "./settings.service";
 
 declare var moment: any;
@@ -29,7 +28,7 @@ export class LineChartComponent implements OnInit  {
   @Input() title       : string;
   @Input() set timeFromNow(tm:string) {
     this._timeFromNow = tm;
-    this.queryData();
+    // this.queryData();
   }
   get timeFromNow():string {
     return this._timeFromNow;
@@ -37,22 +36,24 @@ export class LineChartComponent implements OnInit  {
 
   @Input() set groupByTime(tm:string) {
     this._groupByTime = tm;
-    this.queryData();
+    // this.queryData();
   }
   get groupByTime():string {
     return this._groupByTime;
   }
   @Input() set groupByTag(tm:string){
     this._groupByTag = tm;
-    this.queryData();
+    // this.queryData();
   }
   get groupByTag():string {
     return this._groupByTag;
   }
-  @Input() filterById  : string;
-  @Input() filterByTopic : string;
-  @Input() query       : string;
+  @Input() filterById      : string;
+  @Input() filterByTopic   : string;
+  @Input() query           : string;
   @Input() isFilterEnabled : boolean;
+  @Input() fillGaps        : boolean;
+  @Input() dataProcFunc    : string;
   @Input() set height (val: number) {
     this._height = String(val)+"px";
     this.canvasElement.nativeElement.style.height = this._height;
@@ -62,6 +63,7 @@ export class LineChartComponent implements OnInit  {
   }
 
   @Input() set change(v:boolean) {
+    console.log("QUery on change");
     this.queryData();
   }
   get change(){
@@ -100,22 +102,31 @@ export class LineChartComponent implements OnInit  {
       console.log("transformData:Empty response");
       return;
     }
+    let addedObjects = [];
+    let objectType = "";
+    let serviceName = "";
     for (let val of queryResponse.Results[0].Series) {
       let data:any[] = [];
       for (let v of val["values"]) {
         data.push({t:moment.unix(v[0]),y:v[1]});
       }
+      serviceName = val.name;
       areLabelsConfigured = true;
       let label = "unknown";
       if (val.tags) {
         switch (this.groupByTag) {
           case "location_id":
+            objectType = "location";
             let locationId = val.tags.location_id;
             let loc = this.registry.getLocationById(Number(locationId))
             if (loc) {
               if ((loc.length)>0)
                 label = loc[0].alias;
-            }
+              else
+                label = "location "+locationId;
+            }else
+              label = "location "+locationId;
+            addedObjects.push(locationId);
             break;
           case "service_id":
             let service = this.registry.getServiceById(Number(val.tags.service_id))
@@ -124,10 +135,13 @@ export class LineChartComponent implements OnInit  {
             }
             break;
           case "dev_id":
+            objectType = "dev";
             let dev = this.registry.getDeviceById(Number(val.tags.dev_id))
             if (dev) {
               label = dev.alias +" in "+ dev.location_alias;
+              addedObjects.push(val.tags.dev_id);
             }else {
+              label = "device "+val.tags.dev_id;
               console.log("No device for id = ",val.tags.dev_id)
             }
             break;
@@ -144,8 +158,39 @@ export class LineChartComponent implements OnInit  {
         // backgroundColor: 'rgba(27,255,16,0.23)',
       });
     }
+    //Adding missing objects
+    if(objectType=="location") {
+      for(let loc of this.registry.locations) {
+        let result = addedObjects.filter(location => location == loc.id)
+        if (result.length==0) {
+          this.chartData.push({
+            data:[],
+            label:loc.alias,
+            borderColor:this.settings.getColor(loc.alias),
+            fill:false,
+            pointRadius:1.5,
+            lineTension:0.2
+          });
+        }
+      }
+    }else if(objectType=="dev") {
+      serviceName = serviceName.split(".")[0];
+      for(let dev of this.registry.getDevicesFilteredByService(serviceName)) {
+        let result = addedObjects.filter(device => device == dev.id)
+        if (result.length==0) {
+          let label = dev.alias +" in "+ dev.location_alias;
+          this.chartData.push({
+            data:[],
+            label:label,
+            borderColor:this.settings.getColor(label),
+            fill:false,
+            pointRadius:1.5,
+            lineTension:0.2
+          });
+        }
+      }
+    }
   }
-
 
   ngOnInit() {
 
@@ -166,7 +211,7 @@ export class LineChartComponent implements OnInit  {
       this.isFilterEnabled = true;
 
     if(this._height == undefined){
-      this._height = "400px";
+      this._height = "350px";
     }
     this.canvasElement.nativeElement.style.height = this._height;
 
@@ -183,7 +228,9 @@ export class LineChartComponent implements OnInit  {
         }
       }
     });
-    this.queryData();
+
+    // console.log("QUery on init");
+    // this.queryData();
   }
   ngOnDestroy() {
     if(this.globalSub)
@@ -191,18 +238,23 @@ export class LineChartComponent implements OnInit  {
   }
 
   queryData() {
+    let fillMode = "null";
+    if (!this.dataProcFunc)
+      this.dataProcFunc = "mean";
+    if (this.fillGaps)
+      fillMode = "previous"; // null/linear/previous
     console.log("Measurement = "+this.measurement);
     let query = ""
     if (!this.measurement && !this.query)
       return
       // query = "SELECT last(value) AS last_value FROM \"default_20w\".\"sensor_temp.evt.sensor.report\" WHERE time > now()-48h  GROUP BY  location_id FILL(null)"
     if (this.filterByTopic!=undefined) {
-      query = "SELECT value FROM \"default_20w\".\""+this.measurement+"\" WHERE time > now()-"+this.timeFromNow+" and topic='"+this.filterByTopic+"' FILL(previous)"
+      query = "SELECT value FROM \"default_20w\".\""+this.measurement+"\" WHERE time > now()-"+this.timeFromNow+" and topic='"+this.filterByTopic+"' FILL("+fillMode+")"
     }else {
-      query = "SELECT mean(\"value\") AS \"mean_value\" FROM \"default_20w\".\""+this.measurement+"\" WHERE time > now()-"+this.timeFromNow+" GROUP BY time("+this.groupByTime+"), "+this.groupByTag+" FILL(previous)"
+      query = "SELECT "+this.dataProcFunc+"(\"value\") AS \"mean_value\" FROM \"default_20w\".\""+this.measurement+"\" WHERE time > now()-"+this.timeFromNow+" GROUP BY time("+this.groupByTime+"), "+this.groupByTag+" FILL("+fillMode+")"
     }
     if (this.groupByTime != "none" && this.filterByTopic!=undefined) {
-      query = "SELECT mean(\"value\") AS \"mean_value\" FROM \"default_20w\".\""+this.measurement+"\" WHERE time > now()-"+this.timeFromNow+" and topic='"+this.filterByTopic+"' GROUP BY time("+this.groupByTime+") FILL(previous)"
+      query = "SELECT "+this.dataProcFunc+"(\"value\") AS \"mean_value\" FROM \"default_20w\".\""+this.measurement+"\" WHERE time > now()-"+this.timeFromNow+" and topic='"+this.filterByTopic+"' GROUP BY time("+this.groupByTime+") FILL("+fillMode+")"
 
     }
     if(this.query != undefined && this.query != "")

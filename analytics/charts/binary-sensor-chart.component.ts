@@ -19,20 +19,37 @@ declare var Chart: any;
   templateUrl: './binary-sensor-chart.html'
 })
 export class BinarySensorChartComponent implements OnInit  {
-  @Input() measurement : string;
-  @Input() title       : string;
-  @Input() timeFromNow : string;
-  @Input() groupByTime : string;
-  @Input() groupByTag  : string;
-  @Input() filterById  : string;
+  @Input() measurement     : string;
+  @Input() title           : string;
+  @Input() timeFromNow     : string;
+  @Input() groupByTime     : string;
+  @Input() groupByTag      : string;
+  @Input() filterById      : string;
   @Input() filterByTopic   : string;
+  @Input() isFilterEnabled : boolean;
+  @Input() fillGaps        : boolean;
+  @Input() dataProcFunc    : string;
+  @Input() set height (val: number) {
+    this._height = String(val)+"px";
+    this.canvasElement.nativeElement.style.height = this._height;
+  }
+  get height():number {
+    return 0;
+  }
+  @Input() set change(v:boolean) {
+    console.log("QUery on change");
+    this.queryData();
+  }
+  get change(){
+    return true;
+  }
   @ViewChild('canvas')
   canvasElement: ElementRef;
 
   globalSub : Subscription;
 
   chart : any;
-
+  private _height:string;
   public chartLabels:string[] = [];
   public chartType:string = 'bar';
   public chartLegend:boolean = true;
@@ -44,54 +61,106 @@ export class BinarySensorChartComponent implements OnInit  {
   }
 
   transformData(queryResponse:any) {
+    console.dir(queryResponse);
     this.chartLabels.splice(0,this.chartLabels.length)
     this.chartData.splice(0,this.chartData.length)
 
     let areLabelsConfigured = false;
-    if (!queryResponse.Results[0].Series) {
-      console.log("Binary chart , Empty response")
+    if (!queryResponse.Results) {
+      console.log("transformData:Empty response");
       return
     }
-
+    if (!queryResponse.Results[0].Series) {
+      console.log("transformData:Empty response");
+      return;
+    }
+    let addedObjects = [];
+    let objectType = "";
+    let serviceName = "";
     for (let val of queryResponse.Results[0].Series) {
       let data:any[] = [];
       for (let v of val["values"]) {
         data.push({t:moment.unix(v[0]),y:v[1],r:1});
       }
+      serviceName = val.name;
       areLabelsConfigured = true;
       let label = "unknown";
-      switch (this.groupByTag) {
-        case "location_id":
-          let locationId = val.tags.location_id;
-          let loc = this.registry.getLocationById(Number(locationId))
-          if (loc) {
-            if ((loc.length)>0)
-              label = loc[0].alias;
-          }
-          break;
-        case "service_id":
-          let service = this.registry.getServiceById(Number(val.tags.service_id))
-          if (service) {
-            label = service.alias;
-          }
-          break;
-        case "dev_id":
-          let thing = this.registry.getDeviceById(Number(val.tags.dev_id))
-          if (thing) {
-            label = thing.alias +" in "+ thing.location_alias;
-          }
-          break;
+      if (val.tags) {
+        switch (this.groupByTag) {
+          case "location_id":
+            objectType = "location";
+            let locationId = val.tags.location_id;
+            let loc = this.registry.getLocationById(Number(locationId))
+            if (loc) {
+              if ((loc.length)>0)
+                label = loc[0].alias;
+              else
+                label = "location "+locationId;
+            }else {
+              label = "location "+locationId;
+            }
+            addedObjects.push(locationId);
+            break;
+          case "service_id":
+            let service = this.registry.getServiceById(Number(val.tags.service_id))
+            if (service) {
+              label = service.alias;
+            }
+            break;
+          case "dev_id":
+            objectType = "dev";
+            let dev = this.registry.getDeviceById(Number(val.tags.dev_id))
+            if (dev) {
+              label = dev.alias +" in "+ dev.location_alias;
+            }else {
+              label = "device "+val.tags.dev_id
+              console.log("No device for id = ",val.tags.dev_id)
+            }
+            addedObjects.push(val.tags.dev_id);
+            break;
+        }
       }
 
       this.chartData.push({
         data:data,
         label:label,
-        // borderColor:this.random_rgba(0.9),
+        backgroundColor:this.settings.getColor(label),
         fill:false,
         pointRadius:1.5,
         lineTension:0.2,
-        backgroundColor: this.settings.getColor(label),
       });
+    }
+    //Adding missing objects
+    if(objectType=="location") {
+      for(let loc of this.registry.locations) {
+        let result = addedObjects.filter(location => location == loc.id)
+        if (result.length==0) {
+          this.chartData.push({
+            data:[],
+            label:loc.alias,
+            backgroundColor:this.settings.getColor(loc.alias),
+            fill:false,
+            pointRadius:1.5,
+            lineTension:0.2
+          });
+        }
+      }
+    }else if(objectType=="dev") {
+      serviceName = serviceName.split(".")[0];
+      for(let dev of this.registry.getDevicesFilteredByService(serviceName)) {
+        let result = addedObjects.filter(device => device == dev.id)
+        if (result.length==0) {
+          let label = dev.alias +" in "+ dev.location_alias;
+          this.chartData.push({
+            data:[],
+            label:label,
+            backgroundColor:this.settings.getColor(label),
+            fill:false,
+            pointRadius:1.5,
+            lineTension:0.2
+          });
+        }
+      }
     }
   }
 
@@ -128,19 +197,22 @@ export class BinarySensorChartComponent implements OnInit  {
         }
       }
     });
-    this.queryData();
+    // this.queryData();
   }
 
   queryData() {
-    let query = ""
+    let query = "";
+    let fillMode = "null";
+    if (this.fillGaps)
+      fillMode = "previous"; // null/linear/previous
     // query = "SELECT last(value) AS last_value FROM \"default_20w\".\"sensor_temp.evt.sensor.report\" WHERE time > now()-48h  GROUP BY  location_id FILL(null)"
     if (this.filterByTopic!=undefined) {
-      query = "SELECT value FROM \"default_20w\".\""+this.measurement+"\" WHERE time > now()-"+this.timeFromNow+" and topic='"+this.filterByTopic+"' FILL(previous)"
+      query = "SELECT value FROM \"default_20w\".\""+this.measurement+"\" WHERE time > now()-"+this.timeFromNow+" and topic='"+this.filterByTopic+"' FILL("+fillMode+")"
     }else {
-      query = "SELECT count(\"value\") AS \"count_value\" FROM \"default_20w\".\""+this.measurement+"\" WHERE time > now()-"+this.timeFromNow+" and value=true GROUP BY time("+this.groupByTime+"), "+this.groupByTag+" FILL(null)"
+      query = "SELECT count(\"value\") AS \"count_value\" FROM \"default_20w\".\""+this.measurement+"\" WHERE time > now()-"+this.timeFromNow+" and value=true GROUP BY time("+this.groupByTime+"), "+this.groupByTag+" FILL("+fillMode+")"
     }
     if (this.groupByTime != "none" && this.filterByTopic!=undefined) {
-      query = "SELECT mean(\"value\") AS \"mean_value\" FROM \"default_20w\".\""+this.measurement+"\" WHERE time > now()-"+this.timeFromNow+" and topic='"+this.filterByTopic+"' GROUP BY time("+this.groupByTime+") FILL(previous)"
+      query = "SELECT mean(\"value\") AS \"mean_value\" FROM \"default_20w\".\""+this.measurement+"\" WHERE time > now()-"+this.timeFromNow+" and topic='"+this.filterByTopic+"' GROUP BY time("+this.groupByTime+") FILL("+fillMode+")"
 
     }
     let msg  = new FimpMessage("ecollector","cmd.tsdb.query","str_map",{"query":query},null,null)
@@ -165,15 +237,17 @@ export class BinarySensorChartComponent implements OnInit  {
       },
       options: {
         maintainAspectRatio:false,
+        responsive: true,
         title:{text:this.title,display:true},
         scales: {
           xAxes: [{
             type: 'time',
             bounds:'ticks',
-            distribution: 'linear',
+            // distribution: 'linear',
+            stacked: true,
             ticks: {
               source: 'data',
-              autoSkip:true
+              autoSkip:false
             },
             time:{
               unit:'minute',
@@ -184,9 +258,10 @@ export class BinarySensorChartComponent implements OnInit  {
 
           }],
           yAxes: [{
+            stacked: true,
             ticks: {
-              beginAtZero: false,
-              autoSkip:true
+              beginAtZero: true,
+              autoSkip:false,
             }
           }]
         }

@@ -2,6 +2,7 @@
     <div>
         <canvas #canvas width="400" height="500px"></canvas>
     </div>
+  <ng-container *ngIf="isFilterEnabled">
     <button mat-raised-button color="primary" (click)="queryData()" >Reload</button>
     <mat-input-container style="height: 35px;margin: 10px;width: 120px" class="example-full-width">
         <input matInput [(ngModel)]="timeFromNow" placeholder="Time from now" >
@@ -26,11 +27,8 @@
         <mat-select matNativeControl [(value)]="groupByTag"  placeholder="Group by" >
             <mat-option value="location_id">Location</mat-option>
             <mat-option value="dev_id">Device</mat-option>
-            <mat-option value="service_id">Service</mat-option>
             <mat-option value="none">Disabled</mat-option>
         </mat-select>
     </mat-form-field>
-
-
-
+  </ng-container>
 </div>

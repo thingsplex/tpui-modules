@@ -1,14 +1,13 @@
 <nav mat-tab-nav-bar>
-  <a mat-tab-link [routerLink]="['/analytics/dashboard']" >Dashboard</a>
-  <a mat-tab-link [routerLink]="['/analytics/sensors']" >Sensors</a>
-  <a mat-tab-link [routerLink]="['/analytics/activity']" >Activity</a>
-  <a mat-tab-link active [routerLink]="['/analytics/energy']" >Energy</a>
-  <a mat-tab-link  [routerLink]="['/analytics/explore']" >Explore</a>
-  <a mat-tab-link [routerLink]="['/analytics/settings']" >Settings</a>
+    <a mat-tab-link  [routerLink]="['/analytics/dashboard']" >Dashboard</a>
+    <a mat-tab-link [routerLink]="['/analytics/sensors']" >Sensors</a>
+    <a mat-tab-link active [routerLink]="['/analytics/activity']" >Activity</a>
+    <a mat-tab-link [routerLink]="['/analytics/energy']" >Energy</a>
+    <a mat-tab-link [routerLink]="['/analytics/explore']" >Explore</a>
+    <a mat-tab-link [routerLink]="['/analytics/settings']" >Settings</a>
 </nav>
 
 <div style="overflow: hidden" >
-
   <p>
     <mat-expansion-panel style="margin: 5px" >
       <mat-expansion-panel-header>
@@ -17,7 +16,12 @@
       <mat-panel-description>
 
       </mat-panel-description>
-
+      <mat-form-field style="height: 35px;margin: 10px;width: 250px"  >
+        <mat-label> Activity type </mat-label>
+        <mat-select matNativeControl [(ngModel)]="selectedActivityTypes" multiple  placeholder="Sensor type" (change)="updateListOfActivityTypes()"  >
+          <mat-option  *ngFor="let e of listOfActivityTypes" [value]="e.type">{{e.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
       <mat-form-field style="height: 35px;margin: 10px;width: 100px"  >
         <mat-label> Resolution </mat-label>
         <mat-select matNativeControl [(value)]="groupByTime"  placeholder="Resolution" >
@@ -85,41 +89,17 @@
         </mat-select>
       </mat-form-field>
 
-  <p>
-    <mat-form-field style="height: 35px;margin: 10px;width: 230px"  >
-      <mat-label> Fill missing data </mat-label>
-      <mat-select matNativeControl [(value)]="fillGaps"  placeholder="size" >
-        <mat-option [value]="false">Do not fill and show as is</mat-option>
-        <mat-option [value]="true">Use previous value</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field style="height: 35px;margin: 10px;width: 280px"  >
-      <mat-label> Aggregation </mat-label>
-      <mat-select matNativeControl [(value)]="dataProcFunc"  placeholder="size" >
-        <mat-option [value]="'mean'">Use average</mat-option>
-        <mat-option [value]="'median'">Use middle value from sorted list.</mat-option>
-        <mat-option [value]="'min'">Use min value </mat-option>
-        <mat-option [value]="'max'">Use max value </mat-option>
-        <mat-option [value]="'first'">Use first value </mat-option>
-        <mat-option [value]="'last'">Use last value </mat-option>
-        <mat-option [value]="'count'">Count data points </mat-option>
-        <mat-option [value]="'spread'">Difference between min and max </mat-option>
-        <mat-option [value]="'stddev'">Standard deviation.How close the value to the average. </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </p>
-
   <button mat-raised-button color="primary" (click)="reload()" >Reload</button>
   <button mat-raised-button color="primary" (click)="save()" >Save</button>
 
   </mat-expansion-panel>
   </p>
 
-
-<line-chart  [measurement]="'electricity_meter_power'" [isFilterEnabled]="false" [title]="'Power (W)'" [(timeFromNow)]="timeFromNow" [groupByTime]="groupByTime" [groupByTag]="groupByTag" [height]="gSize" [change]="reloadSignal" [fillGaps]="fillGaps" [dataProcFunc]="dataProcFunc"  ></line-chart>
-<line-chart  [measurement]="'electricity_meter_energy'" [isFilterEnabled]="false" [title]="'Energy (kWh)'" [(timeFromNow)]="timeFromNow" [groupByTime]="groupByTime" [groupByTag]="groupByTag" [height]="gSize" [change]="reloadSignal" [fillGaps]="fillGaps" [dataProcFunc]="dataProcFunc"  ></line-chart>
-
-<br>
-<line-chart  [measurement]="'battery.evt.lvl.report'" [isFilterEnabled]="false" [title]="'Battery charge level'" [(timeFromNow)]="timeFromNow" [groupByTime]="groupByTime" [groupByTag]="groupByTag" [height]="gSize" [change]="reloadSignal" [fillGaps]="fillGaps" [dataProcFunc]="dataProcFunc"  ></line-chart>
+  <ng-container *ngFor="let e of listOfActivityTypes">
+    <mat-card *ngIf="e.isSelected" class="sensor-panel">
+      <h3>{{e.name}}</h3>
+      <binary-sensor-chart [measurement]="e.type" [isFilterEnabled]="false" [groupByTag]="groupByTag"  [groupByTime]="groupByTime" [timeFromNow]="timeFromNow" [height]="gSize" [title]="''" [change]="reloadSignal" ></binary-sensor-chart>
+    </mat-card>
+  </ng-container>
 
 </div>

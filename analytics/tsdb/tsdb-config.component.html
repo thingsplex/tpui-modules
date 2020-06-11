@@ -1,14 +1,13 @@
 <nav mat-tab-nav-bar>
   <a mat-tab-link [routerLink]="['/analytics/dashboard']" >Dashboard</a>
   <a mat-tab-link [routerLink]="['/analytics/sensors']" >Sensors</a>
-  <a mat-tab-link [routerLink]="['/analytics/presence']" >Activity</a>
-  <a mat-tab-link [routerLink]="['/analytics/presence']" >Energy</a>
+  <a mat-tab-link [routerLink]="['/analytics/activity']" >Activity</a>
+  <a mat-tab-link [routerLink]="['/analytics/energy']" >Energy</a>
   <a mat-tab-link [routerLink]="['/analytics/explore']" >Explore</a>
   <a mat-tab-link active [routerLink]="['/analytics/settings']" >Settings</a>
 </nav>
 
 <br/>
-<mat-accordion>
 <mat-expansion-panel style="margin: 5px" >
   <mat-expansion-panel-header>
     Data visualization global settings
@@ -29,8 +28,11 @@
     </tr>
     </tbody>
   </table>
+
 </mat-expansion-panel>
 
+
+<div>
 <mat-expansion-panel style="margin: 5px" >
   <mat-expansion-panel-header>
     Data collection settings
@@ -275,6 +277,6 @@
 </mat-card>
 
 </mat-expansion-panel>
-</mat-accordion>
+</div>
 
 

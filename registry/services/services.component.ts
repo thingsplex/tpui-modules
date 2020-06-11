@@ -58,7 +58,6 @@ export class ServiceSelectorWizardComponent implements OnInit {
     if(this.inputServiceAddress) {
       let svcs = this.registry.getServiceByAddress(this.inputServiceAddress)
       if (svcs.length > 0) {
-
         this.selectedServiceId = svcs[0].name;
         this.selectedLocationId = svcs[0].location_id;
         this.selectedInterfaceName = this.inputInterfaceName;
@@ -69,7 +68,6 @@ export class ServiceSelectorWizardComponent implements OnInit {
         this.onThingSelected()
         this.onServiceSelected()
       }
-
     }
   }
   constructor(private route: ActivatedRoute,public registry:ThingsRegistryService) {
@@ -93,12 +91,14 @@ export class ServiceSelectorWizardComponent implements OnInit {
     this.services = this.registry.getServicesForThing(this.selectedThingId);
     console.log("Services for thing:")
     console.dir(this.services)
+    this.onInterfaceSelected("");
   }
 
   onServiceSelected(){
     // this.loadServices(this.selectedService,"");
     this.activeService = this.registry.getServiceByDeviceIdAndName(this.selectedThingId,this.selectedServiceId)
     console.dir(this.activeService);
+    this.onInterfaceSelected("");
   }
 
   onInterfaceSelected(service) {

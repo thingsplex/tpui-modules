@@ -43,6 +43,42 @@
         <div *ngSwitchCase="'evt.meter.report'">
           {{ intf.lastValue.val }} {{ intf.lastValue.props.unit }}
         </div>
+        <div *ngSwitchCase="'evt.meter_ext.report'">
+          <table>
+            <tr><td>Energy Import</td><td>{{ intf.lastValue.val.e_import }}</td><td>kWh</td></tr>
+            <tr><td>Energy Export</td><td>{{ intf.lastValue.val.e_export }}</td><td>kWh</td></tr>
+            <tr><td>Energy Export that day</td><td>{{ intf.lastValue.val.last_e_export }}</td><td>kWh</td></tr>
+            <tr><td>Energy Import that day</td><td>{{ intf.lastValue.val.last_e_import }}</td><td>kWh</td></tr>
+            <tr><td>Power Import</td><td>{{ intf.lastValue.val.p_import }}</td><td>W</td></tr>
+            <tr><td>Reactive Power Import</td><td>{{ intf.lastValue.val.p_import_react }}</td><td>VAR</td></tr>
+            <tr><td>Apparent Power Import</td><td>{{ intf.lastValue.val.p_import_apparent }}</td><td>VA</td></tr>
+            <tr><td>Power Import average </td><td>{{ intf.lastValue.val.p_import_avg }}</td><td>W</td></tr>
+            <tr><td>Power Import minimum that day </td><td>{{ intf.lastValue.val.p_import_min }}</td><td>W</td></tr>
+            <tr><td>Power Import max that day </td><td>{{ intf.lastValue.val.p_import_max }}</td><td>W</td></tr>
+            <tr><td>Power Export </td><td>{{intf.lastValue.val.p_export}} </td><td>W</td></tr>
+            <tr><td>Reactive Power Export </td><td>{{intf.lastValue.val.p_export_react}} </td><td>VAR</td></tr>
+            <tr><td>Power Export minimum that day </td><td>{{intf.lastValue.val.p_export_min}} </td><td>W</td></tr>
+            <tr><td>Power Export max that day </td><td>{{intf.lastValue.val.p_export_max}} </td><td>W</td></tr>
+            <tr><td>Frequency </td><td>{{intf.lastValue.val.freq}} </td><td>Hz</td></tr>
+            <tr><td>Frequency Min </td><td>{{intf.lastValue.val.freq_min}} </td><td>Hz</td></tr>
+            <tr><td>Frequency Max </td><td>{{intf.lastValue.val.freq_max}} </td><td>Hz</td></tr>
+            <tr><td>Voltage phase 1 </td><td>{{intf.lastValue.val.u1}} </td><td>V</td></tr>
+            <tr><td>Voltage phase 2 </td><td>{{intf.lastValue.val.u2}} </td><td>V</td></tr>
+            <tr><td>Voltage phase 3 </td><td>{{intf.lastValue.val.u3}} </td><td>V</td></tr>
+            <tr><td>Current phase 1 </td><td>{{intf.lastValue.val.i1}} </td><td>A</td></tr>
+            <tr><td>Current phase 2 </td><td>{{intf.lastValue.val.i2}} </td><td>A</td></tr>
+            <tr><td>Current phase 3 </td><td>{{intf.lastValue.val.i3}} </td><td>A</td></tr>
+            <tr><td>DC Power </td><td>{{intf.lastValue.dc_p}} </td><td>W</td></tr>
+            <tr><td>DC Power min </td><td>{{intf.lastValue.dc_p_min}} </td><td>W</td></tr>
+            <tr><td>DC Power max </td><td>{{intf.lastValue.dc_p_max}} </td><td>W</td></tr>
+            <tr><td>DC Voltage </td><td>{{intf.lastValue.dc_u}} </td><td>V</td></tr>
+            <tr><td>DC Voltage min </td><td>{{intf.lastValue.dc_u_min}} </td><td>V</td></tr>
+            <tr><td>DC Voltage max </td><td>{{intf.lastValue.dc_u_max}} </td><td>V</td></tr>
+            <tr><td>DC Current </td><td>{{intf.lastValue.dc_i}} </td><td>A</td></tr>
+            <tr><td>DC Current min </td><td>{{intf.lastValue.dc_i_min}} </td><td>A</td></tr>
+            <tr><td>DC Current max </td><td>{{intf.lastValue.dc_i_max}} </td><td>A</td></tr>
+          </table>
+        </div>
          <div *ngSwitchCase="'evt.setpoint.report'">
           {{ intf.lastValue.val.type}} {{ intf.lastValue.val.temp }}
         </div>
@@ -434,6 +470,16 @@
             </mat-input-container></td>
             <td><button mat-raised-button (click)="cmdMeterReportGet(meterUnit.value)" >Get</button></td>
           </tr>
+          </table>
+        </form>
+      </div>
+
+      <div *ngSwitchCase="'cmd.meter_ext.get_report'">
+        <form class="intf-form">
+          <table class="table-full-width" cellspacing="0"><tr>
+              <td></td>
+              <td><button mat-raised-button (click)="cmdGetReportNull()" >Get</button></td>
+            </tr>
           </table>
         </form>
       </div>

@@ -9,13 +9,14 @@ import {ThingsRegistryService} from "../../registry/registry.service";
 import {FimpMessage, NewFimpMessageFromString} from "../../../fimp/Message";
 import {FimpService} from "../../../fimp/fimp.service";
 import {Subscription} from "rxjs";
-import {SimplePieChartComponent} from "../charts/simple-pie-chart.component";
 import {LineChartComponent} from "../charts/line-chart.component";
+import {AnalyticsSettingsService} from "../charts/settings.service";
 
 var sensorTypeMap = {
   "sensor_temp.evt.sensor.report":"Temperature",
   "sensor_humid.evt.sensor.report":"Humidity",
   "sensor_lumin.evt.sensor.report":"Light",
+  "sensor_co2.evt.sensor.report":"CO2 level",
   "sensor_uv.evt.sensor.report":"Ultraviolet light",
 }
 
@@ -26,21 +27,21 @@ var sensorTypeMap = {
 })
 export class SensorsComponent implements OnInit {
   public selectedSensorTypes :any[] = ["sensor_temp.evt.sensor.report"];
-  public listOfSensorTypes : any[] = [{type:"sensor_temp.evt.sensor.report",name:"Temperature",isSelected:true}];
+  public listOfSensorTypes : any[] = []; // {type:"sensor_temp.evt.sensor.report",name:"Temperature",isSelected:true}
   private lastRequestId : string ;
   private globalSub : Subscription;
-  private
   timeFromNow :string = "1d";
   groupByTime :string = "1h";
   groupByTag  :string = "location_id";
   private _refreshRate :number = 60;
-  gSize : number = 300;
+  gSize : number = 350;
+  fillGaps : boolean = false;
+  dataProcFunc : string = "mean";
   reloadSignal:boolean;
   intervalTimer:any;
-
-  @ViewChild('sensorChart') sensorChartRef: LineChartComponent;
-
   set refreshRate(rate : number) {
+    if (rate==-1)
+      return;
     this._refreshRate = rate;
     if (this.intervalTimer!=undefined) {
       clearInterval(this.intervalTimer);
@@ -52,12 +53,16 @@ export class SensorsComponent implements OnInit {
     return this._refreshRate;
   }
 
-  constructor(private registry:ThingsRegistryService,private fimp : FimpService) {
+  @ViewChild('sensorChart') sensorChartRef: LineChartComponent;
+
+
+
+  constructor(private registry:ThingsRegistryService,private fimp : FimpService,private settings:AnalyticsSettingsService) {
 
   }
 
   ngOnInit() {
-    this.loadFromLocalStorage();
+    this.loadFromStorage();
     this.loadListOfSensorTypes();
   }
 
@@ -65,13 +70,7 @@ export class SensorsComponent implements OnInit {
     if(this.globalSub)
       this.globalSub.unsubscribe();
   }
-  reload() {
-    if(this.reloadSignal)
-      this.reloadSignal = false;
-    else {
-      this.reloadSignal = true;
-    }
-  }
+
   loadListOfSensorTypes() {
     this.globalSub = this.fimp.getGlobalObservable().subscribe((msg) => {
       let fimpMsg = NewFimpMessageFromString(msg.payload.toString());
@@ -99,15 +98,14 @@ export class SensorsComponent implements OnInit {
     this.queryData();
   }
   //(change)="updateChart($event)"
-  updateChart(event) {
-    this.sensorChartRef.measurement = event.value;
-    this.sensorChartRef.title  = "";
-    this.sensorChartRef.queryData();
-  }
+  // updateChart(event) {
+  //   this.sensorChartRef.measurement = event.value;
+  //   this.sensorChartRef.title  = "";
+  //   this.sensorChartRef.queryData();
+  // }
 
   updateSelectedSensorTypes() {
     this.updateListOfSensorTypes();
-    this.saveToLocalStorage();
   }
 
   updateListOfSensorTypes() {
@@ -123,14 +121,43 @@ export class SensorsComponent implements OnInit {
     }
   }
 
-  saveToLocalStorage() {
-    localStorage.setItem("analyticsSelectedSensors", JSON.stringify(this.selectedSensorTypes));
+  reload() {
+    if(this.reloadSignal)
+      this.reloadSignal = false;
+    else {
+      this.reloadSignal = true;
+    }
+  }
+  save() {
+    this.saveToStorage()
   }
 
-  loadFromLocalStorage():boolean {
-    if (localStorage.getItem("analyticsSelectedSensors")!=null){
-      this.selectedSensorTypes = JSON.parse(localStorage.getItem("analyticsSelectedSensors"));
-      return true;
+  saveToStorage() {
+    let configs = {};
+    configs["selectedSensorTypes"] = this.selectedSensorTypes;
+    configs["groupByTag"] = this.groupByTag;
+    configs["groupByTime"] = this.groupByTime;
+    configs["timeFromNow"] = this.timeFromNow;
+    configs["gSize"] = this.gSize;
+    configs["refreshRate"] = this.refreshRate;
+    configs["fillGaps"] = this.fillGaps;
+    configs["dataProcFunc"] = this.dataProcFunc;
+    this.settings.updateDashboardConfigs("genericSensors",configs);
+    this.settings.save();
+  }
+
+  loadFromStorage():boolean {
+    let configs = this.settings.getDashboardConfigs("genericSensors");
+    if (configs) {
+      this.selectedSensorTypes = configs["selectedSensorTypes"];
+      this.groupByTag = configs["groupByTag"];
+      this.groupByTime = configs["groupByTime"];
+      this.timeFromNow = configs["timeFromNow"];
+      this.gSize = configs["gSize"];
+      this.refreshRate = configs["refreshRate"];
+      this.fillGaps = configs["fillGaps"];
+      this.dataProcFunc = configs["dataProcFunc"];
+      return true
     }
     return false;
   }

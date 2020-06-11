@@ -1,7 +1,7 @@
 <nav mat-tab-nav-bar>
     <a mat-tab-link active [routerLink]="['/analytics/dashboard']" >Dashboard</a>
     <a mat-tab-link [routerLink]="['/analytics/sensors']" >Sensors</a>
-    <a mat-tab-link [routerLink]="['/analytics/presence']" >Activity</a>
+    <a mat-tab-link [routerLink]="['/analytics/activity']" >Activity</a>
     <a mat-tab-link [routerLink]="['/analytics/energy']" >Energy</a>
     <a mat-tab-link [routerLink]="['/analytics/explore']" >Explore</a>
     <a mat-tab-link [routerLink]="['/analytics/settings']" >Settings</a>
@@ -12,7 +12,7 @@
 <p>
   <mat-expansion-panel style="margin: 5px" >
     <mat-expansion-panel-header>
-      Filters and settings
+      Dashboard settings
     </mat-expansion-panel-header>
     <mat-panel-description>
 
@@ -70,35 +70,64 @@
   <mat-form-field style="height: 35px;margin: 10px;width: 150px"  >
     <mat-label> Auto reload </mat-label>
     <mat-select matNativeControl [(value)]="refreshRate"  placeholder="reload every" >
-      <mat-option value="20">every 20 sec</mat-option>
-      <mat-option value="60">every 1 min</mat-option>
-      <mat-option value="180">every 3 min</mat-option>
-      <mat-option value="300">every 5 min</mat-option>
-      <mat-option value="600">every 10 min</mat-option>
-      <mat-option value="-1"> Disable </mat-option>
+      <mat-option [value]="20">every 20 sec</mat-option>
+      <mat-option [value]="60">every 1 min</mat-option>
+      <mat-option [value]="180">every 3 min</mat-option>
+      <mat-option [value]="300">every 5 min</mat-option>
+      <mat-option [value]="600">every 10 min</mat-option>
+      <mat-option [value]="-1"> Disable </mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-form-field style="height: 35px;margin: 10px;width: 150px"  >
     <mat-label> Graph size </mat-label>
     <mat-select matNativeControl [(value)]="gSize"  placeholder="size" >
-      <mat-option value="150">XS</mat-option>
-      <mat-option value="250">S</mat-option>
-      <mat-option value="350">M</mat-option>
-      <mat-option value="450">L</mat-option>
-      <mat-option value="550">XL</mat-option>
+      <mat-option [value]="150">XS</mat-option>
+      <mat-option [value]="250">S</mat-option>
+      <mat-option [value]="350">M</mat-option>
+      <mat-option [value]="450">L</mat-option>
+      <mat-option [value]="550">XL</mat-option>
     </mat-select>
   </mat-form-field>
+
+  <p>
+    <mat-form-field style="height: 35px;margin: 10px;width: 230px"  >
+      <mat-label> Fill missing data </mat-label>
+      <mat-select matNativeControl [(value)]="fillGaps"  placeholder="size" >
+        <mat-option [value]="false">Do not fill and show as is</mat-option>
+        <mat-option [value]="true">Use previous value</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field style="height: 35px;margin: 10px;width: 280px"  >
+      <mat-label> Aggregation </mat-label>
+      <mat-select matNativeControl [(value)]="dataProcFunc"  placeholder="size" >
+        <mat-option [value]="'mean'">Use average</mat-option>
+        <mat-option [value]="'median'">Use middle value from sorted list.</mat-option>
+        <mat-option [value]="'min'">Use min value </mat-option>
+        <mat-option [value]="'max'">Use max value </mat-option>
+        <mat-option [value]="'first'">Use first value </mat-option>
+        <mat-option [value]="'last'">Use last value </mat-option>
+        <mat-option [value]="'count'">Count data points </mat-option>
+        <mat-option [value]="'spread'">Difference between min and max </mat-option>
+        <mat-option [value]="'stddev'">Standard deviation.How close the value to the average. </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </p>
+
   <button mat-raised-button color="primary" (click)="reload()" >Reload</button>
+  <button mat-raised-button color="primary" (click)="save()" >Save</button>
 
   </mat-expansion-panel>
 </p>
+
+
   <ng-container *ngFor="let e of listOfSensorTypes">
     <mat-card *ngIf="e.isSelected" class="sensor-panel">
        <h3>{{e.name}}</h3>
-       <line-chart #sensorChart [measurement]="e.type" [isFilterEnabled]="false" [title]="''" [(timeFromNow)]="timeFromNow" [groupByTime]="groupByTime" [groupByTag]="groupByTag" [height]="gSize" [change]="reloadSignal" ></line-chart>
+       <line-chart #sensorChart [measurement]="e.type" [isFilterEnabled]="false" [title]="''" [(timeFromNow)]="timeFromNow" [groupByTime]="groupByTime" [groupByTag]="groupByTag" [height]="gSize" [change]="reloadSignal" [fillGaps]="fillGaps" [dataProcFunc]="dataProcFunc"  ></line-chart>
     </mat-card>
   </ng-container>
+
 <br>
 
 
