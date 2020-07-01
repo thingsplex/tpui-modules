@@ -1,5 +1,6 @@
 import {Component, ElementRef, ViewChild,OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef,MatSnackBar} from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';

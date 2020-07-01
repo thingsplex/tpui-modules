@@ -1,6 +1,7 @@
 import { Component, OnInit,Inject } from '@angular/core';
-import { MatDialog, MatDialogRef,MatSnackBar} from '@angular/material';
-import { MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BACKEND_ROOT } from "app/globals";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 

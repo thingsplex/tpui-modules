@@ -169,9 +169,9 @@
          <button mat-raised-button (click)="addXPathMapping(node)" >Add </button>
       </div>
       <div *ngIf="node.Config.TransformType=='template'">
-        <mat-input-container  style="width: 100%">
+        <mat-form-field  style="width: 100%">
           <textarea  mat-autosize  minRows="4" matInput placeholder="Template body" [(ngModel)]="node.Config.Template" > </textarea>
-        </mat-input-container>
+        </mat-form-field>
       </div>
   <br>
  </div>

@@ -9,7 +9,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromEvent';
 import { BACKEND_ROOT } from "app/globals";
-import {MatDialog} from "@angular/material";
+import { MatDialog } from "@angular/material/dialog";
 import {RecordEditorDialog} from "./record-editor-dialog.component";
 import {TableContextRec} from "./model"
 import {HttpClient} from "@angular/common/http";

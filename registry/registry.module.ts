@@ -1,21 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableModule,
-         MatFormFieldModule,
-         MatInputModule,
-         MatChipsModule,
-         MatIconModule,
-         MatSliderModule,
-         MatCheckboxModule,
-         MatListModule,
-         MatSelectModule,
-         MatOptionModule,
-         MatDialogModule,
-         MatTabsModule,
-         MatButtonModule,
-         MatSnackBarModule,
-         MatCardModule,
-         MatCheckbox} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule, MatCheckbox } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 import { FormsModule } from '@angular/forms';
 import { ThingsComponent } from './things/things.component';
 import { DevicesComponent } from './devices/devices.component';

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BACKEND_ROOT } from "app/globals";
 import {FlowLogDialog, FlowSourceDialog} from "../flow-editor/flow-editor.component";
-import {MatDialog} from "@angular/material";
+import { MatDialog } from "@angular/material/dialog";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Component({
@@ -39,7 +39,7 @@ export class FlowOverviewComponent implements OnInit {
          })
 
          this.groups = [];
-         groupsSet.forEach(value => {
+         groupsSet.forEach((value:string) => {
            this.groups.push(value);
          })
        // console.dir(this.groups);

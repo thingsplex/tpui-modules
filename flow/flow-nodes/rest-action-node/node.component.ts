@@ -1,6 +1,6 @@
 import {MetaNode} from "../../flow-editor/flow-editor.component";
 import {Component, Input, OnInit} from "@angular/core";
-import {MatDialog} from "@angular/material";
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
   selector: 'rest-action-node',

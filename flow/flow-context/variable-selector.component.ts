@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {BACKEND_ROOT} from "app/globals";
 import {TableContextRec} from "./model";
 import {RecordEditorDialog} from "./record-editor-dialog.component";
-import {MatDialog} from "@angular/material";
+import { MatDialog } from "@angular/material/dialog";
 import {HttpClient} from "@angular/common/http";
 
 export class ContextVariable {

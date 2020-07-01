@@ -25,9 +25,9 @@
     </div>
  </div>
   <p>
-    <mat-input-container class="node-transition-field">
+    <mat-form-field class="node-transition-field">
       <input matInput type="number" [(ngModel)]="node.Config.Timeout" placeholder="Timeout">
-    </mat-input-container>
+    </mat-form-field>
   </p>
   <p>
     <button mat-raised-button (click)="runFlow(node)" >Run</button>

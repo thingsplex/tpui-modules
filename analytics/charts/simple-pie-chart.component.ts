@@ -23,8 +23,7 @@ export class SimplePieChartComponent implements OnInit  {
   @Input() title       : string;
   @Input() data : number[];
   @Input() labels : string[];
-  @ViewChild('canvas')
-  canvasElement: ElementRef;
+  @ViewChild('canvass') canvasElement: ElementRef;
 
   globalSub : Subscription;
 
@@ -43,9 +42,11 @@ export class SimplePieChartComponent implements OnInit  {
   ngOnInit() {
     this.chartData.push({data:this.data,backgroundColor:[]})
     this.applyColors();
-    this.initChart();
-  }
 
+  }
+  ngAfterViewInit() {
+    this.initChart(); 
+  }
   applyColors() {
     let colors:any[] = [];
     let i = 0;

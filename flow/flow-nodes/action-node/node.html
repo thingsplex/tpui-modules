@@ -14,25 +14,25 @@
           <mat-panel-title> Advanced Service binding </mat-panel-title>
       </mat-expansion-panel-header>
         <p>
-            <mat-input-container style="width: 130px">
+            <mat-form-field style="width: 130px">
                 <input matInput [(ngModel)]="node.Service" placeholder="Service">
-            </mat-input-container>
-            <mat-input-container style="width: 200px">
+            </mat-form-field>
+            <mat-form-field style="width: 200px">
                 <input matInput [(ngModel)]="node.ServiceInterface" placeholder="Interface">
-            </mat-input-container>
-            <mat-input-container style="width: 450px">
+            </mat-form-field>
+            <mat-form-field style="width: 450px">
                 <input matInput [(ngModel)]="node.Address" placeholder="Address">
-            </mat-input-container>
+            </mat-form-field>
         </p>
-        <mat-input-container style="width: 450px">
+        <mat-form-field style="width: 450px">
             <input matInput [(ngModel)]="node.Config.ResponseToTopic" placeholder="Response topic">
-        </mat-input-container>
+        </mat-form-field>
       <div style="margin-bottom: 5px" >
         <mat-checkbox [(ngModel)]="node.Config.RegisterAsVirtualService" >Register as virtual service</mat-checkbox>
       </div>
-      <mat-input-container style="width: 200px">
+      <mat-form-field style="width: 200px">
         <input matInput [(ngModel)]="node.Config.VirtualServiceGroup" placeholder="Service group">
-      </mat-input-container>
+      </mat-form-field>
       <json-input [label] = "'Service properties'"  [(jData)]="node.Config.VirtualServiceProps"></json-input>
 
     </mat-expansion-panel>
@@ -60,15 +60,15 @@
               </mat-select>
             </mat-form-field>
             <span [ngSwitch]="node.Config.DefaultValue.ValueType">
-                    <mat-input-container *ngSwitchCase="'string'" class="node-transition-field">
+                    <mat-form-field *ngSwitchCase="'string'" class="node-transition-field">
                         <input matInput [(ngModel)]="node.Config.DefaultValue.Value" placeholder="Default value">
-                    </mat-input-container>
-                    <mat-input-container *ngSwitchCase="'int'" class="node-transition-field">
+                    </mat-form-field>
+                    <mat-form-field *ngSwitchCase="'int'" class="node-transition-field">
                         <input matInput type="number" [(ngModel)]="node.Config.DefaultValue.Value" placeholder="Default value">
-                    </mat-input-container>
-                    <mat-input-container *ngSwitchCase="'float'" class="node-transition-field">
+                    </mat-form-field>
+                    <mat-form-field *ngSwitchCase="'float'" class="node-transition-field">
                         <input matInput type="number" [(ngModel)]="node.Config.DefaultValue.Value" placeholder="Default value">
-                    </mat-input-container>
+                    </mat-form-field>
                 <span *ngSwitchCase="''">
                 </span>
                 <mat-radio-group *ngSwitchCase="'bool'" class="example-radio-group" placeholder="Default value" [(ngModel)]="node.Config.DefaultValue.Value">
@@ -79,33 +79,33 @@
                             false (Off)
                         </mat-radio-button>
                 </mat-radio-group>
-                <mat-input-container *ngSwitchCase="'str_array'" class="node-transition-field">
+                <mat-form-field *ngSwitchCase="'str_array'" class="node-transition-field">
                         <input matInput [(ngModel)]="complexValueAsString" (change)="updateComplexValue()"   placeholder="Default value : [&quot;abc&quot;,&quot;cde&quot;]">
-                </mat-input-container>
-                <mat-input-container *ngSwitchCase="'int_array'" class="node-transition-field">
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="'int_array'" class="node-transition-field">
                         <input matInput [(ngModel)]="complexValueAsString" (change)="updateComplexValue()"  placeholder="Default value : [1,2] ">
-                </mat-input-container>
-                <mat-input-container *ngSwitchCase="'float_array'" class="node-transition-field">
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="'float_array'" class="node-transition-field">
                         <input matInput [(ngModel)]="complexValueAsString" (change)="updateComplexValue()"  placeholder="Default value : [1.2,0.5] ">
-                </mat-input-container>
-                <mat-input-container *ngSwitchCase="'bool_array'" class="node-transition-field">
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="'bool_array'" class="node-transition-field">
                         <input matInput [(ngModel)]="complexValueAsString" (change)="updateComplexValue()"  placeholder="Default value : [true,false]">
-                </mat-input-container>
-                <mat-input-container *ngSwitchCase="'str_map'" class="node-transition-field">
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="'str_map'" class="node-transition-field">
                     <input matInput [(ngModel)]="complexValueAsString" (change)="updateComplexValue()"  placeholder="Default value : {&quot;a&quot;:&quot;a1&quot;,&quot;b&quot;:&quot;b2&quot;}">
-                </mat-input-container>
-                <mat-input-container *ngSwitchCase="'int_map'" class="node-transition-field">
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="'int_map'" class="node-transition-field">
                         <input matInput [(ngModel)]="complexValueAsString" (change)="updateComplexValue()"  placeholder="Default value : {&quot;a&quot;:1,&quot;b&quot;:2}">
-                </mat-input-container>
-                <mat-input-container *ngSwitchCase="'float_map'" class="node-transition-field">
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="'float_map'" class="node-transition-field">
                         <input matInput [(ngModel)]="complexValueAsString" (change)="updateComplexValue()"  placeholder="Default value : {&quot;a&quot;:0.5,&quot;b&quot;:1.5}">
-                </mat-input-container>
-                <mat-input-container *ngSwitchCase="'bool_map'" class="node-transition-field">
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="'bool_map'" class="node-transition-field">
                         <input matInput [(ngModel)]="complexValueAsString" (change)="updateComplexValue()"  placeholder="Default value : {&quot;a&quot;:true,&quot;b&quot;:false}">
-                </mat-input-container>
-                <mat-input-container *ngSwitchCase="'object'" class="node-transition-field">
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="'object'" class="node-transition-field">
                         <input matInput [(ngModel)]="complexValueAsString" (change)="updateComplexValue()"  placeholder="Default value : {&quot;a&quot;:&quot;b&quot;,&quot;b&quot;:3}">
-                </mat-input-container>
+                </mat-form-field>
             </span>
 
             <p>

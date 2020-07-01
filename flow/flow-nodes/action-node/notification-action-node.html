@@ -1,7 +1,7 @@
 <div>
     <variable-selector [label]="'Input variable'" [variableName]="node.Config.VariableName" [isGlobal]="node.Config.IsVariableGlobal" [flowId]="flowId" (onSelect)="inputVariableSelected($event)" ></variable-selector>
-    <mat-input-container style="width: 300px" >
+    <mat-form-field style="width: 300px" >
       <textarea mat-autosize  minRows="6" matInput [(ngModel)]="node.Config.DefaultValue.Value.MessageContent" > </textarea>
-    </mat-input-container>
+    </mat-form-field>
 
 </div>

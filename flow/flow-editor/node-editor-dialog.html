@@ -2,9 +2,9 @@
 
 <div [ngSwitch]="node.Type"  >
 
-    <mat-input-container class="node-label-field">
+    <mat-form-field class="node-label-field">
           <input matInput [(ngModel)]="node.Label" placeholder="Label" >
-    </mat-input-container>
+    </mat-form-field>
     <div *ngSwitchCase="'trigger'">
         <trigger-node *ngIf="node.Ui.nodeType==''" [node]="node" [nodes]="flow.Nodes" [flowId]="flow.Id" ></trigger-node>
         <vinc-trigger-node *ngIf="node.Ui.nodeType=='vinc_trigger'" [node]="node" [nodes]="flow.Nodes" [flowId]="flow.Id" ></vinc-trigger-node>

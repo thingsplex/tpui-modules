@@ -1,9 +1,9 @@
 <h1 mat-dialog-title> Add one or many devices </h1>
 <mat-dialog-content>
 <div *ngFor="let message of messages">{{message}}</div>
-  <mat-input-container class="node-transition-field">
+  <mat-form-field class="node-transition-field">
      <input matInput [(ngModel)]="customTemplateName" placeholder="templateName">
-  </mat-input-container>
+  </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
 <button mat-raised-button color="accent" (click)="startInclusion()" >Open network </button>

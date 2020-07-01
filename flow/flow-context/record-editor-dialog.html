@@ -1,11 +1,11 @@
 <h1 mat-dialog-title>Variable</h1>
 <mat-dialog-content style="height: 290px">
-        <mat-input-container class="node-transition-field">
+        <mat-form-field class="node-transition-field">
             <input  matInput placeholder="Name" [(ngModel)]="ctxRec.Name" >
-        </mat-input-container>
-        <mat-input-container class="node-transition-field">
+        </mat-form-field>
+        <mat-form-field class="node-transition-field">
           <input  matInput placeholder="Description" [(ngModel)]="ctxRec.Description" >
-        </mat-input-container>
+        </mat-form-field>
         <mat-select #nodeTypeInput class="value-selector"  placeholder="Value type" [(ngModel)]="ctxRec.ValueType" (change)="onTypeSelected($event)">
           <mat-option value="">The same as input </mat-option>
           <mat-option value="string">string</mat-option>
@@ -25,19 +25,19 @@
         </mat-select>
         <div [ngSwitch]="ctxRec.ValueType">
           <div *ngSwitchCase="'string'">
-            <mat-input-container class="node-transition-field">
+            <mat-form-field class="node-transition-field">
               <input matInput [(ngModel)]="ctxRec.Value" placeholder="Default value">
-            </mat-input-container>
+            </mat-form-field>
           </div>
           <div *ngSwitchCase="'int'">
-            <mat-input-container class="node-transition-field">
+            <mat-form-field class="node-transition-field">
               <input matInput type="number" [(ngModel)]="ctxRec.Value" placeholder="Default value">
-            </mat-input-container>
+            </mat-form-field>
           </div>
           <div *ngSwitchCase="'float'">
-            <mat-input-container class="node-transition-field">
+            <mat-form-field class="node-transition-field">
               <input matInput type="number" [(ngModel)]="ctxRec.Value" placeholder="Default value">
-            </mat-input-container>
+            </mat-form-field>
           </div>
           <div *ngSwitchCase="''">
 
@@ -53,49 +53,49 @@
             </mat-radio-group>
           </div>
           <div *ngSwitchCase="'str_array'">
-            <mat-input-container class="node-transition-field">
+            <mat-form-field class="node-transition-field">
               <input matInput [(ngModel)]="ctxRec.Value" placeholder="Default value : ['abc','cde']">
-            </mat-input-container>
+            </mat-form-field>
           </div>
           <div *ngSwitchCase="'int_array'">
-            <mat-input-container class="node-transition-field">
+            <mat-form-field class="node-transition-field">
               <input matInput [(ngModel)]="ctxRec.Value" placeholder="Default value : [1,2] ">
-            </mat-input-container>
+            </mat-form-field>
           </div>
           <div *ngSwitchCase="'float_array'">
-            <mat-input-container class="node-transition-field">
+            <mat-form-field class="node-transition-field">
               <input matInput [(ngModel)]="ctxRec.Value" placeholder="Default value : [1.2,0.5] ">
-            </mat-input-container>
+            </mat-form-field>
           </div>
           <div *ngSwitchCase="'bool_array'">
-            <mat-input-container class="node-transition-field">
+            <mat-form-field class="node-transition-field">
               <input matInput [(ngModel)]="ctxRec.Value" placeholder="Default value : [true,false]">
-            </mat-input-container>
+            </mat-form-field>
           </div>
           <div *ngSwitchCase="'str_map'">
-            <mat-input-container class="node-transition-field">
+            <mat-form-field class="node-transition-field">
               <input matInput [(ngModel)]="ctxRec.Value" placeholder="Default value : {'a':'a1','b':'b2'}">
-            </mat-input-container>
+            </mat-form-field>
           </div>
           <div *ngSwitchCase="'int_map'">
-            <mat-input-container class="node-transition-field">
+            <mat-form-field class="node-transition-field">
               <input matInput [(ngModel)]="ctxRec.Value" placeholder="Default value : {'a':1,'b':2}">
-            </mat-input-container>
+            </mat-form-field>
           </div>
           <div *ngSwitchCase="'float_map'">
-            <mat-input-container class="node-transition-field">
+            <mat-form-field class="node-transition-field">
               <input matInput [(ngModel)]="ctxRec.Value" placeholder="Default value : {'a':0.5,'b':1.5}">
-            </mat-input-container>
+            </mat-form-field>
           </div>
           <div *ngSwitchCase="'bool_map'">
-            <mat-input-container class="node-transition-field">
+            <mat-form-field class="node-transition-field">
               <input matInput [(ngModel)]="ctxRec.Value" placeholder="Default value : {'a':true,'b':false}">
-            </mat-input-container>
+            </mat-form-field>
           </div>
           <div *ngSwitchCase="'object'">
-            <mat-input-container class="node-transition-field">
+            <mat-form-field class="node-transition-field">
               <input matInput [(ngModel)]="ctxRec.Value" placeholder="Default value : {'a':'b','b':3}">
-            </mat-input-container>
+            </mat-form-field>
           </div>
         </div>
         <mat-checkbox style="margin-bottom: 5px;margin-top: 5px; margin-right: 10px;" [(ngModel)]="ctxRec.InMemory" > In memory </mat-checkbox>

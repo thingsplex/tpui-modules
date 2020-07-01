@@ -24,24 +24,23 @@ import { RecordEditorDialog} from "./flow-context/record-editor-dialog.component
 import { CdkTableModule } from '@angular/cdk/table';
 import { SignInDialog,FirebaseAuthCheckComponent } from './firebase/firebase-auth.component';
 
-import { MatTableModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatButtonModule,
-  MatChipsModule,
-  MatIconModule,
-  MatSliderModule,
-  MatCheckboxModule,
-  MatListModule,
-  MatSelectModule,
-  MatOptionModule,
-  MatDialogModule,
-  MatCardModule,
-  MatSidenavModule,
-  MatRadioModule,
-  MatExpansionModule,
-  MatTabsModule,
-  MatCheckbox} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule, MatCheckbox } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 // import {MsgDetailsDialog} from "../timeline/timeline.component";
 import {FlowPropsDialog} from "./flow-editor/flow-props-editor.component";
 

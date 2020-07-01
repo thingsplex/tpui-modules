@@ -1,15 +1,15 @@
 <h1 *ngIf="opType=='add'" mat-dialog-title> Create new flow </h1>
 <h1 *ngIf="opType=='edit'" mat-dialog-title> Edit flow </h1>
 <mat-dialog-content>
-  <mat-input-container class="example-full-width">
+  <mat-form-field class="example-full-width">
     <input matInput [(ngModel)]="flow.Name" placeholder="Name" >
-  </mat-input-container>
-  <mat-input-container class="example-full-width">
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
     <input matInput [(ngModel)]="flow.Group" placeholder="Group" >
-  </mat-input-container>
-  <mat-input-container style="width: 370px" >
+  </mat-form-field>
+  <mat-form-field style="width: 370px" >
     <input  matInput [(ngModel)]="flow.Description" placeholder="Description" >
-  </mat-input-container>
+  </mat-form-field>
   <div>
     <mat-form-field style="width: 370px" class="value-selector" >
       <mat-select #nodeTypeInput placeholder="How to start new flow instance ?" [(ngModel)]="flow.ParallelExecution">
@@ -29,13 +29,13 @@
       <tbody>
       <tr *ngFor="let s of settings">
         <td>{{ s.Key }}:</td>
-        <td><mat-input-container class="example-full-width">
+        <td><mat-form-field class="example-full-width">
           <input matInput [(ngModel)]="s.Value" placeholder="" >
-        </mat-input-container></td>
+        </mat-form-field></td>
         <td>
-        <mat-input-container style="width: 150px" >
+        <mat-form-field style="width: 150px" >
           <input  matInput [(ngModel)]="s.Description" placeholder="" >
-        </mat-input-container></td>
+        </mat-form-field></td>
       </tr>
       </tbody>
     </table>

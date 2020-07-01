@@ -15,15 +15,15 @@
                     </mat-panel-title>
             </mat-expansion-panel-header>
             <p>
-            <mat-input-container style="width: 130px">
+            <mat-form-field style="width: 130px">
                 <input matInput [(ngModel)]="node.Service" placeholder="Service" >
-            </mat-input-container>
-            <mat-input-container style="width: 200px">
+            </mat-form-field>
+            <mat-form-field style="width: 200px">
                 <input matInput [(ngModel)]="node.ServiceInterface" placeholder="Interface" >
-            </mat-input-container>
-            <mat-input-container style="width: 450px">
+            </mat-form-field>
+            <mat-form-field style="width: 450px">
                 <input matInput [(ngModel)]="node.Address" placeholder="Address" >
-            </mat-input-container>
+            </mat-form-field>
             </p>
         </mat-expansion-panel>
         <mat-expansion-panel>
@@ -32,12 +32,12 @@
                           Configure flow as virtual device
                         </mat-panel-title>
                 </mat-expansion-panel-header>
-                   <mat-input-container style="width: 130px">
+                   <mat-form-field style="width: 130px">
                         <input matInput [(ngModel)]="flowPublishService" placeholder="Service" (change)="onPublishServiceChange()" >
-                   </mat-input-container>
-                   <mat-input-container style="width: 200px">
+                   </mat-form-field>
+                   <mat-form-field style="width: 200px">
                         <input matInput [(ngModel)]="flowPublishInterface" placeholder="Interface" (change)="onPublishServiceChange()" >
-                   </mat-input-container>
+                   </mat-form-field>
                    <p>Address: {{ flowPublishAddress }}</p>
                    <button mat-raised-button (click)="publishFlowAsVirtualDevice()" >Copy to service binding</button>
                   <div style="margin-bottom: 5px;margin-top: 10px" >
@@ -47,9 +47,9 @@
                     <mat-checkbox [(ngModel)]="node.Config.LookupServiceNameAndLocation" >Do service name and location lookup</mat-checkbox>
                   </div>
 
-                  <mat-input-container style="width: 200px">
+                  <mat-form-field style="width: 200px">
                     <input matInput [(ngModel)]="node.Config.VirtualServiceGroup" placeholder="Service group">
-                  </mat-input-container>
+                  </mat-form-field>
                   <json-input style="min-width: 400px" [label] = "'Service properties'"  [(jData)]="node.Config.VirtualServiceProps"></json-input>
         </mat-expansion-panel>
         <mat-expansion-panel>
@@ -79,15 +79,15 @@
                 <mat-option value="object">object</mat-option>
             </mat-select>
             <span [ngSwitch]="node.Config.ValueFilter.ValueType">
-                    <mat-input-container *ngSwitchCase="'string'" class="node-transition-field">
+                    <mat-form-field *ngSwitchCase="'string'" class="node-transition-field">
                         <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value">
-                    </mat-input-container>
-                    <mat-input-container *ngSwitchCase="'int'" class="node-transition-field">
+                    </mat-form-field>
+                    <mat-form-field *ngSwitchCase="'int'" class="node-transition-field">
                         <input matInput type="number" [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value">
-                    </mat-input-container>
-                    <mat-input-container *ngSwitchCase="'float'"  class="node-transition-field">
+                    </mat-form-field>
+                    <mat-form-field *ngSwitchCase="'float'"  class="node-transition-field">
                         <input matInput type="number" [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value">
-                    </mat-input-container>
+                    </mat-form-field>
                 <span *ngSwitchCase="''">
 
                 </span>
@@ -99,39 +99,39 @@
                             false (Off)
                         </mat-radio-button>
                 </mat-radio-group>
-                <mat-input-container *ngSwitchCase="'str_array'" class="node-transition-field">
+                <mat-form-field *ngSwitchCase="'str_array'" class="node-transition-field">
                         <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : ['abc','cde']">
-                </mat-input-container>
-                <mat-input-container *ngSwitchCase="'int_array'" class="node-transition-field">
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="'int_array'" class="node-transition-field">
                         <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : [1,2] ">
-                </mat-input-container>
-                <mat-input-container *ngSwitchCase="'float_array'" class="node-transition-field">
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="'float_array'" class="node-transition-field">
                         <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : [1.2,0.5] ">
-                </mat-input-container>
-                <mat-input-container *ngSwitchCase="'bool_array'" class="node-transition-field">
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="'bool_array'" class="node-transition-field">
                         <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : [true,false]">
-                </mat-input-container>
-                <mat-input-container *ngSwitchCase="'str_map'" class="node-transition-field">
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="'str_map'" class="node-transition-field">
                         <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : {'a':'a1','b':'b2'}">
-                </mat-input-container>
-                <mat-input-container *ngSwitchCase="'int_map'" class="node-transition-field">
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="'int_map'" class="node-transition-field">
                         <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : {'a':1,'b':2}">
-                </mat-input-container>
-                <mat-input-container *ngSwitchCase="'float_map'" class="node-transition-field">
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="'float_map'" class="node-transition-field">
                         <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : {'a':0.5,'b':1.5}">
-                </mat-input-container>
-                <mat-input-container *ngSwitchCase="'bool_map'" class="node-transition-field">
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="'bool_map'" class="node-transition-field">
                         <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : {'a':true,'b':false}">
-                </mat-input-container>
-                <mat-input-container *ngSwitchCase="'object'" class="node-transition-field">
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="'object'" class="node-transition-field">
                         <input matInput [(ngModel)]="node.Config.ValueFilter.Value" placeholder="Default value : {'a':'b','b':3}">
-                </mat-input-container>
+                </mat-form-field>
             </span>
           </mat-expansion-panel>
           <p>
-          <mat-input-container class="node-transition-field">
+          <mat-form-field class="node-transition-field">
              <input matInput type="number" [(ngModel)]="node.Config.Timeout" placeholder="Timeout">
-          </mat-input-container>
+          </mat-form-field>
           </p>
    </div>
          <p>

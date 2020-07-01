@@ -2,9 +2,9 @@ import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import { FimpService } from "app/fimp/fimp.service";
 import { FimpMessage ,NewFimpMessageFromString } from 'app/fimp/Message';
 import { Subscription } from "rxjs/Subscription";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 // import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatSnackBar} from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {ThingsRegistryService} from "../registry/registry.service";
 
 // import {AddDeviceDialog} from "../zwave-man/zwave-man.component";

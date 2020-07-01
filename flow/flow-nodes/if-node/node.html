@@ -28,19 +28,19 @@
 
        <span [ngSwitch]="node.Config.Expression[index2].RightVariable.ValueType">
         <span *ngSwitchCase="'string'">
-          <mat-input-container class="node-transition-field">
+          <mat-form-field class="node-transition-field">
               <input matInput [(ngModel)]="node.Config.Expression[index2].RightVariable.Value" placeholder=" Right value" >
-          </mat-input-container>
+          </mat-form-field>
         </span>
         <span *ngSwitchCase="'int'">
-          <mat-input-container class="node-transition-field">
+          <mat-form-field class="node-transition-field">
               <input matInput type="number" [(ngModel)]="node.Config.Expression[index2].RightVariable.Value" placeholder="value" >
-          </mat-input-container>
+          </mat-form-field>
         </span>
         <span *ngSwitchCase="'float'">
-          <mat-input-container class="node-transition-field">
+          <mat-form-field class="node-transition-field">
               <input matInput type="number" [(ngModel)]="node.Config.Expression[index2].RightVariable.Value" placeholder="value" >
-          </mat-input-container>
+          </mat-form-field>
         </span>
 
         <span *ngSwitchCase="'bool'">

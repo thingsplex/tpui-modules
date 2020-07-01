@@ -1,14 +1,14 @@
 import { Component, OnInit,Inject } from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
-import {MatDialog, MatDialogRef,MatSnackBar} from '@angular/material';
-import {MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FimpService } from "app/fimp/fimp.service";
 import {FimpMessage, NewFimpMessageFromString} from "app/fimp/Message";
 import { msgTypeToValueTypeMap } from "app/things-db/mapping";
 import { BACKEND_ROOT } from "app/globals";
 import { ServiceInterface } from "app/tpui-modules/registry/model";
 import {SafeResourceUrl,DomSanitizer} from "@angular/platform-browser"
-import { setTimeout } from 'timers';
 import {FireService} from "app/firebase/fire.service";
 import {FlowPropsDialog} from "./flow-props-editor.component";
 import {Subscription} from "rxjs";

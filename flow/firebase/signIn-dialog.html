@@ -1,17 +1,17 @@
 <h1 mat-dialog-title>SignIn</h1>
 <mat-dialog-content>
-        <mat-input-container style="width: 300px" class="node-transition-field">
+        <mat-form-field style="width: 300px" class="node-transition-field">
             <input  matInput placeholder="Email" [(ngModel)]="email" >
-        </mat-input-container>
+        </mat-form-field>
        <div>
-         <mat-input-container style="width: 300px" class="node-transition-field">
+         <mat-form-field style="width: 300px" class="node-transition-field">
            <input type="password"  matInput placeholder="Password" [(ngModel)]="password" >
-         </mat-input-container>
+         </mat-form-field>
        </div>
       <div *ngIf="isRegisterMode">
-        <mat-input-container style="width: 300px"  class="node-transition-field">
+        <mat-form-field style="width: 300px"  class="node-transition-field">
           <input type="password"  matInput placeholder="Password" [(ngModel)]="password2" >
-        </mat-input-container>
+        </mat-form-field>
       </div>
       <div>{{errorMessage}}</div>
 </mat-dialog-content>

@@ -1,6 +1,6 @@
 import { Component, OnInit ,Input } from '@angular/core';
 import { MetaNode, ServiceLookupDialog } from "../flow-editor/flow-editor.component";
-import { MatDialog, MatDialogRef} from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-flow-nodes',

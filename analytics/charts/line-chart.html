@@ -3,9 +3,9 @@
         <canvas #canvas width="400" height="500px"></canvas>
     </div>
     <ng-container *ngIf="isFilterEnabled">
-      <mat-input-container style="height: 35px;margin: 10px;width: 120px" class="example-full-width">
+      <mat-form-field style="height: 35px;margin: 10px;width: 120px" class="example-full-width">
           <input matInput [(ngModel)]="timeFromNow" placeholder="Time from now" >
-      </mat-input-container>
+      </mat-form-field>
       <mat-form-field style="height: 35px;margin: 10px;width: 150px"  >
           <mat-select matNativeControl [(value)]="groupByTime"  placeholder="Group by time" >
               <mat-option value="5m">1 min</mat-option>

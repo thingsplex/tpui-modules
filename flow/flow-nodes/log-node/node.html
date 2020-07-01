@@ -7,9 +7,9 @@
     </mat-select>
   </mat-form-field>
   <div>
-    <mat-input-container  style="width: 400px">
+    <mat-form-field  style="width: 400px">
       <input matInput [(ngModel)]="node.Config.Text" placeholder="Text">
-    </mat-input-container>
+    </mat-form-field>
   </div>
  <variable-selector [label]="'Input variable'" [variableName]="node.Config.VariableName" [isGlobal]="node.Config.IsVariableGlobal" [flowId]="flowId" (onSelect)="inputVariableSelected($event)" ></variable-selector>
 

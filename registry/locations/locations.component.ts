@@ -11,7 +11,8 @@ import 'rxjs/add/observable/fromEvent';
 import {Location} from '../model';
 import { BACKEND_ROOT } from "app/globals";
 import { LocationEditorDialog} from './location-editor.component'
-import {MatDialog, MatDialogRef,MatSnackBar} from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {ThingsRegistryService} from "../registry.service";
 import {Subscription} from "rxjs";
 import {FimpMessage} from "../../../fimp/Message";
