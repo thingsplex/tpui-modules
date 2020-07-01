@@ -12,12 +12,26 @@
     </mat-card-header>
     <mat-card-content>
 
+      <div style="margin: 10px">
+        <label style="margin: 5px">Show only :</label>
+        <mat-radio-group [(ngModel)] = "filter" class="conf-radio-group">
+          <mat-radio-button class="conf-radio-button"  [value]="'RUNNING'">
+            Running flows
+          </mat-radio-button>
+          <mat-radio-button class="conf-radio-button"  [value]="'STOPPED'">
+            Stopped flows
+          </mat-radio-button>
+          <mat-radio-button class="conf-radio-button"  [value]="'ALL'">
+            All flows
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
 
    <mat-list >
      <ng-container *ngFor="let group of groups">
      <h3 >  {{group}}</h3>
        <ng-container *ngFor="let flow of flows">
-         <mat-list-item  *ngIf="flow.Group == group">
+         <mat-list-item  *ngIf="flow.Group == group && (flow.State==filter || filter=='ALL' )">
            <mat-icon mat-list-icon *ngIf="flow.State=='RUNNING'" style="color: #64ae52">device_hub</mat-icon>
            <mat-icon mat-list-icon *ngIf="flow.State!='RUNNING'" style="color: #ff3928">device_hub</mat-icon>
            <h3 mat-line style="font-size: 21px">  {{flow.Name}} </h3>

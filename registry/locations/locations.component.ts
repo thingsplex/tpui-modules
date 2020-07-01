@@ -2,7 +2,6 @@ import {Component, ElementRef, ViewChild,OnInit,Input,Output,EventEmitter} from 
 import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-import { Http, Response,URLSearchParams }  from '@angular/http';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
@@ -17,6 +16,7 @@ import {ThingsRegistryService} from "../registry.service";
 import {Subscription} from "rxjs";
 import {FimpMessage} from "../../../fimp/Message";
 import {FimpService} from "../../../fimp/fimp.service";
+import {HttpClient} from "@angular/common/http";
 // import {MatTableDataSource} from '@angular/material';
 
 @Component({
@@ -31,12 +31,12 @@ displayedColumns = ['id','type','sub_type','alias','address','action'];
 // 'serviceName','serviceAlias','intfMsgType'];
   dataSource: LocationsDataSource | null;
   private registrySub: Subscription = null;
-  constructor(private http : Http,public dialog: MatDialog,private registry:ThingsRegistryService,private fimp:FimpService) {
+  constructor(private http : HttpClient,public dialog: MatDialog,private registry:ThingsRegistryService,private fimp:FimpService) {
 
   }
 
   ngOnInit() {
-    this.dataSource = new LocationsDataSource(this.http,this.registry);
+    this.dataSource = new LocationsDataSource(this.registry);
 
     if (!this.registry.isRegistryInitialized()) {
       if (!this.registrySub) {
@@ -88,23 +88,13 @@ export class LocationsDataSource extends DataSource<any> {
   locations : Location[] = [];
   locationsObs = new BehaviorSubject<Location[]>([]);
 
-  constructor(private http : Http,private registry:ThingsRegistryService) {
+  constructor(private registry:ThingsRegistryService) {
     super();
     // this.getData();
   }
 
   getData() {
-    let params: URLSearchParams = new URLSearchParams();
-    // this.http
-    //     .get(BACKEND_ROOT+'/fimp/api/registry/locations',{search:params})
-    //     .map((res: Response)=>{
-    //       let result = res.json();
-    //       return this.mapThings(result);
-    //     }).subscribe(result=>{
-    //       this.locationsObs.next(result);
-    //     });
     this.locationsObs.next(this.registry.locations)
-
   }
 
   connect(): Observable<Location[]> {
@@ -143,17 +133,10 @@ export class LocationSelectorWizardComponent implements OnInit {
     this.loadLocations();
     this.selectedLocationId = this.currentLocation;
   }
-  constructor(private http : Http,private registry:ThingsRegistryService) {
+  constructor(private registry:ThingsRegistryService) {
   }
 
   loadLocations() {
-    // this.http.get(BACKEND_ROOT+'/fimp/api/registry/locations',{})
-    // .map((res: Response)=>{
-    //   let result = res.json();
-    //   return result;
-    // }).subscribe(result=>{
-    //   this.locations = result;
-    // });
     this.locations = this.registry.locations
   }
   onSelected() {

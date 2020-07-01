@@ -1,10 +1,9 @@
 import { Component, OnInit,Inject } from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
-import { Http, Response,URLSearchParams,RequestOptions,Headers }  from '@angular/http';
 import {MatDialog, MatDialogRef,MatSnackBar} from '@angular/material';
 import {MAT_DIALOG_DATA} from '@angular/material';
 import { FimpService } from "app/fimp/fimp.service";
-import { FimpMessage } from "app/fimp/Message";
+import {FimpMessage, NewFimpMessageFromString} from "app/fimp/Message";
 import { msgTypeToValueTypeMap } from "app/things-db/mapping";
 import { BACKEND_ROOT } from "app/globals";
 import { ServiceInterface } from "app/tpui-modules/registry/model";
@@ -12,6 +11,8 @@ import {SafeResourceUrl,DomSanitizer} from "@angular/platform-browser"
 import { setTimeout } from 'timers';
 import {FireService} from "app/firebase/fire.service";
 import {FlowPropsDialog} from "./flow-props-editor.component";
+import {Subscription} from "rxjs";
+import {HttpClient} from "@angular/common/http";
 
 export class MetaNode {
   Id               :string;
@@ -57,8 +58,10 @@ export class FlowEditorComponent implements OnInit {
   isDraggableLine:boolean;
   canvasHeight:number;
   canvasInitHeight:number;
+  lastRequestId:string;
+  private globalSub : Subscription;
 
-  constructor(private route: ActivatedRoute,private router: Router,private http : Http,public dialog: MatDialog,private fire:FireService,public snackBar: MatSnackBar) {
+  constructor(private route: ActivatedRoute,private router: Router,private http : HttpClient,public dialog: MatDialog,private fire:FireService,public snackBar: MatSnackBar,private fimp : FimpService) {
     this.flow = new Flow();
    }
 
@@ -68,29 +71,44 @@ export class FlowEditorComponent implements OnInit {
       this.showPropsDialog(id);
     }
     this.canvasHeight = 0;
+    this.configureFimpListener();
     this.loadFlow(id);
 
   }
+  ngOnDestroy() {
+    if(this.globalSub)
+      this.globalSub.unsubscribe();
+  }
+
+  configureFimpListener() {
+    this.globalSub = this.fimp.getGlobalObservable().subscribe((msg) => {
+      let fimpMsg = NewFimpMessageFromString(msg.payload.toString());
+      if (fimpMsg.service == "tpflow" && fimpMsg.corid ==this.lastRequestId ){
+        if (fimpMsg.mtype == "evt.flow.definition_report") {
+          if (fimpMsg.val) {
+            this.flow = fimpMsg.val;
+            this.enhanceNodes();
+            console.log("Flow loaded. Name :"+this.flow.Name);
+            setTimeout(()=>{this.redrawAllLines()},100);
+            let canvas = document.getElementById("flowEditorCanvasId");
+            this.canvasInitHeight = canvas.clientHeight;
+            this.loadContext();
+          }
+        }else if(fimpMsg.mtype == "evt.flow.update_report") {
+          this.snackBar.open('Flow is saved',"",{duration:1000});
+        }
+      }
+    });
+  }
 
   loadFlow(id:string) {
-     this.http
-      .get(BACKEND_ROOT+'/fimp/flow/definition/'+id)
-      .map(function(res: Response){
-        let body = res.json();
-        //console.log(body.Version);
-        return body;
-      }).subscribe ((result) => {
-         this.flow = result;
-         this.enhanceNodes();
-         console.dir(this.flow);
-         setTimeout(()=>{this.redrawAllLines()},100);
-         var canvas = document.getElementById("flowEditorCanvasId");
-         this.canvasInitHeight = canvas.clientHeight;
-        //  console.dir(this.flow)
-        //  console.log(this.flow.Name)
-         this.loadContext();
-      });
+    let msg  = new FimpMessage("tpflow","cmd.flow.get_definition","string",id,null,null)
+    msg.src = "tplex-ui"
+    this.lastRequestId = msg.uid;
+    msg.resp_to = "pt:j1/mt:rsp/rt:app/rn:tplex-ui/ad:1"
+    this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:tpflow/ad:1",msg.toString());
   }
+
   loadContext() {
     this.http
       .get(BACKEND_ROOT+'/fimp/api/flow/context/'+this.flow.Id)
@@ -126,16 +144,12 @@ export class FlowEditorComponent implements OnInit {
 
  saveFlow() {
     // console.dir(this.flow)
-    let snackRef = this.snackBar.open('Saving....',"");
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({headers:headers});
-    this.http
-      .post(BACKEND_ROOT+'/fimp/flow/definition/'+this.flow.Id,JSON.stringify(this.flow),  options )
-      .subscribe ((result) => {
-        snackRef.dismiss();
-        this.snackBar.open('Flow is saved',"",{duration:1000});
-        this.router.navigate(['/flow/editor',this.flow.Id]);
-      });
+     let snackRef = this.snackBar.open('Saving....',"");
+     let msg  = new FimpMessage("tpflow","cmd.flow.update_definition","object",this.flow,null,null)
+     msg.src = "tplex-ui"
+     this.lastRequestId = msg.uid;
+     msg.resp_to = "pt:j1/mt:rsp/rt:app/rn:tplex-ui/ad:1"
+     this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:tpflow/ad:1",msg.toString());
   }
   runFlow() {
     let node:MetaNode;
@@ -158,7 +172,7 @@ export class FlowEditorComponent implements OnInit {
   showPropsDialog(id) {
     let dialogRef = this.dialog.open(FlowPropsDialog,{
       // height: '95%',
-      width: '500px',
+      width: '600px',
       data:this.flow
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -693,7 +707,7 @@ export class FlowLogDialog {
   limit : number;
   flowId : string ;
   mode : string;
-  constructor(public dialogRef: MatDialogRef<FlowSourceDialog>,@Inject(MAT_DIALOG_DATA) public data: any,private http : Http) {
+  constructor(public dialogRef: MatDialogRef<FlowSourceDialog>,@Inject(MAT_DIALOG_DATA) public data: any,private http : HttpClient) {
     this.limit = 10;
     this.flowId = data.flowId;
     this.mode = data.mode;
@@ -708,10 +722,7 @@ export class FlowLogDialog {
 
     this.http
       .get(rurl)
-      .map(function(res: Response){
-        let body = res.json()
-        return body;
-      }).subscribe ((result) => {
+      .subscribe ((result:any) => {
         this.flowLog = result;
     });
 
@@ -794,7 +805,7 @@ export class NodeEditorDialog {
 export class ContextDialog {
   localContext :string ;
   globalContext : string;
-  constructor(public dialogRef: MatDialogRef<ContextDialog>,@Inject(MAT_DIALOG_DATA) public data: Flow,private http : Http) {
+  constructor(public dialogRef: MatDialogRef<ContextDialog>,@Inject(MAT_DIALOG_DATA) public data: Flow,private http : HttpClient) {
     //  this.http
     //   .get(BACKEND_ROOT+'/fimp/api/flow/context/'+data.Id)
     //   .map(function(res: Response){
@@ -880,7 +891,7 @@ export class HelpDialog {
 export class ServiceLookupDialog  implements OnInit {
   interfaces :any;
   msgFlowDirectionD = "";
-  constructor(public dialogRef: MatDialogRef<ServiceLookupDialog>,private http : Http,@Inject(MAT_DIALOG_DATA) msgFlowDirectionD : string) {
+  constructor(public dialogRef: MatDialogRef<ServiceLookupDialog>,private http : HttpClient,@Inject(MAT_DIALOG_DATA) msgFlowDirectionD : string) {
     console.log("Msg flow direction:"+msgFlowDirectionD);
     this.msgFlowDirectionD = msgFlowDirectionD
   }

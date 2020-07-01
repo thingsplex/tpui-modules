@@ -3,7 +3,6 @@ import {MatDialog, MatDialogRef,MatSnackBar} from '@angular/material';
 import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-import { Http, Response,URLSearchParams }  from '@angular/http';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
@@ -17,6 +16,7 @@ import {DeviceEditorDialog} from './device-editor.component'
 import {ThingsRegistryService} from "../registry.service";
 import {register} from "ts-node/dist";
 import {Subscription} from "rxjs";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-devices',
@@ -32,7 +32,7 @@ export class DevicesComponent implements OnInit {
 
   @ViewChild('filterAddr') filter: ElementRef;
 
-  constructor(private http : Http,private route: ActivatedRoute,public dialog: MatDialog,private registry:ThingsRegistryService) {
+  constructor(private http : HttpClient,private route: ActivatedRoute,public dialog: MatDialog,private registry:ThingsRegistryService) {
 
   }
 
@@ -40,7 +40,7 @@ export class DevicesComponent implements OnInit {
 
     let filterName = this.route.snapshot.params['filterName'];
     this.locationId = this.route.snapshot.params['filterValue'];
-    this.dataSource = new DevicesDataSource(this.http,this.registry);
+    this.dataSource = new DevicesDataSource(this.registry);
     if (this.locationId=="*"){
       this.locationId = "";
     }
@@ -115,23 +115,12 @@ export class DevicesDataSource extends DataSource<any> {
   get filter(): string { return this._filterChange.value; }
   set filter(filter: string) { this.getData("","") }
 
-  constructor(private http : Http,private registry:ThingsRegistryService) {
+  constructor(private registry:ThingsRegistryService) {
     super();
     // this.getData("");
   }
 
   getData(filterName,id:string) {
-    // let params: URLSearchParams = new URLSearchParams();
-    // params.set('locationId', locationId);
-    // this.http
-    //     .get(BACKEND_ROOT+'/fimp/api/registry/devices',{search:params})
-    //     .map((res: Response)=>{
-    //       let result = res.json();
-    //       return this.mapDevices(result);
-    //     }).subscribe(result=>{
-    //       this.devicesObs.next(result);
-    //     });
-
     console.log("Total devices in registry = "+this.registry.devices.length);
     if (filterName == "locationId") {
       if (id == "") {

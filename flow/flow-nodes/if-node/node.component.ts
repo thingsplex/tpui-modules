@@ -1,8 +1,8 @@
 import {MetaNode} from "../../flow-editor/flow-editor.component";
 import {Component, Input, OnInit} from "@angular/core";
 import {MatDialog} from "@angular/material";
-import {Http, Response} from "@angular/http";
 import {BACKEND_ROOT} from "../../../../globals";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'if-node',
@@ -15,7 +15,7 @@ export class IfNodeComponent implements OnInit {
   @Input() flowId:string;
   localVars:any;
   globalVars:any;
-  constructor(public dialog: MatDialog,private http : Http) { }
+  constructor(public dialog: MatDialog,private http : HttpClient) { }
   ngOnInit() {
     this.loadContext();
   }
@@ -35,10 +35,7 @@ export class IfNodeComponent implements OnInit {
     if (this.flowId) {
       this.http
         .get(BACKEND_ROOT+'/fimp/api/flow/context/'+this.flowId)
-        .map(function(res: Response){
-          let body = res.json();
-          return body;
-        }).subscribe ((result) => {
+        .subscribe ((result) => {
         this.localVars = [];
         for (var key in result){
           this.node
@@ -51,10 +48,7 @@ export class IfNodeComponent implements OnInit {
 
     this.http
       .get(BACKEND_ROOT+'/fimp/api/flow/context/global')
-      .map(function(res: Response){
-        let body = res.json();
-        return body;
-      }).subscribe ((result) => {
+      .subscribe ((result) => {
       this.globalVars = [];
       for (var key in result){
         this.globalVars.push(result[key].Name);
@@ -63,8 +57,6 @@ export class IfNodeComponent implements OnInit {
   }
 
   variableSelected(event:any,config:any){
-
-
 
   }
 }

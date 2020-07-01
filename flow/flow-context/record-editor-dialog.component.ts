@@ -1,11 +1,11 @@
 import { Component, OnInit,Inject } from '@angular/core';
-import { Http, Response,URLSearchParams,RequestOptions,Headers }  from '@angular/http';
 import { MatDialog, MatDialogRef,MatSnackBar} from '@angular/material';
 import { MAT_DIALOG_DATA} from '@angular/material';
 import { BACKEND_ROOT } from "app/globals";
 import {Variable} from "../flow-editor/flow-editor.component";
 import {TableContextRec} from "./model";
 import {ContextRecord} from "./model"
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Component({
     selector: 'record-editor-dialog',
@@ -14,14 +14,14 @@ import {ContextRecord} from "./model"
   })
   export class RecordEditorDialog {
     ctxRec : TableContextRec;
-    constructor(public dialogRef: MatDialogRef<RecordEditorDialog>, @Inject(MAT_DIALOG_DATA) public data: TableContextRec, public snackBar: MatSnackBar, private http : Http) {
+    constructor(public dialogRef: MatDialogRef<RecordEditorDialog>, @Inject(MAT_DIALOG_DATA) public data: TableContextRec, public snackBar: MatSnackBar, private http : HttpClient) {
           this.ctxRec = data;
           console.dir(data)
     }
 
     save(){
-      let headers = new Headers({ 'Content-Type': 'application/json' });
-      let options = new RequestOptions({headers:headers});
+      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      let options = {headers:headers};
       let request = new ContextRecord();
       request.Name = this.ctxRec.Name;
       request.Variable = new Variable();
@@ -37,7 +37,7 @@ import {ContextRecord} from "./model"
         this.ctxRec.FlowId = "global";
       }
       this.http
-        .post(BACKEND_ROOT+'/fimp/api/flow/context/record/'+this.ctxRec.FlowId,JSON.stringify(request),  options )
+        .post(BACKEND_ROOT+'/fimp/api/flow/context/record/'+this.ctxRec.FlowId,request,  options )
         .subscribe ((result) => {
            console.log("Context record was saved");
           this.snackBar.open('Saved',null,{duration: 2000});

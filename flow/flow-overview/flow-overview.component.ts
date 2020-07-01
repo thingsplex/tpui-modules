@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Headers, Http, RequestOptions, Response, URLSearchParams} from '@angular/http';
 import { BACKEND_ROOT } from "app/globals";
-import { DatePipe } from '@angular/common';
 import {FlowLogDialog, FlowSourceDialog} from "../flow-editor/flow-editor.component";
 import {MatDialog} from "@angular/material";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Component({
   selector: 'flow-overview',
@@ -13,7 +12,10 @@ import {MatDialog} from "@angular/material";
 export class FlowOverviewComponent implements OnInit {
   flows : any[];
   groups : string[];
-  constructor(private http : Http,public dialog: MatDialog) {  }
+  filter : string;
+  constructor(private http : HttpClient,public dialog: MatDialog) {
+    this.filter = "RUNNING"
+  }
 
   ngOnInit() {
     this.loadListOfFlows()
@@ -21,11 +23,7 @@ export class FlowOverviewComponent implements OnInit {
   loadListOfFlows() {
      this.http
       .get(BACKEND_ROOT+'/fimp/flow/list')
-      .map(function(res: Response){
-        let body = res.json();
-        //console.log(body.Version);
-        return body;
-      }).subscribe ((result) => {
+      .subscribe ((result:any) => {
          this.flows = result;
          var groupsSet = new Set();
          for (let gr of this.flows) {
@@ -85,24 +83,11 @@ export class FlowOverviewComponent implements OnInit {
     });
   }
 
-  // openFlowShareWindow() {
-  //   let dialogRef = this.dialog.open(FlowLibComponent,{
-  //     // height: '95%',
-  //     width: '95%',
-  //     data:{}
-  //   });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //
-  //
-  //
-  //   });
-  // }
-
   importFlow(flow){
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({headers:headers});
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = {headers:headers};
     this.http
-      .put(BACKEND_ROOT+'/fimp/flow/definition/import',JSON.stringify(flow),  options )
+      .put(BACKEND_ROOT+'/fimp/flow/definition/import',flow,  options )
       .subscribe ((result) => {
         console.log("Flow was saved");
       });

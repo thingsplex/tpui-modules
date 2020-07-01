@@ -18,7 +18,6 @@ import { ActionNodeComponent,VincActionNodeComponent,NotificationActionNodeCompo
 import { ReceiveNodeComponent } from './flow-nodes/flow-nodes.component';
 import { FlowRoutingModule } from "app/tpui-modules/flow/flow-routing.module";
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 import { RegistryModule} from 'app/tpui-modules/registry/registry.module'
 import { VariableElementComponent} from 'app/tpui-modules/flow/flow-nodes/ui-elements/ui-elements.component'
 import { RecordEditorDialog} from "./flow-context/record-editor-dialog.component";
@@ -68,7 +67,6 @@ import {FlowPropsDialog} from "./flow-editor/flow-props-editor.component";
     MatRadioModule,
     MatExpansionModule,
     FormsModule,
-    HttpModule,
     RegistryModule,
     MatTabsModule,
     CdkTableModule

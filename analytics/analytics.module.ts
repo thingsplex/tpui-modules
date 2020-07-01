@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkTableModule } from '@angular/cdk/table';
-import { HttpModule } from '@angular/http';
 import { AnalyticsRoutingModule } from "./analytics-routing.module";
 import { RegistryModule } from "../registry/registry.module";
 import { last } from 'rxjs/operator/last';
@@ -57,7 +56,6 @@ import {AnalyticsSettingsService} from "./charts/settings.service";
     MatDialogModule,
     MatExpansionModule,
     MatTabsModule,
-     HttpModule,
     RegistryModule
   ],
   exports:[],

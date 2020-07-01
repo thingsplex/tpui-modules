@@ -2,7 +2,6 @@ import {Component, ElementRef, ViewChild, OnInit, Input} from '@angular/core';
 import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-import { Http, Response,URLSearchParams }  from '@angular/http';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
@@ -13,6 +12,7 @@ import { BACKEND_ROOT } from "app/globals";
 import {MatDialog} from "@angular/material";
 import {RecordEditorDialog} from "./record-editor-dialog.component";
 import {TableContextRec} from "./model"
+import {HttpClient} from "@angular/common/http";
 
 
 @Component({
@@ -26,7 +26,7 @@ export class FlowContextComponent implements OnInit {
   loadMode : string
   displayedColumns = ['flowId','name','description','valueType','value','updatedAt','action'];
   dataSource: FlowContextDataSource | null;
-  constructor(private http : Http,public dialog: MatDialog) {
+  constructor(private http : HttpClient,public dialog: MatDialog) {
   }
   ngOnInit() {
     if (!this.flowId) {
@@ -89,7 +89,7 @@ export class FlowContextComponent implements OnInit {
 export class FlowContextDataSource extends DataSource<any> {
   ctxRecordsObs = new BehaviorSubject<TableContextRec[]>([]);
 
-  constructor(private http : Http,private flowId:string) {
+  constructor(private http : HttpClient,private flowId:string) {
     super();
     console.log("Getting context data")
     this.getData(flowId);
@@ -98,24 +98,10 @@ export class FlowContextDataSource extends DataSource<any> {
   getData(flowId:string) {
     this.http
         .get(BACKEND_ROOT+'/fimp/api/flow/context/'+flowId)
-        .map((res: Response)=>{
-          let result = res.json();
-          return this.mapContext(result,flowId);
-        }).subscribe(result=>{
+        .subscribe((result:any)=>{
           this.ctxRecordsObs.next(result);
           console.log("Mappping global variable")
         });
-    // if(this.flowId)
-    //   this.http
-    //     .get(BACKEND_ROOT+'/fimp/api/flow/context/'+this.flowId)
-    //     .map((res: Response)=>{
-    //       let result = res.json();
-    //       return this.mapContext(result,this.flowId);
-    //     }).subscribe(result=>{
-    //
-    //       this.ctxRecordsObs.next(this.ctxRecordsObs.getValue().concat(result));
-    //   });
-
   }
 
   connect(): Observable<TableContextRec[]> {

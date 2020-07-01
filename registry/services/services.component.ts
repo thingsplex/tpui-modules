@@ -3,7 +3,6 @@ import {MatDialog, MatDialogRef,MatSnackBar} from '@angular/material';
 import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-import { Http, Response,URLSearchParams }  from '@angular/http';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
@@ -12,9 +11,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromEvent';
 import { ActivatedRoute } from '@angular/router';
 import { ServiceInterface,Service} from '../model';
-import { BACKEND_ROOT} from "app/globals";
 import { getFimpServiceList} from "app/fimp/service-lookup"
-// import {ThingIntfUiComponent} from 'app/registry/thing-intf-ui/thing-intf-ui.component'
 import {ServiceEditorDialog} from './service-editor.component'
 import {ThingsRegistryService} from "../registry.service";
 import {Subscription} from "rxjs";
@@ -135,14 +132,14 @@ export class ServicesComponent implements OnInit {
   @ViewChild('filterThingAddr') filterThingAddr: ElementRef;
   @ViewChild('filterServiceName') filterServiceName: ElementRef;
 
-  constructor(private http : Http,private route: ActivatedRoute,public dialog: MatDialog,private registry:ThingsRegistryService) {
+  constructor(private route: ActivatedRoute,public dialog: MatDialog,private registry:ThingsRegistryService) {
 
   }
 
   ngOnInit() {
     this.thingId = this.route.snapshot.params['filterValue'];
     console.log("Thing id  = ",this.thingId);
-    this.dataSource = new ServicesDataSource(this.http,this.registry);
+    this.dataSource = new ServicesDataSource(this.registry);
 
     if (!this.registry.isRegistryInitialized()) {
       if (!this.registrySub) {
@@ -220,7 +217,7 @@ export class ServicesDataSource extends DataSource<any> {
   services : Service[] = [];
   servicesObs = new BehaviorSubject<Service[]>([]);
 
-  constructor(private http : Http,private registry:ThingsRegistryService) {
+  constructor(private registry:ThingsRegistryService) {
     super();
   }
 

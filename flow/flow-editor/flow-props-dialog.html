@@ -11,17 +11,40 @@
     <input  matInput [(ngModel)]="flow.Description" placeholder="Description" >
   </mat-input-container>
   <div>
-  <mat-form-field style="width: 370px" class="value-selector" >
-    <mat-select #nodeTypeInput placeholder="How to start new flow instance ?" [(ngModel)]="flow.ParallelExecution">
-      <mat-option value="parallel">Run all instances in parallel </mat-option>
-      <mat-option value="keep_first">Keep already running instance and skip new instance</mat-option>
-      <mat-option value="keep_last">Keep new instance and abort already running instance</mat-option>
-    </mat-select>
-  </mat-form-field>
+    <mat-form-field style="width: 370px" class="value-selector" >
+      <mat-select #nodeTypeInput placeholder="How to start new flow instance ?" [(ngModel)]="flow.ParallelExecution">
+        <mat-option value="parallel">Run all instances in parallel </mat-option>
+        <mat-option value="keep_first">Keep already running instance and skip new instance</mat-option>
+        <mat-option value="keep_last">Keep new instance and abort already running instance</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
+
+  <div *ngIf="hasCustomSettings">
+    <h3 >Custom settings</h3>
+    <table>
+      <thead>
+      <tr><td>Name</td><td>Value</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let s of settings">
+        <td>{{ s.Key }}:</td>
+        <td><mat-input-container class="example-full-width">
+          <input matInput [(ngModel)]="s.Value" placeholder="" >
+        </mat-input-container></td>
+        <td>
+        <mat-input-container style="width: 150px" >
+          <input  matInput [(ngModel)]="s.Description" placeholder="" >
+        </mat-input-container></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+
 </mat-dialog-content>
 <mat-dialog-actions>
 <button mat-raised-button color="warn" (click)="save()" >Save</button>
-<button *ngIf="opType=='edit'" mat-raised-button >Close</button>
+<button *ngIf="opType=='edit'" mat-raised-button mat-dialog-close >Close</button>
 <button *ngIf="opType=='add'" mat-raised-button [routerLink]="['/flow/overview']" mat-dialog-close> Close </button>
 </mat-dialog-actions>

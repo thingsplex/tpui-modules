@@ -2,8 +2,8 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
 import { Observable } from 'rxjs';
 import {FireService} from "app/firebase/fire.service";
-import {Headers, Http, RequestOptions} from "@angular/http";
 import {BACKEND_ROOT} from "app/globals";
+import {HttpClient} from "@angular/common/http";
 
 
 export interface Item { name: string; }
@@ -17,7 +17,7 @@ export class FlowLibComponent implements OnInit {
   // private itemsCollection: AngularFirestoreCollection<Item>;
   items: Observable<Item[]>;
   flows: any[];
-  constructor(public fire:FireService, private http : Http,public dialog: MatDialog) {
+  constructor(public fire:FireService, private http : HttpClient,public dialog: MatDialog) {
     // this.flowSourceText = JSON.stringify(data, null, 2)
     // this.itemsCollection = afs.collection<Item>('items');
     // this.items = this.itemsCollection.valueChanges();
@@ -94,7 +94,7 @@ export class FlowLibComponent implements OnInit {
       //     .subscribe ((result) => {
       //       console.log("Flow was saved");
       //     });
-      this.http.put(BACKEND_ROOT+'/fimp/flow/definition/import_from_url', {Url:flowUrl,Token:""}).subscribe(res => console.log(res.json()));
+      this.http.put(BACKEND_ROOT+'/fimp/flow/definition/import_from_url', {Url:flowUrl,Token:""}).subscribe((res:any) => console.log(res.json()));
       // this.http.get(flowUrl).subscribe ((result) => {
 
         // This can be downloaded directly:

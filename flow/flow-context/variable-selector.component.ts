@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Http, Response} from "@angular/http";
 import {BACKEND_ROOT} from "app/globals";
 import {TableContextRec} from "./model";
 import {RecordEditorDialog} from "./record-editor-dialog.component";
 import {MatDialog} from "@angular/material";
+import {HttpClient} from "@angular/common/http";
 
 export class ContextVariable {
 
@@ -32,7 +32,7 @@ export class VariableSelectorComponent implements OnInit {
   ngOnInit() {
     this.loadContext();
   }
-  constructor(private http : Http,public dialog: MatDialog) {
+  constructor(private http : HttpClient,public dialog: MatDialog) {
   }
 
   loadContext() {
@@ -42,10 +42,7 @@ export class VariableSelectorComponent implements OnInit {
 
       this.http
         .get(BACKEND_ROOT+'/fimp/api/flow/context/'+this.flowId)
-        .map(function(res: Response){
-          let body = res.json();
-          return body;
-        }).subscribe ((result) => {
+        .subscribe ((result) => {
         let isVariableInList = false;
         for (var key in result){
           let v = new ContextVariable()
@@ -77,10 +74,7 @@ export class VariableSelectorComponent implements OnInit {
 
     this.http
       .get(BACKEND_ROOT+'/fimp/api/flow/context/global')
-      .map(function(res: Response){
-        let body = res.json();
-        return body;
-      }).subscribe ((result) => {
+      .subscribe ((result) => {
       let isVariableInList = false;
       for (var key in result){
         let v = new ContextVariable()

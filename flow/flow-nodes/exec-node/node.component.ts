@@ -1,7 +1,6 @@
 import {MetaNode, ServiceLookupDialog} from "../../flow-editor/flow-editor.component";
 import {Component, Input, OnInit} from "@angular/core";
 import {MatDialog} from "@angular/material";
-import {Http, Response} from "@angular/http";
 import {ContextVariable} from "../../flow-context/variable-selector.component";
 
 @Component({
@@ -15,7 +14,7 @@ export class ExecNodeComponent implements OnInit {
   @Input() flowId:string;
   localVars:any;
   globalVars:any;
-  constructor(public dialog: MatDialog,private http : Http) {
+  constructor(public dialog: MatDialog) {
   }
 
   ngOnInit() {

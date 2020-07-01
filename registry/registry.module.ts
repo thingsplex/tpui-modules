@@ -17,7 +17,6 @@ import { MatTableModule,
          MatCardModule,
          MatCheckbox} from '@angular/material';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 import { ThingsComponent } from './things/things.component';
 import { DevicesComponent } from './devices/devices.component';
 import { ServicesComponent ,ServicesMainComponent,ServiceSelectorWizardComponent } from './services/services.component';
@@ -55,7 +54,6 @@ import {ThingsRegistryService} from "./registry.service";
     MatDialogModule,
     MatTabsModule,
     MatCardModule,
-    HttpModule,
     CdkTableModule
   ],
   exports:[ServicesComponent,

@@ -3,7 +3,6 @@ import {MatDialog, MatDialogRef,MatSnackBar} from '@angular/material';
 import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-import { Http, Response,URLSearchParams }  from '@angular/http';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
@@ -16,6 +15,7 @@ import { BACKEND_ROOT } from "app/globals";
 import { ThingEditorDialog} from './thing-editor.component'
 import {ThingsRegistryService} from "../registry.service";
 import {Subscription} from "rxjs";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-things',
@@ -29,7 +29,7 @@ export class ThingsComponent implements OnInit {
   private registrySub: Subscription = null;
   @ViewChild('filterAddr') filter: ElementRef;
 
-  constructor(private http : Http,private route: ActivatedRoute,public dialog: MatDialog,private registry:ThingsRegistryService) {
+  constructor(private http : HttpClient,private route: ActivatedRoute,public dialog: MatDialog,private registry:ThingsRegistryService) {
 
   }
 
@@ -98,7 +98,7 @@ export class ThingsDataSource extends DataSource<any> {
   get filter(): string { return this._filterChange.value; }
   set filter(filter: string) { this.getData("") }
 
-  constructor(private http : Http,private registry:ThingsRegistryService) {
+  constructor(private http : HttpClient,private registry:ThingsRegistryService) {
     super();
     // this.getData("");
   }
