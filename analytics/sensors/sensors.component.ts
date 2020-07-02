@@ -105,6 +105,7 @@ export class SensorsComponent implements OnInit {
   // }
 
   updateSelectedSensorTypes() {
+    console.log("sensor type update")
     this.updateListOfSensorTypes();
   }
 

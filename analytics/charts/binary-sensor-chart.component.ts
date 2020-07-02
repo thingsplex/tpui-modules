@@ -31,7 +31,7 @@ export class BinarySensorChartComponent implements OnInit  {
   @Input() dataProcFunc    : string;
   @Input() set height (val: number) {
     this._height = String(val)+"px";
-    this.canvasElement.nativeElement.style.height = this._height;
+
   }
   get height():number {
     return 0;
@@ -164,10 +164,12 @@ export class BinarySensorChartComponent implements OnInit  {
     }
   }
 
-
   ngOnInit() {
+  }
 
-    if(this.timeFromNow == undefined)
+  ngAfterViewInit() {
+    this.canvasElement.nativeElement.style.height = this._height;
+      if(this.timeFromNow == undefined)
       this.timeFromNow = "24h";
     if (this.measurement==undefined)
       this.measurement = "sensor_presence.evt.presence.report";

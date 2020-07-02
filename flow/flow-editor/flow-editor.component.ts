@@ -9,7 +9,7 @@ import { msgTypeToValueTypeMap } from "app/things-db/mapping";
 import { BACKEND_ROOT } from "app/globals";
 import { ServiceInterface } from "app/tpui-modules/registry/model";
 import {SafeResourceUrl,DomSanitizer} from "@angular/platform-browser"
-import {FireService} from "app/firebase/fire.service";
+// import {FireService} from "app/firebase/fire.service";
 import {FlowPropsDialog} from "./flow-props-editor.component";
 import {Subscription} from "rxjs";
 import {HttpClient} from "@angular/common/http";
@@ -61,11 +61,11 @@ export class FlowEditorComponent implements OnInit {
   lastRequestId:string;
   private globalSub : Subscription;
 
-  constructor(private route: ActivatedRoute,private router: Router,private http : HttpClient,public dialog: MatDialog,private fire:FireService,public snackBar: MatSnackBar,private fimp : FimpService) {
+  constructor(private route: ActivatedRoute,private router: Router,private http : HttpClient,public dialog: MatDialog,public snackBar: MatSnackBar,private fimp : FimpService) {
     this.flow = new Flow();
    }
 
-  ngOnInit() {
+  ngOnInit(){
     let id  = this.route.snapshot.params['id'];
     if (id=="-" || id=="") {
       this.showPropsDialog(id);
@@ -112,10 +112,7 @@ export class FlowEditorComponent implements OnInit {
   loadContext() {
     this.http
       .get(BACKEND_ROOT+'/fimp/api/flow/context/'+this.flow.Id)
-      .map(function(res: Response){
-        let body = res.json();
-        return body;
-      }).subscribe ((result) => {
+      .subscribe ((result) => {
          this.localVars = [];
          for (var key in result){
             this.localVars.push(result[key].Name);
@@ -125,10 +122,7 @@ export class FlowEditorComponent implements OnInit {
 
     this.http
       .get(BACKEND_ROOT+'/fimp/api/flow/context/global')
-      .map(function(res: Response){
-        let body = res.json();
-        return body;
-      }).subscribe ((result) => {
+      .subscribe ((result) => {
         this.globalVars = [];
         for (var key in result){
             this.globalVars.push(result[key].Name);
@@ -542,8 +536,8 @@ findInputSocketPosition(htmlElement):any {
   }
 
   shareFlow() {
-    this.fire.addFlow(this.flow);
-    this.snackBar.open('Flow is shared',"",{duration:1000});
+    // this.fire.addFlow(this.flow);
+    // this.snackBar.open('Flow is shared',"",{duration:1000});
   }
 
   showLog() {

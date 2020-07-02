@@ -1,6 +1,6 @@
 <h1 mat-dialog-title> Run the flow </h1>
-<mat-dialog-content>
-        <div [ngSwitch]="valueType">
+<mat-dialog-content style="height: 70px">
+        <div [ngSwitch]="valueType" style="margin: 10px">
                 <div *ngSwitchCase="'string'">
                     <mat-form-field class="node-transition-field">
                         <input matInput [(ngModel)]="value" placeholder="Default value">

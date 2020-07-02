@@ -45,7 +45,7 @@ export class SimplePieChartComponent implements OnInit  {
 
   }
   ngAfterViewInit() {
-    this.initChart(); 
+    this.initChart();
   }
   applyColors() {
     let colors:any[] = [];

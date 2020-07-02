@@ -22,7 +22,7 @@ import { RegistryModule} from 'app/tpui-modules/registry/registry.module'
 import { VariableElementComponent} from 'app/tpui-modules/flow/flow-nodes/ui-elements/ui-elements.component'
 import { RecordEditorDialog} from "./flow-context/record-editor-dialog.component";
 import { CdkTableModule } from '@angular/cdk/table';
-import { SignInDialog,FirebaseAuthCheckComponent } from './firebase/firebase-auth.component';
+// import { SignInDialog,FirebaseAuthCheckComponent } from './firebase/firebase-auth.component';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -79,8 +79,8 @@ import {FlowPropsDialog} from "./flow-editor/flow-props-editor.component";
      FlowRunDialog,
      FlowPropsDialog,
      FlowLogDialog,
-    SignInDialog,
-    FirebaseAuthCheckComponent,
+    // SignInDialog,
+    // FirebaseAuthCheckComponent,
      VariableSelectorComponent,
      JsonInputComponent,
      NodeEditorDialog,
@@ -111,6 +111,6 @@ import {FlowPropsDialog} from "./flow-editor/flow-props-editor.component";
   ],
   providers:[],
   exports:[JsonInputComponent],
-  entryComponents: [FlowSourceDialog,FlowLogDialog,FlowRunDialog,FlowPropsDialog,ServiceLookupDialog,ContextDialog,NodeEditorDialog,HelpDialog,RecordEditorDialog,SignInDialog]
+  entryComponents: [FlowSourceDialog,FlowLogDialog,FlowRunDialog,FlowPropsDialog,ServiceLookupDialog,ContextDialog,NodeEditorDialog,HelpDialog,RecordEditorDialog] // SignInDialog
 })
 export class FlowModule { }

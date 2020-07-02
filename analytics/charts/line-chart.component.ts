@@ -56,7 +56,7 @@ export class LineChartComponent implements OnInit  {
   @Input() dataProcFunc    : string;
   @Input() set height (val: number) {
     this._height = String(val)+"px";
-    this.canvasElement.nativeElement.style.height = this._height;
+
   }
   get height():number {
     return 0;
@@ -191,8 +191,11 @@ export class LineChartComponent implements OnInit  {
       }
     }
   }
+  ngOnInit()
+   {
+   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
 
     if(this.timeFromNow == undefined)
       this.timeFromNow = "24h";
