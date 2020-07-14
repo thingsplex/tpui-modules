@@ -22,8 +22,6 @@ import { RegistryModule} from 'app/tpui-modules/registry/registry.module'
 import { VariableElementComponent} from 'app/tpui-modules/flow/flow-nodes/ui-elements/ui-elements.component'
 import { RecordEditorDialog} from "./flow-context/record-editor-dialog.component";
 import { CdkTableModule } from '@angular/cdk/table';
-// import { SignInDialog,FirebaseAuthCheckComponent } from './firebase/firebase-auth.component';
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule, MatCheckbox } from '@angular/material/checkbox';

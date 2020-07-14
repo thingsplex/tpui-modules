@@ -2,8 +2,7 @@ import {Component, ElementRef, ViewChild,OnInit} from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject,Observable} from 'rxjs';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
@@ -64,13 +63,13 @@ export class DevicesComponent implements OnInit {
       this.setParentObjectName(filterName);
     }
 
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-        .debounceTime(150)
-        .distinctUntilChanged()
-        .subscribe(() => {
-          if (!this.dataSource) { return; }
-          this.dataSource.filter = this.filter.nativeElement.value;
-        });
+    // Observable.fromEvent(this.filter.nativeElement, 'keyup')
+    //     .debounceTime(150)
+    //     .distinctUntilChanged()
+    //     .subscribe(() => {
+    //       if (!this.dataSource) { return; }
+    //       this.dataSource.filter = this.filter.nativeElement.value;
+    //     });
   }
   showDeviceEditorDialog(service:Device) {
     let dialogRef = this.dialog.open(DeviceEditorDialog,{

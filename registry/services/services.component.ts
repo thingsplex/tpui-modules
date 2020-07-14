@@ -1,9 +1,8 @@
 import {Component, ElementRef, ViewChild,OnInit,Input,Output,EventEmitter} from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import {DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject} from 'rxjs';
+import {Observable} from 'rxjs';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
@@ -158,23 +157,25 @@ export class ServicesComponent implements OnInit {
       this.setParentObjectName();
     }
 
-    Observable.fromEvent(this.filterThingAddr.nativeElement, 'keyup')
-        .debounceTime(500)
-        .distinctUntilChanged()
-        .subscribe(() => {
-          if (!this.dataSource) { return; }
-          this.dataSource.getData(this.filterThingAddr.nativeElement.value,this.filterServiceName.nativeElement.value,"")
-        });
-    Observable.fromEvent(this.filterServiceName.nativeElement, 'keyup')
-        .debounceTime(500)
-        .distinctUntilChanged()
-        .subscribe(() => {
-          if (!this.dataSource) { return; }
-          this.dataSource.getData(this.filterThingAddr.nativeElement.value,this.filterServiceName.nativeElement.value,"")
-        });
+
 
   }
-
+  // ngAfterViewInit() {
+  //   Observable.fromEvent(this.filterThingAddr.nativeElement, 'keyup')
+  //     .debounceTime(500)
+  //     .distinctUntilChanged()
+  //     .subscribe(() => {
+  //       if (!this.dataSource) { return; }
+  //       this.dataSource.getData(this.filterThingAddr.nativeElement.value,this.filterServiceName.nativeElement.value,"")
+  //     });
+  //   Observable.fromEvent(this.filterServiceName.nativeElement, 'keyup')
+  //     .debounceTime(500)
+  //     .distinctUntilChanged()
+  //     .subscribe(() => {
+  //       if (!this.dataSource) { return; }
+  //       this.dataSource.getData(this.filterThingAddr.nativeElement.value,this.filterServiceName.nativeElement.value,"")
+  //     });
+  // }
   setParentObjectName () {
     let dev = this.registry.getDeviceById(parseInt(this.thingId))
     if (dev)
@@ -223,20 +224,7 @@ export class ServicesDataSource extends DataSource<any> {
   }
 
   getData(thingAddr:string ,serviceName:string,thingId:string) {
-    // let params: URLSearchParams = new URLSearchParams();
-    // params.set('serviceName', serviceName);
-    // params.set('thingId', thingId);
-    // if (thingId!="*") {
-    //   params.set('thingId', thingId);
-    // }
-    // this.http
-    //     .get(BACKEND_ROOT+'/fimp/api/registry/services',{search:params})
-    //     .map((res: Response)=>{
-    //       let result = res.json();
-    //       return this.mapThings(result);
-    //     }).subscribe(result=>{
-    //       this.servicesObs.next(result);
-    //     });
+
     if (thingId!="" && thingId!="*") {
       this.servicesObs.next(this.registry.getServicesForDevice(parseInt(thingId)));
     }else {

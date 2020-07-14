@@ -1,7 +1,6 @@
 import {Component, ElementRef, ViewChild,OnInit,Input,Output,EventEmitter} from '@angular/core';
 import {DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject,Observable,Subscription} from 'rxjs';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
@@ -12,13 +11,10 @@ import {Location} from '../model';
 import { BACKEND_ROOT } from "app/globals";
 import { LocationEditorDialog} from './location-editor.component'
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import {ThingsRegistryService} from "../registry.service";
-import {Subscription} from "rxjs";
 import {FimpMessage} from "../../../fimp/Message";
 import {FimpService} from "../../../fimp/fimp.service";
 import {HttpClient} from "@angular/common/http";
-// import {MatTableDataSource} from '@angular/material';
 
 @Component({
   selector: 'app-locations',

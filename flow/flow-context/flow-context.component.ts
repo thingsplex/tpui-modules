@@ -1,7 +1,6 @@
 import {Component, ElementRef, ViewChild, OnInit, Input} from '@angular/core';
 import {DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject,Observable} from 'rxjs';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
@@ -99,6 +98,7 @@ export class FlowContextDataSource extends DataSource<any> {
     this.http
         .get(BACKEND_ROOT+'/fimp/api/flow/context/'+flowId)
         .subscribe((result:any)=>{
+          result = this.mapContext(result,flowId)
           this.ctxRecordsObs.next(result);
           console.log("Mappping global variable")
         });
@@ -120,6 +120,7 @@ export class FlowContextDataSource extends DataSource<any> {
             loc.Value = result[key].Variable.Value;
             loc.ValueType = result[key].Variable.ValueType;
             contexts.push(loc)
+            console.log("Value = "+loc.Value)
      }
      return contexts;
   }
