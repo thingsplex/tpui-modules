@@ -55,7 +55,10 @@ export class LineChartComponent implements OnInit  {
   @Input() fillGaps        : boolean;
   @Input() dataProcFunc    : string;
   @Input() set height (val: number) {
+    console.log("chart height has changed to"+val)
     this._height = String(val)+"px";
+    if (this.canvasElement)
+      this.canvasElement.nativeElement.style.height = this._height;
 
   }
   get height():number {

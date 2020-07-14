@@ -3,65 +3,6 @@
 
   <button  style = "margin-bottom: 20px;" mat-raised-button [routerLink]="['/flow/overview']">  <mat-icon>chevron_left</mat-icon>  <mat-icon>network_check</mat-icon> Flows </button>
 
-<mat-sidenav-container>
-  <mat-sidenav #sidenav mode="side" opened="false" style="background-color:beige">
-    <!-- sidenav content -->
-    <mat-list>
-    <mat-list-item><h3> Nodes </h3></mat-list-item>
-    <mat-list-item> <button mat-raised-button (click)="addNode('trigger','')"  >
-        <mat-icon aria-label="Edit node">input</mat-icon> Trigger</button>
-    </mat-list-item>
-    <mat-list-item> <button mat-raised-button (click)="addNode('vinc_trigger','')"  >
-        <mat-icon aria-label="Edit node">input</mat-icon> Home event trigger</button>
-    </mat-list-item>
-    <mat-list-item> <button mat-raised-button (click)="addNode('trigger','scene_trigger')"  >
-          <mat-icon aria-label="Edit node">input</mat-icon>Scene trigger</button>
-    </mat-list-item>
-    <mat-list-item> <button mat-raised-button (click)="addNode('action','notification_action')"  >
-        <mat-icon aria-label="Edit node">send</mat-icon>Push notifications</button>
-    </mat-list-item>
-    <mat-list-item> <button mat-raised-button (click)="addNode('action','timeline_action')"  >
-          <mat-icon aria-label="Edit node">send</mat-icon>Publish timeline</button>
-    </mat-list-item>
-    <mat-list-item> <button mat-raised-button (click)="addNode('time_trigger','')" >
-        <mat-icon aria-label="Edit node">schedule</mat-icon> Time trigger</button>
-    </mat-list-item>
-    <mat-list-item> <button mat-raised-button (click)="addNode('action','')" >
-        <mat-icon  aria-label="Edit node">send</mat-icon> Action</button>
-    </mat-list-item>
-      <mat-list-item> <button mat-raised-button (click)="addNode('rest_action','')" >
-        <mat-icon  aria-label="Edit node">send</mat-icon> REST Action</button>
-      </mat-list-item>
-    <mat-list-item> <button mat-raised-button (click)="addNode('action','vinc_action')" >
-        <mat-icon  aria-label="Edit node">send</mat-icon> Modes & shortcuts action</button>
-    </mat-list-item>
-    <mat-list-item> <button mat-raised-button (click)="addNode('receive','')" >
-      <mat-icon aria-label="Edit node">input</mat-icon> Receive</button>
-    </mat-list-item>
-    <mat-list-item> <button mat-raised-button (click)="addNode('if','')" >
-      <mat-icon  aria-label="Edit node">call_split</mat-icon> If</button>
-    </mat-list-item>
-    <mat-list-item> <button mat-raised-button (click)="addNode('loop','')" >
-        <mat-icon  aria-label="Edit node">loop</mat-icon> Loop</button>
-    </mat-list-item>
-    <mat-list-item> <button mat-raised-button (click)="addNode('wait','')" >
-      <mat-icon aria-label="Edit node">update</mat-icon> Wait</button>
-    </mat-list-item>
-    <mat-list-item> <button mat-raised-button (click)="addNode('set_variable','')" >
-      <mat-icon aria-label="Edit node">edit</mat-icon> Set variable</button>
-    </mat-list-item>
-    <mat-list-item> <button mat-raised-button (click)="addNode('transform','')" >
-        <mat-icon aria-label="Edit node">transform</mat-icon> Transform</button>
-    </mat-list-item>
-    <mat-list-item> <button mat-raised-button (click)="addNode('exec','')" >
-        <mat-icon aria-label="Exec node">flash_on</mat-icon> Exec</button>
-    </mat-list-item>
-    <mat-list-item> <button mat-raised-button (click)="addNode('log_action','')" >
-          <mat-icon aria-label="Exec node">flash_on</mat-icon> Log</button>
-    </mat-list-item>
-    </mat-list>
-  </mat-sidenav>
-
   <mat-card class="flow-editor-main-card">
     <mat-card-header>
       <mat-card-title><h3>Flow : {{ flow.Name }} </h3></mat-card-title>
@@ -72,6 +13,56 @@
           <mat-icon aria-label="Edit node">edit</mat-icon>
         </button>
       </p>
+      <button mat-raised-button class="example-fab" style="position: absolute" [matMenuTriggerFor]="nTypes">
+        <mat-icon aria-label="Add node">add</mat-icon> Add node
+      </button>
+      <mat-menu #nTypes="matMenu">
+        <button mat-menu-item [matMenuTriggerFor]="triggers"><mat-icon aria-label="Edit node">input</mat-icon> Triggers</button>
+        <button mat-menu-item [matMenuTriggerFor]="actions"><mat-icon aria-label="Edit node">send</mat-icon> Actions</button>
+        <button mat-menu-item [matMenuTriggerFor]="flowCtrl"><mat-icon  aria-label="Edit node">call_split</mat-icon> Flow control</button>
+        <button mat-menu-item [matMenuTriggerFor]="data" ><mat-icon aria-label="Edit node">transform</mat-icon> Data</button>
+        <button mat-menu-item [matMenuTriggerFor]="tools"><mat-icon aria-label="Exec node">flash_on</mat-icon> Tools</button>
+      </mat-menu>
+
+      <mat-menu #triggers="matMenu">
+        <button mat-menu-item (click)="addNode('trigger','')" >Generic</button>
+        <button mat-menu-item (click)="addNode('vinc_trigger','')">Home event</button>
+        <button mat-menu-item (click)="addNode('trigger','scene_trigger')">Scene</button>
+        <button mat-menu-item (click)="addNode('time_trigger','')">Time</button>
+      </mat-menu>
+
+      <mat-menu #actions="matMenu">
+        <button mat-menu-item (click)="addNode('action','')">Generic</button>
+        <button mat-menu-item (click)="addNode('action','notification_action')">Push notification</button>
+        <button mat-menu-item (click)="addNode('action','timeline_action')">Publish to timeline</button>
+        <button mat-menu-item (click)="addNode('rest_action','')">REST</button>
+        <button mat-menu-item (click)="addNode('action','vinc_action')">Modes & shortcuts</button>
+      </mat-menu>
+
+      <mat-menu #flowCtrl="matMenu">
+        <button mat-menu-item (click)="addNode('if','')">If switch</button>
+        <button mat-menu-item (click)="addNode('loop','')">Loop</button>
+        <button mat-menu-item (click)="addNode('wait','')">Wait</button>
+        <button mat-menu-item (click)="addNode('receive','')">Wait for event</button>
+      </mat-menu>
+
+      <mat-menu #data="matMenu">
+        <button mat-menu-item (click)="addNode('set_variable','')">Set variable</button>
+        <button mat-menu-item (click)="addNode('transform','')">Transform</button>
+      </mat-menu>
+
+      <mat-menu #tools="matMenu">
+        <button mat-menu-item (click)="addNode('exec','')">Run script</button>
+        <button mat-menu-item (click)="addNode('log_action','')">Write to log</button>
+      </mat-menu>
+
+      <mat-menu #reptiles="matMenu">
+        <button mat-menu-item>Banded Day Gecko</button>
+        <button mat-menu-item>Banded Gila Monster</button>
+        <button mat-menu-item>Black Tree Monitor</button>
+        <button mat-menu-item>Blue Spiny Lizard</button>
+        <button mat-menu-item disabled>Velociraptor</button>
+      </mat-menu>
       <div id="flowEditorCanvasId" class="drag-area" (drop)="nodeDrop($event)" (dragstart)="nodeDragStart($event)" (dragover)="allowNodeDrop($event)"  >
           <svg id="flow-connections" class = "connections" ></svg>
           <mat-card id = "nodeId_{{node.Id}}" *ngFor="let node of flow.Nodes;let index = index;" class="node-card" [style.left.px]="node.Ui.x" [style.top.px]="node.Ui.y" draggable="true" >
@@ -113,9 +104,6 @@
 
           </mat-card>
        </div>
-    <button mat-mini-fab class="example-fab" (click)="sidenav.toggle()">
-    <mat-icon>add</mat-icon>
-  </button>
     </mat-card-content>
 
     <mat-card-actions>
@@ -137,7 +125,6 @@
   </mat-card>
 
  <!-- primary content -->
-</mat-sidenav-container>
 
 </div>
 

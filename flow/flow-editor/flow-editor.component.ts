@@ -450,8 +450,8 @@ findInputSocketPosition(htmlElement):any {
     node.ErrorTransition = "";
     node.Config = null;
     node.Ui = new Ui();
-    node.Ui.x = 70;
-    node.Ui.y = 170;
+    node.Ui.x = 80;
+    node.Ui.y = 200;
     node.Ui.nodeType = uiNodeType;
 
 

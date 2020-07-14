@@ -43,13 +43,14 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 // import {MsgDetailsDialog} from "../timeline/timeline.component";
 import {FlowPropsDialog} from "./flow-editor/flow-props-editor.component";
-
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   imports: [
     CommonModule,
     FlowRoutingModule,
     MatInputModule,
+    MatMenuModule,
     MatButtonModule,
     MatFormFieldModule,
     MatTableModule,

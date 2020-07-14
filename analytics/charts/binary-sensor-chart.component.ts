@@ -31,6 +31,8 @@ export class BinarySensorChartComponent implements OnInit  {
   @Input() dataProcFunc    : string;
   @Input() set height (val: number) {
     this._height = String(val)+"px";
+    if (this.canvasElement)
+      this.canvasElement.nativeElement.style.height = this._height;
 
   }
   get height():number {

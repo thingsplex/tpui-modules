@@ -19,7 +19,7 @@
     </mat-panel-description>
   <mat-form-field style="height: 35px;margin: 10px;width: 250px"  >
         <mat-label> Sensor types </mat-label>
-        <mat-select matNativeControl [(ngModel)]="selectedSensorTypes" multiple  placeholder="Sensor type" (change)="updateSelectedSensorTypes()"  >
+        <mat-select matNativeControl [(ngModel)]="selectedSensorTypes" multiple  placeholder="Sensor type" (selectionChange)="updateSelectedSensorTypes()"  >
             <mat-option  *ngFor="let e of listOfSensorTypes" [value]="e.type">{{e.name}}</mat-option>
         </mat-select>
     </mat-form-field>
