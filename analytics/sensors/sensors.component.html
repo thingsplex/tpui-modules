@@ -23,23 +23,41 @@
             <mat-option  *ngFor="let e of listOfSensorTypes" [value]="e.type">{{e.name}}</mat-option>
         </mat-select>
     </mat-form-field>
-  <mat-form-field style="height: 35px;margin: 10px;width: 100px"  >
-      <mat-label> Resolution </mat-label>
-      <mat-select matNativeControl [(value)]="groupByTime"  placeholder="Resolution" >
-        <mat-option value="5m">1 min</mat-option>
-        <mat-option value="5m">5 min</mat-option>
-        <mat-option value="10m">10 min</mat-option>
-        <mat-option value="30m">30 min</mat-option>
-        <mat-option value="1h">1 hours</mat-option>
-        <mat-option value="2h">2 hours</mat-option>
-        <mat-option value="5h">5 hours</mat-option>
-        <mat-option value="1d">1 day</mat-option>
-        <mat-option value="2d">2 day</mat-option>
-        <mat-option value="7d">1 week</mat-option>
-        <mat-option value="1m">1 month</mat-option>
-        <mat-option value="none">None</mat-option>
+
+    <mat-form-field style="height: 35px;margin: 10px;width: 150px"  >
+      <mat-label> Group by </mat-label>
+      <mat-select matNativeControl [(value)]="groupByTag"  placeholder="Group by" >
+        <mat-option value="location_id">Location</mat-option>
+        <mat-option value="dev_id">Device</mat-option>
+        <mat-option value="service_id">Service</mat-option>
+        <mat-option value="none">Disabled</mat-option>
       </mat-select>
     </mat-form-field>
+
+    <mat-form-field style="height: 35px;margin: 10px;width: 150px"  >
+      <mat-label> Auto reload </mat-label>
+      <mat-select matNativeControl [(value)]="refreshRate"  placeholder="reload every" >
+        <mat-option [value]="20">every 20 sec</mat-option>
+        <mat-option [value]="60">every 1 min</mat-option>
+        <mat-option [value]="180">every 3 min</mat-option>
+        <mat-option [value]="300">every 5 min</mat-option>
+        <mat-option [value]="600">every 10 min</mat-option>
+        <mat-option [value]="-1"> Disable </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field style="height: 35px;margin: 10px;width: 150px"  >
+      <mat-label> Graph size </mat-label>
+      <mat-select matNativeControl [(value)]="gSize"  placeholder="size" >
+        <mat-option [value]="150">XS</mat-option>
+        <mat-option [value]="250">S</mat-option>
+        <mat-option [value]="350">M</mat-option>
+        <mat-option [value]="450">L</mat-option>
+        <mat-option [value]="550">XL</mat-option>
+      </mat-select>
+    </mat-form-field>
+  <br/>
+  Time range :
   <mat-form-field style="height: 35px;margin: 10px;width: 130px"  >
     <mat-label> Time from now </mat-label>
     <mat-select matNativeControl [(value)]="timeFromNow"  placeholder="Time from now" >
@@ -56,41 +74,44 @@
       <mat-option value="48w">1 year</mat-option>
     </mat-select>
   </mat-form-field>
+  OR
+    <mat-form-field style="margin-right: 5px;margin-left: 5px;width: 130px;">
+      <mat-label>From</mat-label>
+      <input matInput [matDatepicker]="pickerFrom">
+      <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+      <mat-datepicker #pickerFrom ></mat-datepicker>
+    </mat-form-field>
+    -
+    <mat-form-field style="margin-right: 5px;margin-left: 5px;width: 130px;">
+      <mat-label>To</mat-label>
+      <input matInput [matDatepicker]="pickerTo">
+      <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+      <mat-datepicker #pickerTo></mat-datepicker>
+    </mat-form-field>
 
-  <mat-form-field style="height: 35px;margin: 10px;width: 150px"  >
-    <mat-label> Group by </mat-label>
-    <mat-select matNativeControl [(value)]="groupByTag"  placeholder="Group by" >
-      <mat-option value="location_id">Location</mat-option>
-      <mat-option value="dev_id">Device</mat-option>
-      <mat-option value="service_id">Service</mat-option>
-      <mat-option value="none">Disabled</mat-option>
-    </mat-select>
-  </mat-form-field>
+    with resolution
 
-  <mat-form-field style="height: 35px;margin: 10px;width: 150px"  >
-    <mat-label> Auto reload </mat-label>
-    <mat-select matNativeControl [(value)]="refreshRate"  placeholder="reload every" >
-      <mat-option [value]="20">every 20 sec</mat-option>
-      <mat-option [value]="60">every 1 min</mat-option>
-      <mat-option [value]="180">every 3 min</mat-option>
-      <mat-option [value]="300">every 5 min</mat-option>
-      <mat-option [value]="600">every 10 min</mat-option>
-      <mat-option [value]="-1"> Disable </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <mat-form-field style="height: 35px;margin: 10px;width: 100px"  >
+      <mat-label> Resolution </mat-label>
+      <mat-select matNativeControl [(value)]="groupByTime"  placeholder="Resolution" >
+        <mat-option value="auto">auto</mat-option>
+        <mat-option value="5m">1 min</mat-option>
+        <mat-option value="5m">5 min</mat-option>
+        <mat-option value="10m">10 min</mat-option>
+        <mat-option value="30m">30 min</mat-option>
+        <mat-option value="1h">1 hours</mat-option>
+        <mat-option value="2h">2 hours</mat-option>
+        <mat-option value="5h">5 hours</mat-option>
+        <mat-option value="1d">1 day</mat-option>
+        <mat-option value="2d">2 day</mat-option>
+        <mat-option value="7d">1 week</mat-option>
+        <mat-option value="1m">1 month</mat-option>
+        <mat-option value="none">None</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field style="height: 35px;margin: 10px;width: 150px"  >
-    <mat-label> Graph size </mat-label>
-    <mat-select matNativeControl [(value)]="gSize"  placeholder="size" >
-      <mat-option [value]="150">XS</mat-option>
-      <mat-option [value]="250">S</mat-option>
-      <mat-option [value]="350">M</mat-option>
-      <mat-option [value]="450">L</mat-option>
-      <mat-option [value]="550">XL</mat-option>
-    </mat-select>
-  </mat-form-field>
 
-  <p>
+  <br/>
     <mat-form-field style="height: 35px;margin: 10px;width: 230px"  >
       <mat-label> Fill missing data </mat-label>
       <mat-select matNativeControl [(value)]="fillGaps"  placeholder="size" >
@@ -112,7 +133,7 @@
         <mat-option [value]="'stddev'">Standard deviation.How close the value to the average. </mat-option>
       </mat-select>
     </mat-form-field>
-  </p>
+
 
   <mat-card-actions>
     <button mat-raised-button color="primary" (click)="reload()" >Reload</button>

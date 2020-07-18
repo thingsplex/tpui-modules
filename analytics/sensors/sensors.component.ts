@@ -164,7 +164,7 @@ export class SensorsComponent implements OnInit {
   }
 
   queryData() {
-    let msg  = new FimpMessage("ecollector","cmd.tsdb.get_measurements","str_map",{},null,null)
+    let msg  = new FimpMessage("ecollector","cmd.tsdb.get_measurements","str_map",{"proc_id":"1"},null,null)
     msg.src = "tplex-ui"
     this.lastRequestId = msg.uid;
     msg.resp_to = "pt:j1/mt:rsp/rt:app/rn:tplex-ui/ad:1"

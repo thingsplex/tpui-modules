@@ -191,7 +191,7 @@ export class BinarySensorChartComponent implements OnInit  {
     this.globalSub = this.fimp.getGlobalObservable().subscribe((msg) => {
       let fimpMsg = NewFimpMessageFromString(msg.payload.toString());
       if (fimpMsg.service == "ecollector" && fimpMsg.corid ==this.lastRequestId ){
-        if (fimpMsg.mtype == "evt.tsdb.query_report") {
+        if (fimpMsg.mtype == "evt.tsdb.query_report" || fimpMsg.mtype == "evt.tsdb.data_points_report") {
           console.log("Message from ecollector");
           if (fimpMsg.val) {
             this.transformData(fimpMsg.val);
@@ -205,24 +205,31 @@ export class BinarySensorChartComponent implements OnInit  {
   }
 
   queryData() {
-    let query = "";
     let fillMode = "null";
+    if (!this.dataProcFunc)
+      this.dataProcFunc = "mean";
     if (this.fillGaps)
       fillMode = "previous"; // null/linear/previous
-    // query = "SELECT last(value) AS last_value FROM \"default_20w\".\"sensor_temp.evt.sensor.report\" WHERE time > now()-48h  GROUP BY  location_id FILL(null)"
-    if (this.filterByTopic!=undefined) {
-      query = "SELECT value FROM \"default_20w\".\""+this.measurement+"\" WHERE time > now()-"+this.timeFromNow+" and topic='"+this.filterByTopic+"' FILL("+fillMode+")"
-    }else {
-      query = "SELECT count(\"value\") AS \"count_value\" FROM \"default_20w\".\""+this.measurement+"\" WHERE time > now()-"+this.timeFromNow+" and value=true GROUP BY time("+this.groupByTime+"), "+this.groupByTag+" FILL("+fillMode+")"
-    }
-    if (this.groupByTime != "none" && this.filterByTopic!=undefined) {
-      query = "SELECT mean(\"value\") AS \"mean_value\" FROM \"default_20w\".\""+this.measurement+"\" WHERE time > now()-"+this.timeFromNow+" and topic='"+this.filterByTopic+"' GROUP BY time("+this.groupByTime+") FILL("+fillMode+")"
+    console.log("Measurement = "+this.measurement);
+    if (!this.measurement)
+      return
 
+    let request = {
+      "proc_id":1,
+      "field_name":"value",
+      "measurement_name":this.measurement,
+      "relative_time":this.timeFromNow,
+      "from_time":"",
+      "to_time":"",
+      "group_by_time":this.groupByTime,
+      "group_by_tag":this.groupByTag,
+      "fill_type":fillMode,
+      "data_function":"count"
     }
-    let msg  = new FimpMessage("ecollector","cmd.tsdb.query","str_map",{"query":query},null,null)
+    let msg  = new FimpMessage("ecollector","cmd.tsdb.get_data_points","object",request,null,null)
     msg.src = "tplex-ui"
-    this.lastRequestId = msg.uid;
     msg.resp_to = "pt:j1/mt:rsp/rt:app/rn:tplex-ui/ad:1"
+    this.lastRequestId = msg.uid;
     this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:ecollector/ad:1",msg.toString());
   }
 

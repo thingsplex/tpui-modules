@@ -18,40 +18,6 @@
 
       </mat-panel-description>
 
-      <mat-form-field style="height: 35px;margin: 10px;width: 100px"  >
-        <mat-label> Resolution </mat-label>
-        <mat-select matNativeControl [(value)]="groupByTime"  placeholder="Resolution" >
-          <mat-option value="5m">1 min</mat-option>
-          <mat-option value="5m">5 min</mat-option>
-          <mat-option value="10m">10 min</mat-option>
-          <mat-option value="30m">30 min</mat-option>
-          <mat-option value="1h">1 hours</mat-option>
-          <mat-option value="2h">2 hours</mat-option>
-          <mat-option value="5h">5 hours</mat-option>
-          <mat-option value="1d">1 day</mat-option>
-          <mat-option value="2d">2 day</mat-option>
-          <mat-option value="7d">1 week</mat-option>
-          <mat-option value="1m">1 month</mat-option>
-          <mat-option value="none">None</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field style="height: 35px;margin: 10px;width: 130px"  >
-        <mat-label> Time from now </mat-label>
-        <mat-select matNativeControl [(value)]="timeFromNow"  placeholder="Time from now" >
-          <mat-option value="1h">1 hours</mat-option>
-          <mat-option value="6h">6 hours</mat-option>
-          <mat-option value="12h">12 hours</mat-option>
-          <mat-option value="1d">1 day</mat-option>
-          <mat-option value="2d">2 days</mat-option>
-          <mat-option value="1w">1 week</mat-option>
-          <mat-option value="2w">2 weeks</mat-option>
-          <mat-option value="4w">1 month</mat-option>
-          <mat-option value="12w">3 month</mat-option>
-          <mat-option value="24w">6 month</mat-option>
-          <mat-option value="48w">1 year</mat-option>
-        </mat-select>
-      </mat-form-field>
-
       <mat-form-field style="height: 35px;margin: 10px;width: 150px"  >
         <mat-label> Group by </mat-label>
         <mat-select matNativeControl [(value)]="groupByTag"  placeholder="Group by" >
@@ -85,7 +51,61 @@
         </mat-select>
       </mat-form-field>
 
-  <p>
+      <br/>
+      Time range :
+      <mat-form-field style="height: 35px;margin: 10px;width: 130px"  >
+        <mat-label> Time from now </mat-label>
+        <mat-select matNativeControl [(value)]="timeFromNow"  placeholder="Time from now" >
+          <mat-option value="1h">1 hours</mat-option>
+          <mat-option value="6h">6 hours</mat-option>
+          <mat-option value="12h">12 hours</mat-option>
+          <mat-option value="1d">1 day</mat-option>
+          <mat-option value="2d">2 days</mat-option>
+          <mat-option value="1w">1 week</mat-option>
+          <mat-option value="2w">2 weeks</mat-option>
+          <mat-option value="4w">1 month</mat-option>
+          <mat-option value="12w">3 month</mat-option>
+          <mat-option value="24w">6 month</mat-option>
+          <mat-option value="48w">1 year</mat-option>
+        </mat-select>
+      </mat-form-field>
+      OR
+      <mat-form-field style="margin-right: 5px;margin-left: 5px;width: 130px;">
+        <mat-label>From</mat-label>
+        <input matInput [matDatepicker]="pickerFrom">
+        <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+        <mat-datepicker #pickerFrom ></mat-datepicker>
+      </mat-form-field>
+      -
+      <mat-form-field style="margin-right: 5px;margin-left: 5px;width: 130px;">
+        <mat-label>To</mat-label>
+        <input matInput [matDatepicker]="pickerTo">
+        <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+        <mat-datepicker #pickerTo></mat-datepicker>
+      </mat-form-field>
+
+      with resolution
+
+      <mat-form-field style="height: 35px;margin: 10px;width: 100px"  >
+        <mat-label> Resolution </mat-label>
+        <mat-select matNativeControl [(value)]="groupByTime"  placeholder="Resolution" >
+          <mat-option value="auto">auto</mat-option>
+          <mat-option value="5m">1 min</mat-option>
+          <mat-option value="5m">5 min</mat-option>
+          <mat-option value="10m">10 min</mat-option>
+          <mat-option value="30m">30 min</mat-option>
+          <mat-option value="1h">1 hours</mat-option>
+          <mat-option value="2h">2 hours</mat-option>
+          <mat-option value="5h">5 hours</mat-option>
+          <mat-option value="1d">1 day</mat-option>
+          <mat-option value="2d">2 day</mat-option>
+          <mat-option value="7d">1 week</mat-option>
+          <mat-option value="1m">1 month</mat-option>
+          <mat-option value="none">None</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <br/>
     <mat-form-field style="height: 35px;margin: 10px;width: 230px"  >
       <mat-label> Fill missing data </mat-label>
       <mat-select matNativeControl [(value)]="fillGaps"  placeholder="size" >
@@ -107,7 +127,7 @@
         <mat-option [value]="'stddev'">Standard deviation.How close the value to the average. </mat-option>
       </mat-select>
     </mat-form-field>
-  </p>
+
   <mat-card-actions>
     <button mat-raised-button color="primary" (click)="reload()" >Reload</button>
     <button mat-raised-button color="primary" (click)="save()" >Save</button>

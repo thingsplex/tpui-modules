@@ -16,10 +16,10 @@ import {Subject} from "rxjs";
 @Injectable()
 export class ThingsRegistryService{
 
-  public services : any;
-  public locations : any;
-  public things :any;
-  public devices :any;
+  public services : any = [];
+  public locations : any = [];
+  public things : any = [];
+  public devices :any = [];
   private registryStateSource = new Subject<string>();
   public registryState$ = this.registryStateSource.asObservable();
   constructor(private fimp: FimpService,private http: HttpClient) {
@@ -92,27 +92,41 @@ export class ThingsRegistryService{
 
 
   getLocationById(locationId:number) {
-    return this.locations.filter(location => location.id == locationId)
+    if(this.locations)
+      return this.locations.filter(location => location.id == locationId)
+    else
+      return []
   }
 
   getThingsForLocation(locationId:number) {
+    if(this.things)
       return this.things.filter(thing => thing.location_id == locationId)
+    else
+      return []
   }
 
   getDevicesForLocation(locationId:number) {
-    return this.devices.filter(device => device.location_id == locationId)
+    if(this.devices)
+      return this.devices.filter(device => device.location_id == locationId)
+    else
+      return []
   }
 
   getDevicesForThing(thingId:number) {
-    return this.devices.filter(device => device.thing_id == thingId)
+    if(this.devices)
+      return this.devices.filter(device => device.thing_id == thingId)
+    else
+      return []
   }
 
   getThingById(thingId:number) {
-    return this.things.filter(thing => thing.id == thingId)[0]
+    if(this.things)
+      return this.things.filter(thing => thing.id == thingId)[0]
   }
 
   getDeviceById(devId:number) {
-    return this.devices.filter(dev => dev.id == devId)[0]
+    if (this.devices)
+      return this.devices.filter(dev => dev.id == devId)[0]
   }
 
   getThingByAddress(tech:string,address:string) {
@@ -124,38 +138,57 @@ export class ThingsRegistryService{
 
   getThingByFullAddress(address:string) {
     // console.dir(this.things);
-    return this.things.filter(thing => (thing.address == address ))
+    if(this.things)
+      return this.things.filter(thing => (thing.address == address ))
+    else
+      return []
   }
 
   getServiceByAddress(address:string) {
-    return this.services.filter(service => address.indexOf(service.address)>=0)
+    if (this.services)
+      return this.services.filter(service => address.indexOf(service.address)>=0)
+    else
+      return []
   }
 
   getServicesForThing(thingId:number) {
+    if (this.services)
       return this.services.filter(service => service.container_id == thingId)
+    else
+      return []
   }
 
   getServicesForDevice(deviceId:number) {
-    return this.services.filter(service => service.container_id == deviceId && service.container_type == "dev")
+    if (this.services)
+      return this.services.filter(service => service.container_id == deviceId && service.container_type == "dev")
+    else
+      return []
   }
 
   getServiceById(serviceId:number) {
+    if (this.services)
       return this.services.filter(service => service.id == serviceId)[0]
   }
 
   getServiceByDeviceIdAndName(deviceId:number,name: string) {
-    return this.services.filter(service => service.container_id == deviceId && service.container_type == "dev" && service.name == name )[0]
+    if (this.services)
+      return this.services.filter(service => service.container_id == deviceId && service.container_type == "dev" && service.name == name )[0]
   }
 
   getDevicesFilteredByService(serviceName:string) {
-    let services = this.services.filter(service => service.container_type == "dev" && service.name == serviceName )
-    let result = [];
-    for(let svc of services) {
-      let dev = this.getDeviceById(svc.container_id)
-      if(dev)
-        result.push(dev)
+    if (this.services) {
+      let services = this.services.filter(service => service.container_type == "dev" && service.name == serviceName)
+      let result = [];
+      for (let svc of services) {
+        let dev = this.getDeviceById(svc.container_id)
+        if (dev)
+          result.push(dev)
+      }
+      return result;
+    } else {
+      return []
+
     }
-    return result;
   }
 
 }

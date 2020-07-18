@@ -1,8 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { Observable } from 'rxjs';
-import {BACKEND_ROOT} from "app/globals";
-import {HttpClient} from "@angular/common/http";
 
 
 export interface Item { name: string; }
@@ -16,7 +14,7 @@ export class FlowLibComponent implements OnInit {
   // private itemsCollection: AngularFirestoreCollection<Item>;
   items: Observable<Item[]>;
   flows: any[];
-  constructor( private http : HttpClient,public dialog: MatDialog) {
+  constructor(public dialog: MatDialog) {
     // this.flowSourceText = JSON.stringify(data, null, 2)
     // this.itemsCollection = afs.collection<Item>('items');
     // this.items = this.itemsCollection.valueChanges();
@@ -98,11 +96,4 @@ export class FlowLibComponent implements OnInit {
 
 }
 
-/*
- apiKey: "AIzaSyBc53fzFqEtPSVIl1iCOSCyPZNx8BtJayY",
-    authDomain: "thingsplex.firebaseapp.com",
-    databaseURL: "https://thingsplex.firebaseio.com",
-    projectId: "thingsplex",
-    storageBucket: "thingsplex.appspot.com",
-    messagingSenderId: "867239467755"
- */
+

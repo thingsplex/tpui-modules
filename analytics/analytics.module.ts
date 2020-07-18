@@ -31,6 +31,8 @@ import {EnergyComponent} from "./energy/energy.component";
 import {TsdbConfigComponent} from "./tsdb/tsdb-config.component";
 import {SimplePieChartComponent} from "./charts/simple-pie-chart.component";
 import {AnalyticsSettingsService} from "./charts/settings.service";
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
 
 @NgModule({
@@ -40,6 +42,8 @@ import {AnalyticsSettingsService} from "./charts/settings.service";
     FormsModule,
     CdkTableModule,
     MatTableModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
     MatButtonModule,
     MatSortModule,
     MatCardModule,

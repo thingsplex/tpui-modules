@@ -38,98 +38,99 @@
     Data collection settings
   </mat-expansion-panel-header>
   <mat-panel-description>
-    Configure data collection rules and filters
   </mat-panel-description>
 
 <mat-card style="margin: 5px">
   <mat-card-header>
-    <mat-card-title><h3>List of event collectors</h3></mat-card-title>
+    <mat-card-title><h3>Configured event collectors</h3></mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <table>
       <thead>
+        <th style="width: 50px"> Id</th>
         <th style="width: 150px"> Name</th>
         <th style="width: 70px"> State </th>
         <th style="width: 80px"> Action </th>
       </thead>
       <tbody>
         <tr *ngFor="let proc of procList">
+          <td>{{proc.Config.ID}}</td>
           <td>{{proc.Config.Name}}</td>
           <td style="width: 150px">{{proc.State}}</td>
           <td style="width: 300px">
             <mat-chip-list >
               <mat-chip color="warn" (click)="selectProc(proc.Config)">Configure</mat-chip>
-              <mat-chip color="warn" (click)="procCtrl('start',procData.ID)">Start</mat-chip>
-              <mat-chip color="warn" (click)="procCtrl('stop',procData.ID)">Stop</mat-chip>
+              <mat-chip color="warn" (click)="procCtrl('start',proc.Config.ID)">Start</mat-chip>
+              <mat-chip color="warn" (click)="procCtrl('stop',proc.Config.ID)">Stop</mat-chip>
+              <mat-chip color="warn" (click)="procCtrl('delete',proc.Config.ID)">Delete</mat-chip>
             </mat-chip-list>
           </td>
         </tr>
       </tbody>
     </table>
     <mat-card-actions>
-
+      <button mat-raised-button (click)="addProc()"> Add new </button>
     </mat-card-actions>
   </mat-card-content>
 </mat-card>
 
 
-<mat-card style="margin: 5px">
+<mat-card style="margin: 5px" *ngIf="selectedProcData">
     <mat-card-header>
       <!--<div mat-card-avatar class="example-header-image"></div>-->
       <mat-card-title><h3>Process configurations</h3></mat-card-title>
       <!--<mat-card-subtitle>Dog Breed</mat-card-subtitle>-->
     </mat-card-header>
-    <mat-card-content *ngIf="procData">
+    <mat-card-content *ngIf="selectedProcData">
       <div  class="tsdb-config-card">
       <mat-form-field class="example-full-width">
-        <input matInput placeholder="Process name" [(ngModel)]="procData.Name" >
+        <input matInput placeholder="Process name" [(ngModel)]="selectedProcData.Name" >
       </mat-form-field>
       <p>
       <mat-form-field class="example-full-width">
-        <input  matInput placeholder="Mqtt broker host" [(ngModel)]="procData.MqttBrokerAddr" >
+        <input  matInput placeholder="Mqtt broker host" [(ngModel)]="selectedProcData.MqttBrokerAddr" >
       </mat-form-field>
       <mat-form-field class="example-full-width">
-          <input  matInput placeholder="username" [(ngModel)]="procData.MqttBrokerUsername" >
+          <input  matInput placeholder="username" [(ngModel)]="selectedProcData.MqttBrokerUsername" >
       </mat-form-field>
       <mat-form-field class="example-full-width">
-          <input  matInput placeholder="password" [(ngModel)]="procData.MqttBrokerPassword" >
+          <input  matInput placeholder="password" [(ngModel)]="selectedProcData.MqttBrokerPassword" >
       </mat-form-field>
       </p>
-
-        <p>
+        <br/>
           <mat-form-field class="example-full-width">
-            <input  matInput placeholder="InfluxDB host" [(ngModel)]="procData.InfluxAddr" >
+            <input  matInput placeholder="InfluxDB host" [(ngModel)]="selectedProcData.InfluxAddr" >
           </mat-form-field>
           <mat-form-field class="example-full-width">
-            <input  matInput placeholder="username" [(ngModel)]="procData.InfluxUsername" >
+            <input  matInput placeholder="username" [(ngModel)]="selectedProcData.InfluxUsername" >
           </mat-form-field>
           <mat-form-field class="example-full-width">
-            <input  matInput placeholder="password" [(ngModel)]="procData.InfluxPassword" >
+            <input  matInput placeholder="password" [(ngModel)]="selectedProcData.InfluxPassword" >
           </mat-form-field>
-        </p>
-        <p>
+        <br/>
           <mat-form-field class="example-full-width">
-            <input  matInput placeholder="DB name" [(ngModel)]="procData.InfluxDB" >
-          </mat-form-field>
-          <mat-form-field class="example-full-width">
-            <input  matInput placeholder="batch size" [(ngModel)]="procData.BatchMaxSize" >
+            <input  matInput placeholder="DB name" [(ngModel)]="selectedProcData.InfluxDB" >
           </mat-form-field>
           <mat-form-field class="example-full-width">
-            <input  matInput placeholder="batch save interval" [(ngModel)]="procData.SaveInterval" >
+            <input  matInput placeholder="batch size" [(ngModel)]="selectedProcData.BatchMaxSize" >
           </mat-form-field>
-        </p>
-        <p>
+          <mat-form-field class="example-full-width">
+            <input  matInput placeholder="batch save interval" [(ngModel)]="selectedProcData.SaveInterval" >
+          </mat-form-field>
+        <br/>
           <mat-form-field class="example-full-width" style="width: 400px">
-            <input  matInput placeholder="Site Id" [(ngModel)]="procData.SiteId" >
+            <input  matInput placeholder="Site Id" [(ngModel)]="selectedProcData.SiteId" >
           </mat-form-field>
-        </p>
+        <br/>
+        <mat-form-field class="example-full-width" style="width: 400px">
+          <input  matInput placeholder="Profile" [(ngModel)]="selectedProcData.Profile" >
+        </mat-form-field>
         <div style="margin-bottom: 5px;margin-top: 10px" >
-          <mat-checkbox [(ngModel)]="procData.Autostart" >Auto start</mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedProcData.Autostart" >Auto start</mat-checkbox>
         </div>
-      </div>
-      <div style="margin-top: 10px">
-        <button mat-raised-button (click)="procCtrl('save',procData.ID)"> Save </button>
-        <button mat-raised-button (click)="resetConfigsToDefault()" color="warn" >Reset configs to default</button>
+        <div style="margin-bottom: 5px;margin-top: 10px" >
+          <mat-checkbox [(ngModel)]="selectedProcData.InitDb" >Init DB</mat-checkbox>
+        </div>
       </div>
       <mat-expansion-panel style="margin-top: 20px;">
         <mat-expansion-panel-header>
@@ -138,7 +139,7 @@
       <mat-card >
         <mat-card-content>
           <mat-list>
-            <mat-list-item *ngFor="let sel of procData.Selectors">
+            <mat-list-item *ngFor="let sel of selectedProcData.Selectors">
               <mat-form-field class="form-full-width">
                 <input  matInput placeholder="Topic" [(ngModel)]="sel.Topic" >
               </mat-form-field>
@@ -162,7 +163,7 @@
       <mat-card>
         <mat-card-content>
           <mat-list>
-          <mat-list-item *ngFor="let sel of procData.Filters">
+          <mat-list-item *ngFor="let sel of selectedProcData.Filters">
             <mat-form-field class="form-filters">
               <input  matInput placeholder="Name" [(ngModel)]="sel.Name" >
             </mat-form-field>
@@ -175,10 +176,6 @@
             <mat-form-field class="form-filters">
                 <input  matInput placeholder="MsgType" [(ngModel)]="sel.MsgType" >
             </mat-form-field>
-              -->>
-              <mat-form-field class="form-filters">
-                <input  matInput placeholder="measurement Id" [(ngModel)]="sel.MeasurementID" >
-              </mat-form-field>
             <div style="margin-bottom: 5px;margin-top: 10px;margin-left: 5px" >
               <mat-checkbox [(ngModel)]="sel.Negation" > Exclude </mat-checkbox>
             </div>
@@ -193,45 +190,15 @@
       </mat-card>
 
       </mat-expansion-panel>
-
-      <mat-expansion-panel style="margin-top: 20px;">
-        <mat-expansion-panel-header>
-          <mat-panel-title> Measurements </mat-panel-title>
-        </mat-expansion-panel-header>
-
-      <mat-card >
-
-        <mat-card-content>
-          <mat-list>
-            <mat-list-item *ngFor="let sel of procData.Measurements">
-              <mat-form-field class="form-filters">
-                <input  matInput placeholder="Id" [(ngModel)]="sel.ID" >
-              </mat-form-field>
-                <mat-form-field style="width:200px">
-                  <input  matInput placeholder="Name" [(ngModel)]="sel.Name" >
-                </mat-form-field>
-                <mat-form-field class="form-filters">
-                  <input  matInput placeholder="Retention duration" [(ngModel)]="sel.RetentionPolicyDuration" >
-                </mat-form-field>
-                <div style="margin-bottom: 5px;margin-top: 10px" >
-                  <mat-checkbox [(ngModel)]="sel.UseServiceAsMeasurementName" >Use service as name</mat-checkbox>
-                </div>
-              <button *ngIf="sel.IsNew" class="delete-button" mat-raised-button (click)="saveMeasurement(sel)"> Save</button>
-              <button class="delete-button" mat-raised-button (click)="removeMeasurement(sel.ID)"> Delete</button>
-            </mat-list-item>
-          </mat-list>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-raised-button (click)="addMeasurement()"> Add </button>
-        </mat-card-actions>
-      </mat-card>
-      </mat-expansion-panel>
-
+      <mat-card-actions>
+        <button mat-raised-button (click)="updateProcess()"> Save </button>
+        <button mat-raised-button (click)="resetConfigsToDefault()" color="warn" >Reset to default configs</button>
+      </mat-card-actions>
     </mat-card-content>
 </mat-card>
 
 
-<mat-card style="margin: 5px">
+<mat-card style="margin: 5px" *ngIf="selectedProcData">
   <mat-card-header>
     <!--<div mat-card-avatar class="example-header-image"></div>-->
     <mat-card-title><h3>DB configuration and monitoring</h3></mat-card-title>

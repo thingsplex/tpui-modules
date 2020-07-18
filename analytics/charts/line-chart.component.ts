@@ -225,7 +225,7 @@ export class LineChartComponent implements OnInit  {
     this.globalSub = this.fimp.getGlobalObservable().subscribe((msg) => {
       let fimpMsg = NewFimpMessageFromString(msg.payload.toString());
       if (fimpMsg.service == "ecollector" && fimpMsg.corid ==this.lastRequestId ){
-        if (fimpMsg.mtype == "evt.tsdb.query_report") {
+        if (fimpMsg.mtype == "evt.tsdb.query_report" || fimpMsg.mtype == "evt.tsdb.data_points_report") {
           if (fimpMsg.val) {
             this.transformData(fimpMsg.val);
             this.chart.update();
@@ -243,7 +243,7 @@ export class LineChartComponent implements OnInit  {
       this.globalSub.unsubscribe();
   }
 
-  queryData() {
+  queryDataOld() {
     let fillMode = "null";
     if (!this.dataProcFunc)
       this.dataProcFunc = "mean";
@@ -266,6 +266,35 @@ export class LineChartComponent implements OnInit  {
     if(this.query != undefined && this.query != "")
       query = this.query
     let msg  = new FimpMessage("ecollector","cmd.tsdb.query","str_map",{"query":query},null,null)
+    msg.src = "tplex-ui"
+    msg.resp_to = "pt:j1/mt:rsp/rt:app/rn:tplex-ui/ad:1"
+    this.lastRequestId = msg.uid;
+    this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:ecollector/ad:1",msg.toString());
+  }
+
+  queryData() {
+    let fillMode = "null";
+    if (!this.dataProcFunc)
+      this.dataProcFunc = "mean";
+    if (this.fillGaps)
+      fillMode = "previous"; // null/linear/previous
+    console.log("Measurement = "+this.measurement);
+    if (!this.measurement)
+      return
+
+    let request = {
+      "proc_id":1,
+      "field_name":"value",
+      "measurement_name":this.measurement,
+      "relative_time":this.timeFromNow,
+      "from_time":"",
+      "to_time":"",
+      "group_by_time":this.groupByTime,
+      "group_by_tag":this.groupByTag,
+      "fill_type":fillMode,
+      "data_function":this.dataProcFunc
+    }
+    let msg  = new FimpMessage("ecollector","cmd.tsdb.get_data_points","object",request,null,null)
     msg.src = "tplex-ui"
     msg.resp_to = "pt:j1/mt:rsp/rt:app/rn:tplex-ui/ad:1"
     this.lastRequestId = msg.uid;

@@ -21,7 +21,7 @@ import {AnalyticsSettingsService} from "../charts/settings.service";
   styleUrls: ['./tsdb.component.css']
 })
 export class TsdbConfigComponent implements OnInit {
-  procData :any;
+  selectedProcData :any; // selected procId
   procList :any;
   listOfMeasurements:string[];
   listOfRetensions:string[];
@@ -103,11 +103,11 @@ export class TsdbConfigComponent implements OnInit {
   }
 
   selectProc(procConfig:any) {
-    this.procData = procConfig
+    this.selectedProcData = procConfig
   }
 
   addSelector() {
-    this.procData.Selectors.push({"ID": -1,"Topic": "","InMemory": false})
+    this.selectedProcData.Selectors.push({"ID": -1,"Topic": "","InMemory": false})
   }
 
   resetConfigsToDefault(){
@@ -124,7 +124,7 @@ export class TsdbConfigComponent implements OnInit {
   }
 
   addFilter() {
-    this.procData.Filters.push({
+    this.selectedProcData.Filters.push({
       "ID": -1,
       "Name": "",
       "Topic": "",
@@ -136,34 +136,15 @@ export class TsdbConfigComponent implements OnInit {
       "LinkedFilterID": 0,
       "IsAtomic": true,
       "Tags": null,
-      "MeasurementID": "default",
-      "InMemory": false
     })
-  }
-
-  saveFilter(filter:any) {
-
-
   }
 
   removeFilter(id:number) {
 
   }
 
-  addMeasurement() {
-    this.procData.Measurements.push({
-      "ID": "",
-      "Name": "",
-      "UseServiceAsMeasurementName": true,
-      "RetentionPolicyName": "default_8w",
-      "RetentionPolicyDuration": "8w",
-      "IsNew":true
-    })
-  }
-
   saveMeasurement(measurement:any) {
     measurement.RetentionPolicyName = measurement.ID+"_"+measurement.RetentionPolicyDuration;
-
   }
 
   removeMeasurement(id:number) {
@@ -179,8 +160,26 @@ export class TsdbConfigComponent implements OnInit {
     this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:ecollector/ad:1",msg.toString());
   }
 
+  addProc() {
+    let msg  = new FimpMessage("ecollector","cmd.ecprocess.add","string","",null,null)
+    msg.src = "tplex-ui"
+    msg.resp_to = "pt:j1/mt:rsp/rt:app/rn:tplex-ui/ad:1"
+    this.lastRequestId = msg.uid;
+    this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:ecollector/ad:1",msg.toString());
+  }
+
+  updateProcess() {
+    //cmd.ecprocess.update_config
+    let msg  = new FimpMessage("ecollector","cmd.ecprocess.update_config","object",this.selectedProcData,null,null)
+    msg.src = "tplex-ui"
+    msg.resp_to = "pt:j1/mt:rsp/rt:app/rn:tplex-ui/ad:1"
+    this.lastRequestId = msg.uid;
+    this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:ecollector/ad:1",msg.toString());
+  }
+
   deleteDbObject(type:string,name:string) {
-    let msg  = new FimpMessage("ecollector","cmd.tsdb.delete_object","str_map",{"name":name,"object_type":type},null,null)
+    let req = {"proc_id":this.selectedProcData.ID.toString(),"name":name,"object_type":type}
+    let msg  = new FimpMessage("ecollector","cmd.tsdb.delete_object","str_map",req,null,null)
     msg.src = "tplex-ui"
     msg.resp_to = "pt:j1/mt:rsp/rt:app/rn:tplex-ui/ad:1"
     this.lastRequestId = msg.uid;
