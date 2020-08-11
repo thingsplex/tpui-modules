@@ -1,19 +1,19 @@
 <div style="margin: 20px">
-    <mat-select placeholder="Location (room,area,house)" style="width:400px" [(ngModel)]="selectedLocationId" (change)="onLocationSelected()" >
+    <mat-select placeholder="Location (room,area,house)" style="width:400px" [(ngModel)]="selectedLocationId" (selectionChange)="onLocationSelected()" >
        <mat-option *ngFor="let location of registry.locations" [value]="location.id">{{ location.alias }} ({{location.type}}) </mat-option>
     </mat-select>
     <p>
-    <mat-select #thingInput placeholder="Thing" style="width:400px" [(ngModel)]="selectedThingId" (change)="onThingSelected()" >
+    <mat-select #thingInput placeholder="Thing" style="width:400px" [(ngModel)]="selectedThingId" (selectionChange)="onThingSelected()" >
       <mat-option *ngFor="let thing of things" [value]="thing.id" >{{ thing.alias }} ({{thing.type}}) </mat-option>
     </mat-select>
     </p>
     <p>
-    <mat-select #serviceInput placeholder="Service" style="width:400px" [(ngModel)]="selectedServiceId" (change)="onServiceSelected()" >
+    <mat-select #serviceInput placeholder="Service" style="width:400px" [(ngModel)]="selectedServiceId" (selectionChange)="onServiceSelected()" >
         <mat-option *ngFor="let service of services" [value]="service.name" >{{ service.alias }} ({{service.name}}) </mat-option>
     </mat-select>
     </p>
     <p>
-      <mat-select *ngIf="activeService" #interfaceInput placeholder="Action" style="width:400px" [(ngModel)]="selectedInterfaceName" (change)="onInterfaceSelected()" >
+      <mat-select *ngIf="activeService" #interfaceInput placeholder="Action" style="width:400px" [(ngModel)]="selectedInterfaceName" (selectionChange)="onInterfaceSelected()" >
         <mat-option *ngFor="let intf of activeService.interfaces" [value]="intf.msg_t" >{{ intf.msg_t }} </mat-option>
       </mat-select>
     </p>

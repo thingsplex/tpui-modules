@@ -14,8 +14,6 @@ import {AnalyticsSettingsService} from "../charts/settings.service";
   styleUrls: ['./energy.component.css']
 })
 export class EnergyComponent implements OnInit {
-  public queryPower : string;
-  public queryEnergy: string;
   selectedSensorTypes = [];
   timeFromNow :string = "1d";
   groupByTime :string = "1h";
@@ -24,8 +22,11 @@ export class EnergyComponent implements OnInit {
   gSize : number = 350;
   fillGaps : boolean = false;
   dataProcFunc : string = "mean";
+  dataTransformFuncV : string = "";
   reloadSignal:boolean;
   intervalTimer:any;
+  toTime :string = "";
+  fromTime:string = "";
   set refreshRate(rate : number) {
     if (rate==-1)
       return;
@@ -40,7 +41,6 @@ export class EnergyComponent implements OnInit {
     return this._refreshRate;
   }
   constructor(private registry:ThingsRegistryService,private settings:AnalyticsSettingsService) {
-   this.queryPower = "SELECT mean(\"value\") AS \"mean_value\" FROM \"default_20w\".\"electricity_meter_power\" WHERE time > now()-1d GROUP BY time(10m),\"location_id\" FILL(previous)"
   }
   ngOnInit() {
     this.loadFromStorage();
@@ -55,6 +55,20 @@ export class EnergyComponent implements OnInit {
   }
   save() {
     this.saveToStorage()
+  }
+
+  fromDateChange(event) {
+    if(event.value)
+      this.fromTime = event.value.format("YYYY-MM-DDTHH:mm:ss")+"Z";
+    else
+      this.fromTime = "";
+  }
+
+  toDateChange(event) {
+    if(event.value)
+      this.toTime = event.value.format("YYYY-MM-DDTHH:mm:ss")+"Z";
+    else
+      this.toTime = "";
   }
 
   saveToStorage() {

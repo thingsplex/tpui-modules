@@ -22,6 +22,8 @@ export class BinarySensorChartComponent implements OnInit  {
   @Input() measurement     : string;
   @Input() title           : string;
   @Input() timeFromNow     : string;
+  @Input() fromTime        : string;
+  @Input() toTime          : string;
   @Input() groupByTime     : string;
   @Input() groupByTag      : string;
   @Input() filterById      : string;
@@ -219,8 +221,8 @@ export class BinarySensorChartComponent implements OnInit  {
       "field_name":"value",
       "measurement_name":this.measurement,
       "relative_time":this.timeFromNow,
-      "from_time":"",
-      "to_time":"",
+      "from_time":this.fromTime,
+      "to_time":this.toTime,
       "group_by_time":this.groupByTime,
       "group_by_tag":this.groupByTag,
       "fill_type":fillMode,

@@ -1,6 +1,6 @@
 <div>
   <mat-form-field style="width: 270px">
-    <mat-select style="width: 270px"   placeholder="{{label}}" [(ngModel)]="variableName" (change)="onSelected()" >
+    <mat-select style="width: 270px"   placeholder="{{label}}" [(ngModel)]="variableName" (selectionChange)="onSelected()" >
       <mat-option value = "">Input variable</mat-option>
       <ng-container *ngFor="let vari of vars">
         <mat-option *ngIf="vari.isGlobal==isGlobal" [value]="vari.Name" >{{vari.Name}}({{vari.Type}})</mat-option>

@@ -2,17 +2,16 @@
     <p><b>Assign</b> </p>
     <div #nodebody >
 
-      <mat-radio-group class="example-radio-group" style="padding-bottom: 5px" placeholder="Value source" [(ngModel)]="valueSource" (change)="valueSourceSelected()">
-        <mat-radio-button class="example-radio-button" [value]="'value'">
+      <mat-radio-group class="example-radio-group" style="padding-bottom: 5px;" placeholder="Value source" [(ngModel)]="valueSource" (change)="valueSourceSelected()">
+        <mat-radio-button class="example-radio-button" [value]="'value'" style="margin-right: 10px">
           Static value
         </mat-radio-button>
         <mat-radio-button class="example-radio-button" [value]="'input'">
           Input variable
         </mat-radio-button>
       </mat-radio-group>
-
-      <div [ngSwitch]="node.Config.DefaultValue.ValueType" style="padding: 5px">
-        <p *ngIf = "node.Config.DefaultValue.ValueType"> Static value : </p>
+   <ng-container *ngIf="valueSource=='value'" >
+      <div [ngSwitch]="node.Config.DefaultValue.ValueType" style="margin-top: 20px;width: 270px">
         <div *ngSwitchCase="'string'">
             <mat-form-field class="node-transition-field">
                 <input matInput [(ngModel)]="node.Config.DefaultValue.Value" placeholder="Default value">
@@ -33,7 +32,7 @@
         </div>
         <div *ngSwitchCase="'bool'">
             <mat-radio-group class="example-radio-group" placeholder="Default value" [(ngModel)]="node.Config.DefaultValue.Value">
-            <mat-radio-button class="example-radio-button" [value]="true">
+            <mat-radio-button class="example-radio-button" [value]="true" style="margin-right: 10px">
               true (On)
             </mat-radio-button>
             <mat-radio-button class="example-radio-button" [value]="false">
@@ -87,8 +86,10 @@
             </mat-form-field>
         </div>
     </div>
+   </ng-container>
    </div>
-  <p><b> to variable </b> </p>
-  <variable-selector [label]="'Variable'" [variableName]="node.Config.Name" [isGlobal]="node.Config.UpdateGlobal" [flowId]="flowId" (onSelect)="resultVariableSelected($event)" ></variable-selector>
+  <br/>
+   <b> to variable </b>
+   <variable-selector [label]="'Variable'" [variableName]="node.Config.Name" [isGlobal]="node.Config.UpdateGlobal" [flowId]="flowId" (onSelect)="resultVariableSelected($event)" ></variable-selector>
 
 </div>

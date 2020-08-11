@@ -37,15 +37,17 @@ export class SetVariableNodeComponent implements OnInit {
   }
 
   valueSourceSelected() {
-    console.log("Input source changed");
+    console.log("Input source changed to = "+this.valueSource);
     if (this.valueSource=="value") {
       this.node.Config.Name = "";
+      this.node.Config.DefaultValue.ValueType = "string";
     }else {
       this.node.Config.DefaultValue.ValueType = "";
     }
   }
 
   resultVariableSelected(cvar) {
+    console.log("Variable selected = "+cvar.Name);
     this.node.Config.Name = cvar.Name;
     if (this.valueSource=="value")
        this.node.Config.DefaultValue.ValueType = cvar.Type;

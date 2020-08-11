@@ -76,14 +76,14 @@
       OR
       <mat-form-field style="margin-right: 5px;margin-left: 5px;width: 130px;">
         <mat-label>From</mat-label>
-        <input matInput [matDatepicker]="pickerFrom">
+        <input matInput [matDatepicker]="pickerFrom" (dateChange)="fromDateChange($event)">
         <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
         <mat-datepicker #pickerFrom ></mat-datepicker>
       </mat-form-field>
       -
       <mat-form-field style="margin-right: 5px;margin-left: 5px;width: 130px;">
         <mat-label>To</mat-label>
-        <input matInput [matDatepicker]="pickerTo">
+        <input matInput [matDatepicker]="pickerTo" (dateChange)="toDateChange($event)">
         <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
         <mat-datepicker #pickerTo></mat-datepicker>
       </mat-form-field>
@@ -121,7 +121,7 @@
   <ng-container *ngFor="let e of listOfActivityTypes">
     <mat-card *ngIf="e.isSelected" class="sensor-panel">
       <h3>{{e.name}}</h3>
-      <binary-sensor-chart [measurement]="e.type" [isFilterEnabled]="false" [groupByTag]="groupByTag"  [groupByTime]="groupByTime" [timeFromNow]="timeFromNow" [height]="gSize" [title]="''" [change]="reloadSignal" ></binary-sensor-chart>
+      <binary-sensor-chart [measurement]="e.type" [isFilterEnabled]="false" [groupByTag]="groupByTag"  [groupByTime]="groupByTime" [timeFromNow]="timeFromNow" [height]="gSize" [title]="''" [change]="reloadSignal" [fromTime]="fromTime" [toTime]="toTime" ></binary-sensor-chart>
     </mat-card>
   </ng-container>
 

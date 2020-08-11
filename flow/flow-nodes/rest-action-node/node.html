@@ -16,7 +16,7 @@
     </mat-form-field>
     <div>
     <mat-form-field style="width: 100px">
-      <mat-select #nodeTypeInput placeholder="Payload type" (change)="requestPayloadTypeSelected()" [(ngModel)]="node.Config.RequestPayloadType">
+      <mat-select #nodeTypeInput placeholder="Payload type" (selectionChange)="requestPayloadTypeSelected()" [(ngModel)]="node.Config.RequestPayloadType">
         <mat-option value="json">json</mat-option>
         <mat-option value="xml">xml</mat-option>
       </mat-select>

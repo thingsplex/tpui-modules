@@ -22,6 +22,8 @@ export class ActivityComponent implements OnInit {
   timeFromNow :string = "1d";
   groupByTime :string = "1h";
   groupByTag  :string = "location_id";
+  toTime :string = "";
+  fromTime:string = "";
   private _refreshRate :number = 60;
   gSize : number = 350;
   fillGaps : boolean = false;
@@ -80,6 +82,20 @@ export class ActivityComponent implements OnInit {
       }
       st.isSelected = isSelected;
     }
+  }
+
+  fromDateChange(event) {
+    if(event.value)
+      this.fromTime = event.value.format("YYYY-MM-DDTHH:mm:ss")+"Z";
+    else
+      this.fromTime = "";
+  }
+
+  toDateChange(event) {
+    if(event.value)
+      this.toTime = event.value.format("YYYY-MM-DDTHH:mm:ss")+"Z";
+    else
+      this.toTime = "";
   }
 
   saveToStorage() {

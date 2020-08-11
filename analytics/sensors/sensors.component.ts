@@ -30,6 +30,8 @@ export class SensorsComponent implements OnInit {
   public listOfSensorTypes : any[] = []; // {type:"sensor_temp.evt.sensor.report",name:"Temperature",isSelected:true}
   private lastRequestId : string ;
   private globalSub : Subscription;
+  toTime :string = "";
+  fromTime:string = "";
   timeFromNow :string = "1d";
   groupByTime :string = "1h";
   groupByTag  :string = "location_id";
@@ -69,6 +71,19 @@ export class SensorsComponent implements OnInit {
   ngOnDestroy() {
     if(this.globalSub)
       this.globalSub.unsubscribe();
+  }
+  fromDateChange(event) {
+    if(event.value)
+      this.fromTime = event.value.format("YYYY-MM-DDTHH:mm:ss")+"Z";
+    else
+      this.fromTime = "";
+  }
+
+  toDateChange(event) {
+    if(event.value)
+      this.toTime = event.value.format("YYYY-MM-DDTHH:mm:ss")+"Z";
+    else
+      this.toTime = "";
   }
 
   loadListOfSensorTypes() {

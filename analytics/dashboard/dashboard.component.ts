@@ -72,12 +72,17 @@ export class DashboardComponent implements OnInit {
             this.calculateThingsByType();
             this.calculateRegistryTotals();
             this.updateAllCharts();
+            console.log("new registry state = allLoaded");
+
           }
           console.log("new registry state = "+state);
 
         });
+      }else {
+        console.log("sub already initialised ")
       }
     }else {
+      console.log("Just calculation ")
       this.calculateDevicesPerLocation();
       this.calculateThingsByType();
       this.calculateRegistryTotals();

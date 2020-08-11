@@ -11,7 +11,7 @@
   <br>
   <div>
     <div *ngIf="node.Config.EventType=='shortcut'">
-      <mat-select #nodeTypeInput class="value-selector" placeholder="Mode filter" (change)="onSelected($event)" [(ngModel)]="node.Config.ValueFilter">
+      <mat-select #nodeTypeInput class="value-selector" placeholder="Mode filter" (selectionChange)="onSelected($event)" [(ngModel)]="node.Config.ValueFilter">
         <mat-option *ngFor="let shortcut of shortcuts" [value]="shortcut.id">{{shortcut.client.name}}</mat-option>
       </mat-select>
     </div>

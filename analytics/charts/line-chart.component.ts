@@ -23,6 +23,7 @@ export class LineChartComponent implements OnInit  {
   private _timeFromNow : string;
   private _groupByTag  : string;
   private _height:string;
+  private isInitialized:boolean = false;
 
   @Input() measurement : string;
   @Input() title       : string;
@@ -51,9 +52,12 @@ export class LineChartComponent implements OnInit  {
   @Input() filterById      : string;
   @Input() filterByTopic   : string;
   @Input() query           : string;
+  @Input() fromTime        : string;
+  @Input() toTime          : string;
   @Input() isFilterEnabled : boolean;
   @Input() fillGaps        : boolean;
   @Input() dataProcFunc    : string;
+  @Input() dataTransformFunc    : string;
   @Input() set height (val: number) {
     console.log("chart height has changed to"+val)
     this._height = String(val)+"px";
@@ -67,7 +71,8 @@ export class LineChartComponent implements OnInit  {
 
   @Input() set change(v:boolean) {
     console.log("QUery on change");
-    this.queryData();
+    if (this.isInitialized)
+      this.queryData();
   }
   get change(){
     return true;
@@ -189,6 +194,7 @@ export class LineChartComponent implements OnInit  {
             fill:false,
             pointRadius:1.5,
             lineTension:0.2
+
           });
         }
       }
@@ -196,10 +202,11 @@ export class LineChartComponent implements OnInit  {
   }
   ngOnInit()
    {
+     console.log("Trfunc 1 "+this.measurement+":"+this.dataTransformFunc )
    }
 
   ngAfterViewInit() {
-
+    console.log("Trfunc 2 "+this.measurement+":"+this.dataTransformFunc )
     if(this.timeFromNow == undefined)
       this.timeFromNow = "24h";
     if (this.measurement==undefined)
@@ -236,7 +243,8 @@ export class LineChartComponent implements OnInit  {
     });
 
     // console.log("QUery on init");
-    // this.queryData();
+    this.queryData();
+    this.isInitialized = true;
   }
   ngOnDestroy() {
     if(this.globalSub)
@@ -281,18 +289,19 @@ export class LineChartComponent implements OnInit  {
     console.log("Measurement = "+this.measurement);
     if (!this.measurement)
       return
-
+    console.log("Time from "+this.fromTime)
     let request = {
       "proc_id":1,
       "field_name":"value",
       "measurement_name":this.measurement,
       "relative_time":this.timeFromNow,
-      "from_time":"",
-      "to_time":"",
+      "from_time":this.fromTime,
+      "to_time":this.toTime,
       "group_by_time":this.groupByTime,
       "group_by_tag":this.groupByTag,
       "fill_type":fillMode,
-      "data_function":this.dataProcFunc
+      "data_function":this.dataProcFunc,
+      "transform_function":this.dataTransformFunc
     }
     let msg  = new FimpMessage("ecollector","cmd.tsdb.get_data_points","object",request,null,null)
     msg.src = "tplex-ui"
@@ -324,6 +333,7 @@ export class LineChartComponent implements OnInit  {
             },
             time:{
               unit:'minute',
+              stepSize:1,
               displayFormats: {
                 minute: 'H:mm'
               }

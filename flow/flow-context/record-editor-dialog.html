@@ -6,7 +6,7 @@
         <mat-form-field class="node-transition-field">
           <input  matInput placeholder="Description" [(ngModel)]="ctxRec.Description" >
         </mat-form-field>
-        <mat-select #nodeTypeInput class="value-selector"  placeholder="Value type" [(ngModel)]="ctxRec.ValueType" (change)="onTypeSelected($event)">
+        <mat-select #nodeTypeInput class="value-selector"  placeholder="Value type" [(ngModel)]="ctxRec.ValueType" (selectionChange)="onTypeSelected($event)">
           <mat-option value="">The same as input </mat-option>
           <mat-option value="string">string</mat-option>
           <mat-option value="bool">bool</mat-option>

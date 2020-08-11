@@ -1,17 +1,8 @@
 import { Injectable } from '@angular/core';
-// import {BehaviorSubject, Observable} from 'rxjs';
-// import {
-//   MqttMessage,
-//   MqttService
-// } from 'angular2-mqtt';
-// import { FimpMessage, NewFimpMessageFromString } from "app/fimp/Message";
-// import {tap} from "rxjs/operators";
 import {FimpService} from "app/fimp/fimp.service";
-import { BACKEND_ROOT} from "app/globals";
 import {HttpClient} from "@angular/common/http";
-import {Subject} from "rxjs";
-
-
+import {Subject, Subscription} from "rxjs";
+import {FimpMessage, NewFimpMessageFromString} from "../../fimp/Message";
 
 @Injectable()
 export class ThingsRegistryService{
@@ -20,16 +11,62 @@ export class ThingsRegistryService{
   public locations : any = [];
   public things : any = [];
   public devices :any = [];
+  private locResponseReceived = false;
+  private thingsResponseReceived = false;
+  private servicesResponseReceived = false;
   private registryStateSource = new Subject<string>();
   public registryState$ = this.registryStateSource.asObservable();
+  private globalSub : Subscription;
+  private lastRequestId:string;
+  private thingsQueryRequestId:string;
+  private devicesQueryRequestId:string;
   constructor(private fimp: FimpService,private http: HttpClient) {
     console.log("registry service constructor")
-    this.loadAllComponents();
+    this.configureFimpListener()
+
+    this.fimp.mqtt.onConnect.subscribe((message: any) => {
+      console.log(" reg - FimpService onConnect");
+      this.loadAllComponents();
+    });
+  }
+  public init() {
   }
 
-  public init() {
-
-
+  configureFimpListener() {
+    this.globalSub = this.fimp.getGlobalObservable().subscribe((msg) => {
+      let fimpMsg = NewFimpMessageFromString(msg.payload.toString());
+      if (fimpMsg.service == "tpflow" ){
+        if (fimpMsg.mtype == "evt.registry.locations_report") {
+          if (fimpMsg.val) {
+            this.locResponseReceived = true;
+            this.locations = fimpMsg.val;
+            this.registryStateSource.next("locationsLoaded");
+            this.notifyRegistryState();
+            console.log("Locations loaded !!!!!")
+          }
+        } else if (fimpMsg.mtype == "evt.registry.things_report") {
+          if (fimpMsg.val) {
+            if (this.thingsQueryRequestId == fimpMsg.corid) {
+              this.thingsResponseReceived = true;
+              this.things = fimpMsg.val;
+              this.registryStateSource.next("thingsLoaded");
+              this.notifyRegistryState();
+            } else if (this.devicesQueryRequestId == fimpMsg.corid) {
+              this.devices = fimpMsg.val;
+              this.registryStateSource.next("devicesLoaded");
+              this.notifyRegistryState();
+            }
+          }
+        } else if (fimpMsg.mtype == "evt.registry.services_report") {
+          if (fimpMsg.val) {
+            this.servicesResponseReceived = true;
+            this.services = fimpMsg.val;
+            this.registryStateSource.next("servicesLoaded");
+            this.notifyRegistryState();
+          }
+        }
+      }
+    });
   }
 
   loadAllComponents() {
@@ -40,41 +77,41 @@ export class ThingsRegistryService{
   }
 
   loadServices() {
-    let params: URLSearchParams = new URLSearchParams();
-    // params.set('serviceName', serviceName);
-    // params.set('filterWithoutAlias',"true");
-    this.http.get(BACKEND_ROOT+'/fimp/api/registry/services')
-      .subscribe(result=>{
-      this.services = result;
-      this.registryStateSource.next("servicesLoaded");
-      this.notifyRegistryState();
-    });
+
+    let val = {
+        "filter_without_alias": "",
+        "location_id": "",
+        "service_name": "",
+        "thing_id": ""
+      };
+    let msg  = new FimpMessage("tpflow","cmd.registry.get_services","str_map",val,null,null)
+    msg.src = "tplex-ui"
+    this.lastRequestId = msg.uid;
+    msg.resp_to = "pt:j1/mt:rsp/rt:app/rn:tplex-ui/ad:1"
+    this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:tpflow/ad:1",msg.toString());
   }
   loadLocations() {
-    this.http.get(BACKEND_ROOT+'/fimp/api/registry/locations')
-      .subscribe(result=>{
-      this.locations = result;
-        this.registryStateSource.next("locationsLoaded");
-        this.notifyRegistryState();
-    });
+    let msg  = new FimpMessage("tpflow","cmd.registry.get_locations","str_map",null,null,null)
+    msg.src = "tplex-ui"
+    this.lastRequestId = msg.uid;
+    msg.resp_to = "pt:j1/mt:rsp/rt:app/rn:tplex-ui/ad:1"
+    this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:tpflow/ad:1",msg.toString());
   }
 
   loadThings() {
-    this.http.get(BACKEND_ROOT+'/fimp/api/registry/things')
-      .subscribe(result=>{
-        this.things = result;
-        this.registryStateSource.next("thingsLoaded");
-        this.notifyRegistryState();
-      });
+    let msg  = new FimpMessage("tpflow","cmd.registry.get_things","str_map",null,null,null)
+    msg.src = "tplex-ui"
+    this.thingsQueryRequestId = msg.uid;
+    msg.resp_to = "pt:j1/mt:rsp/rt:app/rn:tplex-ui/ad:1"
+    this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:tpflow/ad:1",msg.toString());
   }
 
   loadDevices() {
-    this.http.get(BACKEND_ROOT+'/fimp/api/registry/devices')
-      .subscribe(result=>{
-        this.devices = result;
-        this.registryStateSource.next("devicesLoaded");
-        this.notifyRegistryState();
-      });
+    let msg  = new FimpMessage("tpflow","cmd.registry.get_devices","str_map",null,null,null)
+    msg.src = "tplex-ui"
+    this.devicesQueryRequestId = msg.uid;
+    msg.resp_to = "pt:j1/mt:rsp/rt:app/rn:tplex-ui/ad:1"
+    this.fimp.publish("pt:j1/mt:cmd/rt:app/rn:tpflow/ad:1",msg.toString());
   }
 
   notifyRegistryState() {
@@ -84,7 +121,7 @@ export class ThingsRegistryService{
   }
 
   isRegistryInitialized():boolean {
-    if (this.things != undefined && this.locations != undefined && this.services != undefined)
+    if (this.thingsResponseReceived && this.locResponseReceived && this.servicesResponseReceived)
       return true;
     else
       return false;

@@ -6,11 +6,11 @@
       </mat-radio-group>
       </div>
       <br>
-      <div> 
+      <div>
       <div *ngIf="node.Config.DefaultValue.Value.component=='shortcut'">
-      <mat-select #nodeTypeInput class="value-selector" placeholder="Mode filter" (change)="onSelected($event)" [(ngModel)]="node.Config.DefaultValue.Value.id">
+      <mat-select #nodeTypeInput class="value-selector" placeholder="Mode filter" (selectionChange)="onSelected($event)" [(ngModel)]="node.Config.DefaultValue.Value.id">
                     <mat-option *ngFor="let shortcut of shortcuts" [value]="shortcut.id">{{shortcut.client.name}}</mat-option>
-      </mat-select> 
+      </mat-select>
       </div>
       <div *ngIf="node.Config.DefaultValue.Value.component=='mode'">
            <mat-select #nodeTypeInput class="value-selector" placeholder="Mode filter" [(ngModel)]="node.Config.DefaultValue.Value.id">
@@ -18,6 +18,6 @@
                 <mat-option value="away">away</mat-option>
                 <mat-option value="sleep">sleep</mat-option>
                 <mat-option value="vacation">vacation</mat-option>
-           </mat-select> 
-      </div>                    
+           </mat-select>
+      </div>
 </div>

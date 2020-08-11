@@ -72,15 +72,15 @@
       OR
       <mat-form-field style="margin-right: 5px;margin-left: 5px;width: 130px;">
         <mat-label>From</mat-label>
-        <input matInput [matDatepicker]="pickerFrom">
-        <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+        <input matInput [matDatepicker]="pickerFrom" (dateChange)="fromDateChange($event)" >
+        <mat-datepicker-toggle matSuffix [for]="pickerFrom" ></mat-datepicker-toggle>
         <mat-datepicker #pickerFrom ></mat-datepicker>
       </mat-form-field>
       -
       <mat-form-field style="margin-right: 5px;margin-left: 5px;width: 130px;">
         <mat-label>To</mat-label>
-        <input matInput [matDatepicker]="pickerTo">
-        <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+        <input matInput [matDatepicker]="pickerTo" (dateChange)="toDateChange($event)">
+        <mat-datepicker-toggle matSuffix [for]="pickerTo" ></mat-datepicker-toggle>
         <mat-datepicker #pickerTo></mat-datepicker>
       </mat-form-field>
 
@@ -100,7 +100,6 @@
           <mat-option value="1d">1 day</mat-option>
           <mat-option value="2d">2 day</mat-option>
           <mat-option value="7d">1 week</mat-option>
-          <mat-option value="1m">1 month</mat-option>
           <mat-option value="none">None</mat-option>
         </mat-select>
       </mat-form-field>
@@ -128,6 +127,14 @@
       </mat-select>
     </mat-form-field>
 
+      <mat-form-field style="height: 35px;margin: 10px;width: 280px"  >
+        <mat-label> Transformation </mat-label>
+        <mat-select matNativeControl [(value)]="dataTransformFuncV"  placeholder="size" >
+          <mat-option [value]="''">None</mat-option>
+          <mat-option [value]="'difference'">Difference between subsequent values.</mat-option>
+        </mat-select>
+      </mat-form-field>
+
   <mat-card-actions>
     <button mat-raised-button color="primary" (click)="reload()" >Reload</button>
     <button mat-raised-button color="primary" (click)="save()" >Save</button>
@@ -136,10 +143,10 @@
   </p>
 
 
-<line-chart  [measurement]="'electricity_meter_power'" [isFilterEnabled]="false" [title]="'Power (W)'" [(timeFromNow)]="timeFromNow" [groupByTime]="groupByTime" [groupByTag]="groupByTag" [height]="gSize" [change]="reloadSignal" [fillGaps]="fillGaps" [dataProcFunc]="dataProcFunc"  ></line-chart>
-<line-chart  [measurement]="'electricity_meter_energy'" [isFilterEnabled]="false" [title]="'Energy (kWh)'" [(timeFromNow)]="timeFromNow" [groupByTime]="groupByTime" [groupByTag]="groupByTag" [height]="gSize" [change]="reloadSignal" [fillGaps]="fillGaps" [dataProcFunc]="dataProcFunc"  ></line-chart>
+<line-chart  [measurement]="'electricity_meter_power'" [isFilterEnabled]="false" [title]="'Power (W)'" [(timeFromNow)]="timeFromNow" [groupByTime]="groupByTime" [groupByTag]="groupByTag" [height]="gSize" [change]="reloadSignal" [fillGaps]="fillGaps" [dataTransformFunc]="dataTransformFuncV"  [dataProcFunc]="dataProcFunc" [fromTime]="fromTime" [toTime]="toTime" ></line-chart>
+<line-chart  [measurement]="'electricity_meter_energy'" [isFilterEnabled]="false" [title]="'Energy (kWh) '" [(timeFromNow)]="timeFromNow" [groupByTime]="groupByTime" [groupByTag]="groupByTag" [height]="gSize" [change]="reloadSignal" [fillGaps]="fillGaps" [dataTransformFunc]="'difference'" [dataProcFunc]="dataProcFunc" [fromTime]="fromTime" [toTime]="toTime" ></line-chart>
 
 <br>
-<line-chart  [measurement]="'battery.evt.lvl.report'" [isFilterEnabled]="false" [title]="'Battery charge level'" [(timeFromNow)]="timeFromNow" [groupByTime]="groupByTime" [groupByTag]="groupByTag" [height]="gSize" [change]="reloadSignal" [fillGaps]="fillGaps" [dataProcFunc]="dataProcFunc"  ></line-chart>
+<line-chart  [measurement]="'battery.evt.lvl.report'" [isFilterEnabled]="false" [title]="'Battery charge level'" [(timeFromNow)]="timeFromNow" [groupByTime]="groupByTime" [groupByTag]="groupByTag" [height]="gSize" [change]="reloadSignal" [fillGaps]="fillGaps" [dataProcFunc]="dataProcFunc" [fromTime]="fromTime" [toTime]="toTime" ></line-chart>
 
 </div>

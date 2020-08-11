@@ -32,7 +32,7 @@
     <mat-card-actions>
       <mat-form-field>
         <mat-label>Adapter selector</mat-label>
-        <mat-select  [(value)]="adapter" (change)="onAdapterSelected()" >
+        <mat-select  [(value)]="adapter" (selectionChange)="onAdapterSelected()" >
           <mat-option *ngFor="let ad of listOfAdapters" [value]="ad">
             {{ad}}
           </mat-option>
